@@ -46,3 +46,8 @@ out/
 *.rar
 
 application.properties
+
+.gradle/
+build/
+out/
+*.class
