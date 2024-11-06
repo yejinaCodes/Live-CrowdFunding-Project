@@ -1,4 +1,4 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-public class test {
+public class TopFunding {
 }
