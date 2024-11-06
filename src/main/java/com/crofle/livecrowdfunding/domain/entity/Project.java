@@ -9,17 +9,20 @@ import java.time.LocalDateTime;
 @Entity
 public class Project {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     private Maker maker_id; //Maker쪽에서 GeneratedValue 추가
     @ManyToOne
-    private Manager manager_id; //Manager쪽에서 GeneratedValue 추가
+    private Manger manager_id; //Manager쪽에서 GeneratedValue 추가
     @OneToOne
     @JoinColumn(name="plan_id", referencedColumnName = "id")
     private RatePlan ratePlan;
 
-    private Long interest_id;
+    @OneToOne
+    @JoinColumn(name="interest_id", referencedColumnName = "id")
+    private Category category; //Catory 테이블에도 onetoone 추가
     private String product_name;
     private String summary;
 

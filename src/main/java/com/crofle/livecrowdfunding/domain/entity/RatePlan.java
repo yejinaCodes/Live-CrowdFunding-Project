@@ -1,14 +1,15 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class RatePlan {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String plan_name;
+
+    @Column(name="plan_name")
+    private String planName;
     private Boolean charge;
 
     @OneToOne(mappedBy="ratePlan")
