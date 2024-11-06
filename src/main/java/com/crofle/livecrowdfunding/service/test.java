@@ -1,4 +1,4 @@
 package com.crofle.livecrowdfunding.service;
 
-public class test {
+public interface test {
 }
