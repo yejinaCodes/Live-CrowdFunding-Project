@@ -7,15 +7,16 @@ import org.apache.catalina.Manager;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "PROJECT")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Maker maker_id; //Maker쪽에서 GeneratedValue 추가
+    private Maker maker; //Maker쪽에서 GeneratedValue 추가
     @ManyToOne
-    private Manger manager_id; //Manager쪽에서 GeneratedValue 추가
+    private Manager manager; //Manager쪽에서 GeneratedValue 추가
     @OneToOne
     @JoinColumn(name="plan_id", referencedColumnName = "id")
     private RatePlan ratePlan;
@@ -23,23 +24,23 @@ public class Project {
     @OneToOne
     @JoinColumn(name="interest_id", referencedColumnName = "id")
     private Category category; //Catory 테이블에도 onetoone 추가
-    private String product_name;
+    private String productName;
     private String summary;
 
     private int price;
-    private int discount_percentage;
-    private LocalDateTime start_at;
+    private int discountPercentage;
+    private LocalDateTime startAt;
 
-    private LocalDateTime end_at;
+    private LocalDateTime endAt;
     private int percentage;
     @Enumerated(EnumType.STRING)
-    private Status review_status;
+    private Status reviewStatus;
     @Lob
-    private String rejection_reason;
+    private String rejectionReason;
     @Enumerated(EnumType.STRING)
-    private Status progress_status;
-    private int goal_amount;
-    private String content_image;
+    private Status progressStatus;
+    private int goalAmount;
+    private String contentImage;
 
 
 

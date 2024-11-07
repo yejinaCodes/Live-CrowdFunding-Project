@@ -10,7 +10,7 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name="project_id")
-    private Project projectId;
+    private Project project;
     private String image;
 
 }
