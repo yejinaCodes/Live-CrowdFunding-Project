@@ -2,12 +2,10 @@ package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.enums.Status;
 import jakarta.persistence.*;
-import org.apache.catalina.Manager;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "PROJECT")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
