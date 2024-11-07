@@ -1,28 +1,31 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-import com.crofle.livecrowdfunding.domain.CompositeKey;
 import com.crofle.livecrowdfunding.domain.LikedId;
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Liked {
     @EmbeddedId
     private LikedId id;
 
-    @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name="user_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
     @MapsId("projectId")
-    @JoinColumn(name="project_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @Column(name="created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
 }

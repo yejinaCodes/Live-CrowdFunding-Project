@@ -2,29 +2,38 @@ package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.enums.PaymentMethod;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Table(name = "PAYMENT_HISTORY")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentHistory {
-    @Id //외래키 'order_id'를 기본키로 사용
+    @Id
     private Long orderId;
 
-    @OneToOne //Orders 쪽에는 세팅 필요없음.
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
-    private Orders orders;
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId  // orderId를 FK이자 PK로 사용
+    @JoinColumn(name = "order_id")
+    private Orders order;  // orders -> order로 변경 (단수형이 더 적절)
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method")
+    @Column(name = "payment_method", nullable = false)
     private PaymentMethod paymentMethod;
 
-    @Column(name = "delivery_address")
+    @Column(name = "delivery_address", length = 30, nullable = false)
     private String deliveryAddress;
 
-    @Column(name = "payment_at")
+    @Column(name = "payment_at", nullable = false)
     private LocalDateTime paymentAt;
 
-    @Column(name = "refund_status")
-    private Boolean refundStatus;
-
+    @Column(name = "refund_status", nullable = false)
+    @Comment("0: No, 1: YES")
+    private Integer refundStatus = 0;
 }

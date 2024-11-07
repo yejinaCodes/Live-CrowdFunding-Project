@@ -1,6 +1,6 @@
 package com.crofle.livecrowdfunding.domain.enums;
 
-public enum Status {
+public enum ProjectStatus {
     검토중,
     승인,
     반려,
