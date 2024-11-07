@@ -1,7 +1,5 @@
 package com.crofle.livecrowdfunding.domain.entity;
-
 import jakarta.persistence.*;
-
 @Entity
 public class Image {
     @Id
@@ -12,5 +10,4 @@ public class Image {
     @JoinColumn(name="project_id")
     private Project project;
     private String image;
-
 }

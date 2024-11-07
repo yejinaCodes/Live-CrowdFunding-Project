@@ -1,6 +1,5 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-import com.crofle.livecrowdfunding.domain.CompositeKey;
 import com.crofle.livecrowdfunding.domain.UserCategoryId;
 import jakarta.persistence.*;
 

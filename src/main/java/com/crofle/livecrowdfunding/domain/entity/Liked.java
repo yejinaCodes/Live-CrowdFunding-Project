@@ -1,6 +1,5 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-import com.crofle.livecrowdfunding.domain.CompositeKey;
 import com.crofle.livecrowdfunding.domain.LikedId;
 import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
@@ -13,8 +12,8 @@ public class Liked {
     private LikedId id;
 
     @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name="user_id", insertable = false, updatable = false)
+    @MapsId("userId") //복합키에서 특정 필드를 다른 엔티티의 외래 키로 사용하는데 사용
+    @JoinColumn(name="user_id", insertable = false, updatable = false) //복합 키의 특정 필드를 외래키로 사용하는 엔티티 간 관계를 매핑
     private User user;
 
     @ManyToOne
