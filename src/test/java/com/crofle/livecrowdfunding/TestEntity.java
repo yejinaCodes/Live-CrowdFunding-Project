@@ -47,4 +47,7 @@ public class TestEntity {
         System.out.println("Saved User ID: " + savedUser.getId());
         System.out.println("Saved User Email: " + foundUser.getEmail());
     }
+
+    @Test
+    public void userEntityTest2() {}
 }

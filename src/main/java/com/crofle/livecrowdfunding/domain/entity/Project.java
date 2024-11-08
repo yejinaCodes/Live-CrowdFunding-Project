@@ -60,7 +60,7 @@ public class Project {
     private ProjectStatus reviewProjectStatus;
 
     @Lob
-    @Column(name = "rejection_reason")
+    @Column(name = "rejection_reason", columnDefinition = "LONGTEXT")
     private String rejectionReason;
 
     @Enumerated(EnumType.STRING)
