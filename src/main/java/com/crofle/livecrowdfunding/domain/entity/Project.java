@@ -31,7 +31,7 @@ public class Project {
     private RatePlan ratePlan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interest_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @Column(name = "product_name", length = 20, nullable = false)

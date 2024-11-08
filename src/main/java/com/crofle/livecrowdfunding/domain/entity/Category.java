@@ -10,15 +10,17 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "CATEGORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @Column(length = 30, nullable = false)
     private String classification;
 
-    @OneToMany(mappedBy = "interest")
+    @OneToMany(mappedBy = "category")
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")

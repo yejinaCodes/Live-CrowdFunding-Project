@@ -1,10 +1,7 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
@@ -13,7 +10,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Maker {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -53,8 +52,10 @@ public class Maker {
 
     @Column(nullable = false)
     @Comment("0: 활성, 1: 탈퇴")
+    @Builder.Default
     private Integer status = 0;
 
+    @Builder.Default
     @OneToMany(mappedBy = "maker")
     private List<Project> projects = new ArrayList<>();
 }
