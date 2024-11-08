@@ -1,10 +1,7 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,7 +9,10 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@ToString(exclude = {"projects", "chatReports"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Manager {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,8 +36,10 @@ public class Manager {
     private LocalDateTime registeredAt;
 
     @OneToMany(mappedBy = "manager")
+    @Builder.Default
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "manager")
+    @Builder.Default
     private List<ChatReport> chatReports = new ArrayList<>();
 }
