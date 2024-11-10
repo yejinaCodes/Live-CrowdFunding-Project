@@ -1,9 +1,8 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-import com.crofle.livecrowdfunding.domain.TopFundingId;
+import com.crofle.livecrowdfunding.domain.id.TopFundingId;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
 

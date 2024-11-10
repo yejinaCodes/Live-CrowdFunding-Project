@@ -1,6 +1,6 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
-import com.crofle.livecrowdfunding.domain.EventLogId;
+import com.crofle.livecrowdfunding.domain.id.EventLogId;
 import jakarta.persistence.*;
 import lombok.*;
 

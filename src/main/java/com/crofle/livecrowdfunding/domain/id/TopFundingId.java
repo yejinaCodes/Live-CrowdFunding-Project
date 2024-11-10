@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.domain;
+package com.crofle.livecrowdfunding.domain.id;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

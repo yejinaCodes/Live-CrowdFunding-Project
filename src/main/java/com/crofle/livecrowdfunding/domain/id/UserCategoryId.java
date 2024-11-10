@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.domain;
+package com.crofle.livecrowdfunding.domain.id;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
