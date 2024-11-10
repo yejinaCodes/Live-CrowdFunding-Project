@@ -10,9 +10,23 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@ToString(exclude = {
+        "maker",
+        "manager",
+        "ratePlan",
+        "category",
+        "schedules",
+        "events",
+        "chatReports",
+        "likes",
+        "orders",
+        "images",
+        "essentialDocuments",
+        "revenue"
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +67,7 @@ public class Project {
     private LocalDateTime endAt;
 
     @Column(nullable = false)
+    @Builder.Default
     private Integer percentage = 0;
 
     @Enumerated(EnumType.STRING)
@@ -60,7 +75,7 @@ public class Project {
     private ProjectStatus reviewProjectStatus;
 
     @Lob
-    @Column(name = "rejection_reason")
+    @Column(name = "rejection_reason", columnDefinition = "LONGTEXT")
     private String rejectionReason;
 
     @Enumerated(EnumType.STRING)
@@ -74,24 +89,31 @@ public class Project {
     private String contentImage;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Schedule> schedules = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Event> events = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<ChatReport> chatReports = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Liked> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Orders> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<EssentialDocument> essentialDocuments = new ArrayList<>();
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)

@@ -21,7 +21,7 @@ public class RatePlan {
     private String planName;
 
     @Column(nullable = false)
-    private Boolean charge;
+    private Short charge;
 
     @OneToMany(mappedBy = "ratePlan")
     private List<Project> projects = new ArrayList<>();

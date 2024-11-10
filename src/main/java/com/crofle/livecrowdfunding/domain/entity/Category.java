@@ -9,9 +9,10 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "CATEGORY")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Builder
+@ToString(exclude = {"projects", "userInterests"})
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -21,8 +22,10 @@ public class Category {
     private String classification;
 
     @OneToMany(mappedBy = "category")
+    @Builder.Default
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")
+    @Builder.Default
     private List<UserInterest> userInterests = new ArrayList<>();
 }

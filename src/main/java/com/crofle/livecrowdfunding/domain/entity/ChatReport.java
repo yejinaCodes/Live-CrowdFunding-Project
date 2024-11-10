@@ -1,17 +1,17 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "CHAT_REPORT")
+@Builder
+@ToString(exclude = {"user", "project", "manager"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ChatReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
