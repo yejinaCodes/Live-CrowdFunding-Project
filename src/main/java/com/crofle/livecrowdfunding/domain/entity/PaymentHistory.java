@@ -18,7 +18,7 @@ public class PaymentHistory {
     @Id
     private Long orderId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @MapsId  // orderId를 FK이자 PK로 사용
     @JoinColumn(name = "order_id")
     private Orders order;  // orders -> order로 변경 (단수형이 더 적절)

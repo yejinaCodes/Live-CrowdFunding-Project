@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding;
 
+import com.crofle.livecrowdfunding.domain.LikedId;
 import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.domain.enums.PaymentMethod;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
@@ -52,6 +53,9 @@ public class TestEntity {
 
     @Autowired
     private TopFundingRepository topFundingRepository;
+
+    @Autowired
+    private RevenueRepository revenueRepository;
 
 
     @Test
@@ -157,17 +161,30 @@ public class TestEntity {
         System.out.println("Order UserId: " + findOrder.getUser().getId() + " Order ProjectId: " + findOrder.getProject().getId() + " amount, price: " + findOrder.getAmount() + findOrder.getPaymentPrice());
 
         //PaymentHistory
-        PaymentHistory payHistory = PaymentHistory.builder().order(savedOrder).paymentMethod(PaymentMethod.카드)
+        PaymentHistory payHistory = PaymentHistory.builder().orderId(savedOrder.getId()).order(savedOrder).paymentMethod(PaymentMethod.카드)
                 .deliveryAddress("서울 강남구").paymentAt(LocalDateTime.now()).refundStatus(0).build();
         PaymentHistory savedPayment = paymentHistoryRepository.save(payHistory);
         PaymentHistory findPayment = paymentHistoryRepository.findById(savedPayment.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Not present"));
-        System.out.println("Payment Id: " + savedPayment.getOrderId());
+        System.out.println("Payment Id: " + savedPayment.getOrder().getId());
         System.out.println("Payment method: " + findPayment.getPaymentMethod() + " Payment date: " + findPayment.getPaymentAt() + " Payment delivery address: " + findPayment.getDeliveryAddress());
 
 
-//        //Liked
-//        Liked liked = Liked.builder().id(1).build();
+        //Liked
+        Liked liked = Liked.builder().user(savedUser).project(saveProject).createdAt(LocalDateTime.now()).build();
+        //Composite Key build한다음에 어떻게 하지?
+
+
+
+        //Revenue
+        Revenue revenue = Revenue.builder().projectId(saveProject.getId()).project(saveProject).totalAmount(1000000).build();
+        Revenue savedRevenue = revenueRepository.save(revenue);
+        Revenue findRevenue = revenueRepository.findById(savedRevenue.getProjectId())
+                .orElseThrow(() -> new RuntimeException("Not present"));
+        System.out.println("Revenue Id: " + savedRevenue.getProjectId());
+        System.out.println("Revenue Project: " + findRevenue.getProject().getId() + " Revenue Total amount: " + findRevenue.getTotalAmount());
+
+
 
 
     }
