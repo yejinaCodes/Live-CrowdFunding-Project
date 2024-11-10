@@ -1,5 +1,4 @@
 package com.crofle.livecrowdfunding.domain.entity;
-
 import jakarta.persistence.*;
 import lombok.*;
 
