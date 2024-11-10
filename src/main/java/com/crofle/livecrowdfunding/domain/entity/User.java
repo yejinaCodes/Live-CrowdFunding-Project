@@ -2,9 +2,7 @@ package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.springframework.cglib.core.Local;
 
@@ -13,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 @Getter
+@Builder
+@ToString(exclude = {"interests", "likes", "orders", "chatReports"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +52,7 @@ public class User {
     @Column(name = "detail_address", length = 50, nullable = false)
     private String detailAddress;
 
+    @Builder.Default
     @Column(name = "login_method", nullable = false)
     private Boolean loginMethod = false;
 
@@ -64,19 +66,24 @@ public class User {
     @Column(nullable = false)
     private UserStatus status;
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean notification = false;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserInterest> interests = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Liked> likes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Orders> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<ChatReport> chatReports = new ArrayList<>();
 
 }

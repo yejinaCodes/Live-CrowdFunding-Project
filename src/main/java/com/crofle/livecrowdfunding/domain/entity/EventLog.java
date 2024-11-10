@@ -2,25 +2,28 @@ package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.EventLogId;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "EVENT_LOG")
 @Getter
+@Builder
+@ToString(exclude = {"event", "user"})
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventLog {
     @EmbeddedId
     private EventLogId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("eventId")
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

@@ -2,14 +2,15 @@ package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.UserCategoryId;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "USER_INTEREST")
 @Getter
+@Builder
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UserInterest {
     @EmbeddedId
     private UserCategoryId id;

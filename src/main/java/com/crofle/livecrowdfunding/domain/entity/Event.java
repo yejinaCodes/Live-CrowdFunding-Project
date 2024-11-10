@@ -1,9 +1,7 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "EVENT")
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event {
     @Id
@@ -42,5 +42,6 @@ public class Event {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<EventLog> eventLogs = new ArrayList<>();
 }

@@ -2,10 +2,8 @@ package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.enums.PaymentMethod;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.criteria.Order;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
@@ -14,11 +12,13 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "PAYMENT_HISTORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class PaymentHistory {
     @Id
     private Long orderId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @MapsId  // orderId를 FK이자 PK로 사용
     @JoinColumn(name = "order_id")
     private Orders order;  // orders -> order로 변경 (단수형이 더 적절)
