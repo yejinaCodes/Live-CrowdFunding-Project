@@ -1,10 +1,7 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,8 @@ import java.util.List;
 @Getter
 @Table(name = "RATE_PLAN")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class RatePlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

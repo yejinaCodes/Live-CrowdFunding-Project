@@ -7,6 +7,8 @@ import lombok.*;
 @Getter
 @Table(name = "ESSENTIAL_DOCUMENT")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class EssentialDocument {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
