@@ -4,6 +4,7 @@ import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -11,10 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ProjectDetailDTO {
     private Long id;
-    private Long makerId;
-    private Long managerId;
-    private Long ratePlanId;
-    private Long categoryId;
+    private ProjectMakerDTO projectMakerDTO;
     private String productName;
     private String summary;
     private Integer price;
@@ -27,4 +25,6 @@ public class ProjectDetailDTO {
     private ProjectStatus progressProjectStatus;
     private Integer goalAmount;
     private String contentImage;
+    private List<ImageDTO> images;
+    private Integer likeCount;
 }
