@@ -30,7 +30,8 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     @Override
     public PageListResponseDTO<ProjectInfoDTO> findProjectList(PageRequestDTO pageRequestDTO) { //naming precision required
         // 1. Create a Pageable object using the pageRequestDTO
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize()); // example of sorting by name
+//        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize()); // example of sorting by name
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize());
 
         // 2. Fetch a paginated result using the repository
         Page<Project> projectPage = projectRepository.findAll(pageable);

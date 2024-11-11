@@ -29,8 +29,10 @@ public class PageRequestDTO {
 
     private SearchTypeDTO search = new SearchTypeDTO();
 
-    //검색 조건으로 프로젝트 이름명 조회 가능
+    //검색 조건으로 프로젝트 이름명 조회 가능!!!
     private String projectName;
+
+
     public int getOffset(){
         return (page - 1) * 10;
     }
