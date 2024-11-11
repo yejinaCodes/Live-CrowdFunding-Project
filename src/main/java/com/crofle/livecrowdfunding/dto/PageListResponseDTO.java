@@ -1,4 +1,4 @@
 package com.crofle.livecrowdfunding.dto;
 
-public class test {
+public class PageListResponseDTO {
 }
