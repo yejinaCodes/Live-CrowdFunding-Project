@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.dto;
 
+import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import lombok.*;
 
