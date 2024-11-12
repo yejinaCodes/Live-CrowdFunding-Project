@@ -1,6 +1,8 @@
 package com.crofle.livecrowdfunding.service;
 
 
+import com.crofle.livecrowdfunding.dto.ProjectDetailDTO;
+
 public interface ProjectService {
-    public void findProjectDetail(Long id);
+    ProjectDetailDTO findProjectDetail(Long id);
 }

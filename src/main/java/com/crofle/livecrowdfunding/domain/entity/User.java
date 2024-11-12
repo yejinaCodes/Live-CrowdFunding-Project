@@ -1,6 +1,7 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
+import com.crofle.livecrowdfunding.dto.UserInfoDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -86,4 +87,19 @@ public class User {
     @Builder.Default
     private List<ChatReport> chatReports = new ArrayList<>();
 
+    public void updateUserInfo(UserInfoDTO userInfoDTO) {
+        //user 필드 전부 수정
+        this.name = userInfoDTO.getName();
+        this.nickname = userInfoDTO.getNickname();
+        this.phone = userInfoDTO.getPhone();
+        this.birth = userInfoDTO.getBirth();
+        this.email = userInfoDTO.getEmail();
+        this.password = userInfoDTO.getPassword();
+        this.zipcode = userInfoDTO.getZipcode();
+        this.address = userInfoDTO.getAddress();
+        this.detailAddress = userInfoDTO.getDetailAddress();
+        this.loginMethod = userInfoDTO.getLoginMethod();
+        this.status = userInfoDTO.getStatus();
+        this.notification = userInfoDTO.getNotification();
+    }
 }
