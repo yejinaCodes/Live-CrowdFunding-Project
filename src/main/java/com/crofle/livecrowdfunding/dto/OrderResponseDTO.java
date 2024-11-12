@@ -14,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderResponseDTO {
     private Long id;
+    //dto로 바꾸자
     private User user;
     private Project project;
     private Integer amount;

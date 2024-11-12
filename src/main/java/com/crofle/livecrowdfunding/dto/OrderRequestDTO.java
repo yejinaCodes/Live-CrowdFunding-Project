@@ -12,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderRequestDTO {
     private Long id;
+    //dto로 변환하던가 id로 받던가
     private User user;
     private Project project;
     private Integer amount;
