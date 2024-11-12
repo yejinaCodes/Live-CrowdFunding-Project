@@ -26,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("프로젝트 조회에 실패했습니다"));
 
         ProjectDetailResponseDTO projectDetailResponseDTO = modelMapper.map(project, ProjectDetailResponseDTO.class);
-        projectDetailResponseDTO.setProjectMakerResponseDTO(modelMapper.map(project.getMaker(), ProjectMakerResponseDTO.class));
+        projectDetailResponseDTO.setMaker(modelMapper.map(project.getMaker(), ProjectMakerResponseDTO.class));
         //우선 같이 가져오지만 비동기 처리 고려
         projectDetailResponseDTO.setLikeCount(project.getLikes().size());
 
