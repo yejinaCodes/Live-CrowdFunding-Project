@@ -1,6 +1,5 @@
-package com.crofle.livecrowdfunding.dto;
+package com.crofle.livecrowdfunding.dto.response;
 
-import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import lombok.*;
 
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProjectInfoDTO {
+public class ProjectResponseInfoDTO {
     private Long id;
     private Long makerId;
     private Long managerId;

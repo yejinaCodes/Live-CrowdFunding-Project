@@ -4,8 +4,6 @@ import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.nio.file.attribute.AclEntry;
-
 @Getter
 public class PageInfoDTO {
     private int page;
