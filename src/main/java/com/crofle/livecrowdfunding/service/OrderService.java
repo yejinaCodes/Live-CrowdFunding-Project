@@ -5,6 +5,6 @@ import com.crofle.livecrowdfunding.dto.response.OrderResponseDTO;
 import org.springframework.data.jpa.repository.Query;
 
 public interface OrderService {
-    
+
     OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO);
 }
