@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.service;
+package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Liked;
 import com.crofle.livecrowdfunding.domain.entity.Project;
@@ -7,6 +7,7 @@ import com.crofle.livecrowdfunding.domain.id.LikedId;
 import com.crofle.livecrowdfunding.repository.LikedRepository;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
+import com.crofle.livecrowdfunding.service.ProjectLikeService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

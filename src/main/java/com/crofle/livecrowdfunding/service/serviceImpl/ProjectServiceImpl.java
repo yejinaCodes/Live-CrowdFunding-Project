@@ -1,10 +1,11 @@
-package com.crofle.livecrowdfunding.service;
+package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.dto.ProjectDetailDTO;
 import com.crofle.livecrowdfunding.dto.ProjectLikedDTO;
 import com.crofle.livecrowdfunding.dto.ProjectMakerDTO;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
+import com.crofle.livecrowdfunding.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

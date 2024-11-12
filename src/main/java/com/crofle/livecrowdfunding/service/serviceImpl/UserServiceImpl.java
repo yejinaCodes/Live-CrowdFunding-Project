@@ -1,8 +1,9 @@
-package com.crofle.livecrowdfunding.service;
+package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.dto.UserInfoDTO;
 import com.crofle.livecrowdfunding.repository.UserRepository;
+import com.crofle.livecrowdfunding.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
