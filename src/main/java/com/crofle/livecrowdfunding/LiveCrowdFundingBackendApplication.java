@@ -1,6 +1,5 @@
 package com.crofle.livecrowdfunding;
 
-import com.crofle.livecrowdfunding.controller.AdminProject;
 import com.crofle.livecrowdfunding.dto.response.ProjectResponseInfoDTO;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.service.AdminProjectService;
@@ -11,9 +10,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class LiveCrowdFundingBackendApplication {
-	@Autowired
-	private AdminProject adminProjectTest;
-
 	@Autowired
 	private AdminProjectService adminProjectService;
 
@@ -28,10 +24,6 @@ public class LiveCrowdFundingBackendApplication {
 		ProjectResponseInfoDTO result = adminProjectService.findProject(1L);
 
 		adminProjectService.findProjectList(new PageRequestDTO());
-//		System.out.println(result.getId());
-//		System.out.println(result.getProductName());
-//		System.out.println(result.getCategoryId());
-//		System.out.println(result.getPrice());
 
 	}
 

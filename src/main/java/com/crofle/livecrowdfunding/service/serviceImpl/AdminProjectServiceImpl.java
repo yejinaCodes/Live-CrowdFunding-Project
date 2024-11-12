@@ -70,6 +70,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
                 .dataList(projectResponseInfoDTOList)
                 .build();
 
+        //Service 단에서 체크하는 용
         for (ProjectResponseInfoDTO p : pageListResponseDT.getDataList()) {
             log.info("Project ID: " + p.getId());
             log.info("Product Name: " + p.getProductName());

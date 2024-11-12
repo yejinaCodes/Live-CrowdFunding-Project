@@ -16,7 +16,6 @@ public class ProjectResponseInfoDTO {
     private Long managerId;
     private Long ratePlanId;
 
-
     private Long categoryId;
     private String productName;
     private String summary;
