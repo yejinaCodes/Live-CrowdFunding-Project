@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.dto;
+package com.crofle.livecrowdfunding.dto.response;
 
 import com.crofle.livecrowdfunding.domain.entity.PaymentHistory;
 import com.crofle.livecrowdfunding.domain.entity.Project;
@@ -14,9 +14,8 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderResponseDTO {
     private Long id;
-    //dto로 바꾸자
-    private User user;
-    private Project project;
+    private UserInfoResponseDTO user;
+    private ProjectDetailResponseDTO project;
     private Integer amount;
     private Integer paymentPrice;
 }

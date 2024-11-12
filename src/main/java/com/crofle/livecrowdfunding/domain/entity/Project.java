@@ -108,7 +108,7 @@ public class Project {
     @Builder.Default
     private List<Orders> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Image> images = new ArrayList<>();
 

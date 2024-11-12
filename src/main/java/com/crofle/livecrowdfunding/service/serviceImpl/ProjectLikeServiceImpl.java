@@ -34,7 +34,6 @@ public class ProjectLikeServiceImpl implements ProjectLikeService {
         // 이미 찜한 상태인지 확인
         boolean isAlreadyLiked = likedRepository.existsById(likedId);
 
-
         if (isAlreadyLiked) {
             // 찜 해제
             likedRepository.deleteById(likedId);

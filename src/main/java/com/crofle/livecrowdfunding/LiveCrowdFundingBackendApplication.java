@@ -6,25 +6,12 @@ import com.crofle.livecrowdfunding.service.AdminProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class LiveCrowdFundingBackendApplication {
-	@Autowired
-	private AdminProjectService adminProjectService;
 
-	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(LiveCrowdFundingBackendApplication.class, args);
-		LiveCrowdFundingBackendApplication lf = context.getBean(LiveCrowdFundingBackendApplication.class);
-//		LiveCrowdFundingBackendApplication liveCF = new LiveCrowdFundingBackendApplication();
-		lf.callProject();
-	}
-	public void callProject(){
-		System.out.println("checking");
-		ProjectResponseInfoDTO result = adminProjectService.findProject(1L);
-
-		adminProjectService.findProjectList(new PageRequestDTO());
-
-	}
+	public static void main(String[] args) {SpringApplication.run(LiveCrowdFundingBackendApplication.class, args);}
 
 }

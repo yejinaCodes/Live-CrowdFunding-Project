@@ -1,12 +1,13 @@
 package com.crofle.livecrowdfunding.service;
 
-import com.crofle.livecrowdfunding.dto.UserInfoDTO;
+import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 
 public interface UserService {
 
-     UserInfoDTO findUser(Long userId);
+     UserInfoResponseDTO findUser(Long userId);
 
-     void updateUser(UserInfoDTO userInfoDTO);
+     void updateUser(UserInfoRequestDTO userInfoRequestDTO);
 
      void deleteUser(Long userId);
 }
