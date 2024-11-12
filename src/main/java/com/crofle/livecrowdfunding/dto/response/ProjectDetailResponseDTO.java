@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectDetailResponseDTO {
     private Long id;
-    private ProjectMakerResponseDTO projectMakerResponseDTO;
+    private ProjectMakerResponseDTO maker;
     private String productName;
     private String summary;
     private Integer price;
