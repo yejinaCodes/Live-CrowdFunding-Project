@@ -3,8 +3,8 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 import com.crofle.livecrowdfunding.domain.entity.Orders;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
-import com.crofle.livecrowdfunding.dto.OrderRequestDTO;
-import com.crofle.livecrowdfunding.dto.OrderResponseDTO;
+import com.crofle.livecrowdfunding.dto.request.OrderRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.OrderResponseDTO;
 import com.crofle.livecrowdfunding.repository.OrdersRepository;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
@@ -13,7 +13,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

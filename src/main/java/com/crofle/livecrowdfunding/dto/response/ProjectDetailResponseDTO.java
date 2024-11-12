@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.dto;
+package com.crofle.livecrowdfunding.dto.response;
 
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import lombok.*;
@@ -10,9 +10,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDetailDTO {
+public class ProjectDetailResponseDTO {
     private Long id;
-    private ProjectMakerDTO projectMakerDTO;
+    private ProjectMakerResponseDTO projectMakerResponseDTO;
     private String productName;
     private String summary;
     private Integer price;
@@ -25,6 +25,6 @@ public class ProjectDetailDTO {
     private ProjectStatus progressProjectStatus;
     private Integer goalAmount;
     private String contentImage;
-    private List<ImageDTO> images;
+    private List<ImageResponseDTO> images;
     private Integer likeCount;
 }

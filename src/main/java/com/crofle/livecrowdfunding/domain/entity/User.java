@@ -1,11 +1,9 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
-import com.crofle.livecrowdfunding.dto.UserInfoDTO;
+import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Comment;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -87,19 +85,19 @@ public class User {
     @Builder.Default
     private List<ChatReport> chatReports = new ArrayList<>();
 
-    public void updateUserInfo(UserInfoDTO userInfoDTO) {
+    public void updateUserInfo(UserInfoRequestDTO userInfoRequestDTO) {
         //user 필드 전부 수정
-        this.name = userInfoDTO.getName();
-        this.nickname = userInfoDTO.getNickname();
-        this.phone = userInfoDTO.getPhone();
-        this.birth = userInfoDTO.getBirth();
-        this.email = userInfoDTO.getEmail();
-        this.password = userInfoDTO.getPassword();
-        this.zipcode = userInfoDTO.getZipcode();
-        this.address = userInfoDTO.getAddress();
-        this.detailAddress = userInfoDTO.getDetailAddress();
-        this.loginMethod = userInfoDTO.getLoginMethod();
-        this.status = userInfoDTO.getStatus();
-        this.notification = userInfoDTO.getNotification();
+        this.name = userInfoRequestDTO.getName();
+        this.nickname = userInfoRequestDTO.getNickname();
+        this.phone = userInfoRequestDTO.getPhone();
+        this.birth = userInfoRequestDTO.getBirth();
+        this.email = userInfoRequestDTO.getEmail();
+        this.password = userInfoRequestDTO.getPassword();
+        this.zipcode = userInfoRequestDTO.getZipcode();
+        this.address = userInfoRequestDTO.getAddress();
+        this.detailAddress = userInfoRequestDTO.getDetailAddress();
+        this.loginMethod = userInfoRequestDTO.getLoginMethod();
+        this.status = userInfoRequestDTO.getStatus();
+        this.notification = userInfoRequestDTO.getNotification();
     }
 }

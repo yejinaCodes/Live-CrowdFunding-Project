@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.dto;
+package com.crofle.livecrowdfunding.dto.response;
 
 import com.crofle.livecrowdfunding.domain.entity.PaymentHistory;
 import com.crofle.livecrowdfunding.domain.entity.Project;
