@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 @Service
 @Log4j2
@@ -31,8 +32,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
-        User user = findUser(orderRequestDTO.getUser().getId());
-        Project project = findProject(orderRequestDTO.getProject().getId());
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        User user = findUser(orderRequestDTO.getId());
+        Project project = findProject(orderRequestDTO.getId());
         int paymentPrice = calculatePaymentPrice(orderRequestDTO.getAmount(), project.getPrice());
 
         Orders savedOrder = Orders.builder().
@@ -45,6 +49,8 @@ public class OrderServiceImpl implements OrderService {
         savedOrder = ordersRepository.save(savedOrder);
 
         OrderResponseDTO orderResponseDTO = modelMapper.map(savedOrder, OrderResponseDTO.class);
+        stopWatch.stop();
+        log.info("********************주문 생성 시 걸린 시간: {} ********************", stopWatch.getTotalTimeSeconds());
         return orderResponseDTO;
     }
 

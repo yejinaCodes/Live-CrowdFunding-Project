@@ -18,9 +18,9 @@ public class OrderServiceTest {
     @Test
     public void testCreateOrder() {
         OrderRequestDTO orderRequestDTO = OrderRequestDTO.builder()
-                .user(User.builder().id(1L).build())
-                .project(Project.builder().id(1L).build())
-                .amount(5)
+                .id(1L)
+                .projectId(1L)
+                .amount(50)
                 .build();
         OrderResponseDTO orderResponseDTO = orderService.createOrder(orderRequestDTO);
         log.info(orderResponseDTO);
