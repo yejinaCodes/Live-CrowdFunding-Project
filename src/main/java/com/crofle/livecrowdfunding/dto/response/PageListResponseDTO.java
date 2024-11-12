@@ -13,5 +13,4 @@ public class PageListResponseDTO<T> {
     private PageInfoDTO pageInfoDTO;
     private List<T> dataList;
 
-    // public 생성자 추가
 }

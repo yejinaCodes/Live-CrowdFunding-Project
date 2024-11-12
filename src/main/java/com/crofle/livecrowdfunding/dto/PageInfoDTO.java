@@ -20,9 +20,9 @@ public class PageInfoDTO {
 
     @Builder(builderMethodName = "withAll")
     public PageInfoDTO(PageRequestDTO pageRequestDTO, int total) {
-//        if (total <= 0) {
-//            return;
-//        }
+        if (total <= 0) {
+            return;
+        }
 
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
