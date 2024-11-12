@@ -1,9 +1,5 @@
-package com.crofle.livecrowdfunding.dto;
+package com.crofle.livecrowdfunding.dto.response;
 
-import com.crofle.livecrowdfunding.domain.entity.ChatReport;
-import com.crofle.livecrowdfunding.domain.entity.Liked;
-import com.crofle.livecrowdfunding.domain.entity.Orders;
-import com.crofle.livecrowdfunding.domain.entity.UserInterest;
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDTO {
+public class UserInfoResponseDTO {
     private Long id;
     private String name;
     private String nickname;

@@ -1,7 +1,8 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.User;
-import com.crofle.livecrowdfunding.dto.UserInfoDTO;
+import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +21,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserInfoDTO findUser(Long userId) {
+    public UserInfoResponseDTO findUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        return modelMapper.map(user, UserInfoDTO.class);
+        return modelMapper.map(user, UserInfoResponseDTO.class);
     }
 
     @Override
     @Transactional
-    public void updateUser(UserInfoDTO userInfoDTO) {
-        User user = userRepository.findById(userInfoDTO.getId()).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    public void updateUser(UserInfoRequestDTO userInfoRequestDTO) {
+        User user = userRepository.findById(userInfoRequestDTO.getId()).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        user.updateUserInfo(userInfoDTO);
+        user.updateUserInfo(userInfoRequestDTO);
     }
 
     @Override

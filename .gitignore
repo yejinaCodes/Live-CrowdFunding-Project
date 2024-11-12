@@ -51,3 +51,4 @@ application.properties
 build/
 out/
 *.class
+create.sql
