@@ -6,5 +6,4 @@ import com.crofle.livecrowdfunding.domain.id.LikedId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikedRepository extends JpaRepository<Liked, LikedId> {
-
 }
