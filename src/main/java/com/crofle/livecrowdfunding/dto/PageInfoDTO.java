@@ -4,8 +4,6 @@ import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.nio.file.attribute.AclEntry;
-
 @Getter
 public class PageInfoDTO {
     private int page;
@@ -20,9 +18,9 @@ public class PageInfoDTO {
 
     @Builder(builderMethodName = "withAll")
     public PageInfoDTO(PageRequestDTO pageRequestDTO, int total) {
-//        if (total <= 0) {
-//            return;
-//        }
+        if (total <= 0) {
+            return;
+        }
 
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();

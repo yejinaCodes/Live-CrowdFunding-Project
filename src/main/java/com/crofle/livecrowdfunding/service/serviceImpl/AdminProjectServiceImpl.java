@@ -2,7 +2,7 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.dto.*;
-import com.crofle.livecrowdfunding.dto.ProjectInfoDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectResponseInfoDTO;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,17 +27,18 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     private final ModelMapper modelMapper;
 
     @Override
-    public PageListResponseDTO<ProjectInfoDTO> findProjectList(PageRequestDTO pageRequestDTO) { //naming precision required
+    public PageListResponseDTO<ProjectResponseInfoDTO> findProjectList(PageRequestDTO pageRequestDTO) { //naming precision required
         // 1. Create a Pageable object using the pageRequestDTO
-//        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize()); // example of sorting by name
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize());
 
         // 2. Fetch a paginated result using the repository
+        //반환값을 entity 형태로 저장
         Page<Project> projectPage = projectRepository.findAll(pageable);
 
         // 3. Map the Project entities to ProjectInfoDTO objects
-        List<ProjectInfoDTO> projectInfoDTOList = projectPage.stream()
-                .map(project -> new ProjectInfoDTO(
+        //entity 형태를 dto 형태로 response할 수 있는 형태로 변환
+        List<ProjectResponseInfoDTO> projectResponseInfoDTOList = projectPage.stream()
+                .map(project -> new ProjectResponseInfoDTO(
                         project.getId(),
                         project.getMaker().getId(),
                         project.getManager().getId(),
@@ -64,27 +64,29 @@ public class AdminProjectServiceImpl implements AdminProjectService {
                 .build();
 
         // 5. Return the response wrapped in a PageListResponseDTO
-        PageListResponseDTO<ProjectInfoDTO> pageListResponseDT = PageListResponseDTO.<ProjectInfoDTO>builder()
+        //여기에서 넣어줘야 하는 pageInfoDTO를 만들기 위해 위에서 build를 해준다.
+        PageListResponseDTO<ProjectResponseInfoDTO> pageListResponseDT = PageListResponseDTO.<ProjectResponseInfoDTO>builder()
                 .pageInfoDTO(pageInfoDTO)
-                .dataList(projectInfoDTOList)
+                .dataList(projectResponseInfoDTOList)
                 .build();
 
-        for (ProjectInfoDTO p : pageListResponseDT.getDataList()) {
+        //Service 단에서 체크하는 용
+        for (ProjectResponseInfoDTO p : pageListResponseDT.getDataList()) {
             log.info("Project ID: " + p.getId());
-            log.info("heheyejin: " + p.getProductName());
+            log.info("Product Name: " + p.getProductName());
         }
 
         return pageListResponseDT;
     }
 
     @Override
-    public ProjectInfoDTO findProject(Long id) {
+    public ProjectResponseInfoDTO findProject(Long id) {
         Optional<Project> project = projectRepository.findById(id);
-        ProjectInfoDTO projectInfoDTO = modelMapper.map(project, ProjectInfoDTO.class);
+        ProjectResponseInfoDTO projectResponseInfoDTO = modelMapper.map(project, ProjectResponseInfoDTO.class);
         log.info("checking yejina");
-        log.info(projectInfoDTO.getProductName());
+        log.info(projectResponseInfoDTO.getProductName());
 
-        return projectInfoDTO;
+        return projectResponseInfoDTO;
     }
 
     //승인, 반려, 반려 사유 이메일로 보내기
