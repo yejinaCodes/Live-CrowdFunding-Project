@@ -1,13 +1,16 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Category;
+import com.crofle.livecrowdfunding.domain.entity.Maker;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.domain.entity.UserInterest;
 import com.crofle.livecrowdfunding.domain.id.UserCategoryId;
+import com.crofle.livecrowdfunding.dto.SaveMakerDTO;
 import com.crofle.livecrowdfunding.dto.SaveUserDTO;
 import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 import com.crofle.livecrowdfunding.repository.CategoryRepository;
+import com.crofle.livecrowdfunding.repository.MakerRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.UserService;
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
@@ -31,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
+    private final MakerRepository makerRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public SaveUserDTO saveUser(SaveUserDTO saveUserDTO) {
-        // 1. 기본 사용자 정보 생성
+
         User user = User.builder()
                 .name(saveUserDTO.getName())
                 .nickname(saveUserDTO.getNickname())
@@ -75,11 +79,11 @@ public class UserServiceImpl implements UserService {
                 .registeredAt(LocalDateTime.now())
                 .build();
 
-        // 2. 사용자 저장
+
         user = userRepository.save(user);
         log.info("사용자 기본 정보 저장 완료");
 
-        // 3. 카테고리 관심사 처리
+
         if (saveUserDTO.getCategoryIds() != null && !saveUserDTO.getCategoryIds().isEmpty()) {
             List<UserInterest> interests = new ArrayList<>();
 
@@ -103,8 +107,37 @@ public class UserServiceImpl implements UserService {
             user.setInterests(interests);
             userRepository.save(user);
             log.info("사용자 관심사 정보 저장 완료");
+
+
+
+
         }
 
         return saveUserDTO;
+    }
+
+    @Override
+    public SaveMakerDTO saveMaker(SaveMakerDTO saveMakerDTO) {
+
+        Maker maker = Maker.builder()
+                .name(saveMakerDTO.getName())
+                .phone(saveMakerDTO.getPhone())
+                .business(saveMakerDTO.getBusiness())
+                .email(saveMakerDTO.getEmail())
+                .password(saveMakerDTO.getPassword())
+                .zipcode(saveMakerDTO.getZipcode())
+                .address(saveMakerDTO.getAddress())
+                .detailAddress(saveMakerDTO.getDetailAddress())
+                .registerStatus(1)
+                .registeredAt(LocalDateTime.now())
+                .status(0)
+                .build();
+
+
+
+        maker = makerRepository.save(maker);
+        log.info("메이커 정보 저장 완료");
+
+        return saveMakerDTO;
     }
 }

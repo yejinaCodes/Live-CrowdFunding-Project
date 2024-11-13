@@ -8,12 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 
 @SpringBootTest
 @Log4j2
-public class RegisterServiceTest {
+public class SaveServiceTest {
     @Autowired
     private UserService userService;
 
@@ -26,7 +27,7 @@ public class RegisterServiceTest {
                 .phone("123-456-2890")
                 .gender(true)
                 .birth("1919-04-01")
-                .email("용바아아아안41@naver.com")
+                .email("2212@naver.com")
                 .password("1234")
                 .zipcode(12345)
                 .address("123 Street")
@@ -49,5 +50,8 @@ public class RegisterServiceTest {
             assert !savedUser.getCategoryIds().isEmpty() : "카테고리 정보가 비어있습니다";
 
 
+
     }
+
+
 }
