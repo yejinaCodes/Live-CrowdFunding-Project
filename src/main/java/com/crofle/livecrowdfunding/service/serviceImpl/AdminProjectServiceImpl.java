@@ -1,7 +1,9 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Project;
+import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.*;
+import com.crofle.livecrowdfunding.dto.request.ProjectApprovalRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectResponseInfoDTO;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
@@ -77,6 +79,26 @@ public class AdminProjectServiceImpl implements AdminProjectService {
         return projectResponseInfoDTO;
     }
 
+    @Override
+    public ProjectResponseInfoDTO findEssentialDocs(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("해당 프로젝트는 존재하지 않습니다"));
+
+        ProjectResponseInfoDTO projectResponseInfoDTO = modelMapper.map(project, ProjectResponseInfoDTO.class);
+        return projectResponseInfoDTO;
+    }
+
+    @Override
+    public void updateApprovalStatus(Long id, ProjectApprovalRequestDTO request) {
+        Project project = projectRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("해당 프로젝트는 존재하지 않습니다"));
+        project.setReviewProjectStatus(request.getStatus());
+        if(request.getStatus() == ProjectStatus.반려){
+            project.setRejectionReason(request.getRejectionReason());
+        }
+        Project savedProject = projectRepository.save(project);
+    }
+
     //승인, 반려, 반려 사유 이메일로 보내기
+
+
 
 }

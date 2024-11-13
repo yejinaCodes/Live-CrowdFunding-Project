@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@Setter
 @ToString(exclude = {
         "maker",
         "manager",
