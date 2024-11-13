@@ -32,26 +32,29 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        User user = findUser(orderRequestDTO.getId());
-        Project project = findProject(orderRequestDTO.getId());
+        User user = findUser(orderRequestDTO.getUserId());
+        Project project = findProject(orderRequestDTO.getProjectId());
         int paymentPrice = calculatePaymentPrice(orderRequestDTO.getAmount(), project.getPrice());
 
-        Orders savedOrder = Orders.builder().
+        Orders order = Orders.builder().
                 user(user).
                 project(project).
                 amount(orderRequestDTO.getAmount()).
                 paymentPrice(paymentPrice).
                 build();
 
-        savedOrder = ordersRepository.save(savedOrder);
-
-        OrderResponseDTO orderResponseDTO = modelMapper.map(savedOrder, OrderResponseDTO.class);
-        stopWatch.stop();
-        log.info("********************주문 생성 시 걸린 시간: {} ********************", stopWatch.getTotalTimeSeconds());
+        order = ordersRepository.save(order);
+        OrderResponseDTO orderResponseDTO = modelMapper.map(order, OrderResponseDTO.class);
         return orderResponseDTO;
+    }
+
+    @Override
+    @Transactional
+    public OrderResponseDTO findOrder(Long id) {
+        Orders order = ordersRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. ID: " + id));
+
+        return modelMapper.map(order, OrderResponseDTO.class);
     }
 
     private User findUser(Long userId) {
