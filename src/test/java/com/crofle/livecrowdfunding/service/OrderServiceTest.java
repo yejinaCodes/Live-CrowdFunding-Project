@@ -18,11 +18,11 @@ public class OrderServiceTest {
     @Test
     public void testCreateOrder() {
         OrderRequestDTO orderRequestDTO = OrderRequestDTO.builder()
-                .id(1L)
                 .projectId(1L)
-                .amount(50)
+                .userId(1L)
+                .amount(10000)
                 .build();
-        OrderResponseDTO orderResponseDTO = orderService.createOrder(orderRequestDTO);
-        log.info(orderResponseDTO);
+        Long id = orderService.createOrder(orderRequestDTO);
+        log.info(id);
     }
 }

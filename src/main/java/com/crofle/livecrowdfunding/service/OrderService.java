@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OrderService {
 
-    OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO);
+    Long createOrder(OrderRequestDTO orderRequestDTO);
+
+    OrderResponseDTO findOrder(Long id);
 }

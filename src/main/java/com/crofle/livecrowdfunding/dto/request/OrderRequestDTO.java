@@ -11,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderRequestDTO {
-    private Long id;
     private Long userId;
     private Long projectId;
     private Integer amount;
