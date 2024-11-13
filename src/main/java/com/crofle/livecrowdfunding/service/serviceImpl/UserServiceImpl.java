@@ -1,15 +1,27 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
+import com.crofle.livecrowdfunding.domain.entity.Category;
 import com.crofle.livecrowdfunding.domain.entity.User;
+import com.crofle.livecrowdfunding.domain.entity.UserInterest;
+import com.crofle.livecrowdfunding.domain.id.UserCategoryId;
+import com.crofle.livecrowdfunding.dto.SaveUserDTO;
 import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
+import com.crofle.livecrowdfunding.repository.CategoryRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.UserService;
+import com.crofle.livecrowdfunding.domain.enums.UserStatus;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -39,5 +52,59 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long userId) {
 
+    }
+
+    @Transactional
+    @Override
+    public SaveUserDTO saveUser(SaveUserDTO saveUserDTO) {
+        // 1. 기본 사용자 정보 생성
+        User user = User.builder()
+                .name(saveUserDTO.getName())
+                .nickname(saveUserDTO.getNickname())
+                .phone(saveUserDTO.getPhone())
+                .gender(saveUserDTO.getGender())
+                .birth(saveUserDTO.getBirth())
+                .email(saveUserDTO.getEmail())
+                .password(saveUserDTO.getPassword())
+                .zipcode(saveUserDTO.getZipcode())
+                .address(saveUserDTO.getAddress())
+                .detailAddress(saveUserDTO.getDetailAddress())
+                .loginMethod(saveUserDTO.getLoginMethod())
+                .notification(saveUserDTO.getNotification())
+                .status(UserStatus.활성화)
+                .registeredAt(LocalDateTime.now())
+                .build();
+
+        // 2. 사용자 저장
+        user = userRepository.save(user);
+        log.info("사용자 기본 정보 저장 완료");
+
+        // 3. 카테고리 관심사 처리
+        if (saveUserDTO.getCategoryIds() != null && !saveUserDTO.getCategoryIds().isEmpty()) {
+            List<UserInterest> interests = new ArrayList<>();
+
+            for (Long categoryId : saveUserDTO.getCategoryIds()) {
+                Category category = categoryRepository.findById(categoryId)
+                        .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리 ID: " + categoryId));
+
+                // UserCategoryId 생성
+                UserCategoryId userCategoryId = new UserCategoryId(user.getId(), category.getId());
+
+                // UserInterest 생성
+                UserInterest interest = UserInterest.builder()
+                        .id(userCategoryId)
+                        .user(user)
+                        .category(category)
+                        .build();
+
+                interests.add(interest);
+            }
+
+            user.setInterests(interests);
+            userRepository.save(user);
+            log.info("사용자 관심사 정보 저장 완료");
+        }
+
+        return saveUserDTO;
     }
 }
