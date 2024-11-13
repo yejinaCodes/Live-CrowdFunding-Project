@@ -6,6 +6,4 @@ import com.crofle.livecrowdfunding.dto.request.LikedRequestDTO;
 
 public interface LikedService {
     boolean toggleLike(LikedRequestDTO likedRequestDTO);
-
-    boolean isAlreadyLiked(LikedId likedId);
 }

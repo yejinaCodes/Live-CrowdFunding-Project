@@ -33,14 +33,9 @@ public class LikedServiceImpl implements LikedService {
 
         LikedId likedId = createLikedId(request);
 
-        return isAlreadyLiked(likedId)
+        return likedRepository.existsById(likedId)
                 ? handleUnlike(likedId)
                 : handleLike(request, likedId);
-    }
-
-    @Override
-    public boolean isAlreadyLiked(LikedId likedId) {
-        return likedRepository.existsById(likedId);
     }
 
     private void validateRequest(LikedRequestDTO request) {

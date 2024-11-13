@@ -23,18 +23,4 @@ public class LikedServiceTest {
                 .build();
         likedService.toggleLike(likedRequestDTO);
     }
-
-    @Test
-    public void testIsAlreadyLiked() {
-        Long projectId = 1L;
-        Long userId = 1L;
-        LikedId likedId = new LikedId(userId, projectId);
-        boolean isAlreadyLiked = likedService.isAlreadyLiked(likedId);
-
-        if (isAlreadyLiked) {
-            log.info("이미 찜한 상태입니다.");
-        } else {
-            log.info("찜하지 않은 상태입니다.");
-        }
-    }
 }
