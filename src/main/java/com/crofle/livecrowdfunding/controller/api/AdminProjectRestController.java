@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Log4j2
@@ -21,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminProjectRestController {
 
     private final AdminProjectService adminProjectService;
+
+    @GetMapping("/project/{id}")
+    public ResponseEntity<ProjectResponseInfoDTO> getProject(@PathVariable Long id) {
+        return ResponseEntity.ok(adminProjectService.findProject(id));
+    }
 
     @GetMapping("/projects")
     public ResponseEntity<PageListResponseDTO<ProjectResponseInfoDTO>> getProjectList(
@@ -48,6 +50,3 @@ public class AdminProjectRestController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }
-
-
-
