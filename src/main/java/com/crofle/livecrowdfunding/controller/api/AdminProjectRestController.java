@@ -53,7 +53,7 @@ public class AdminProjectRestController {
     //승인, 반려를 위한 프로젝트별 상세 조회
     @GetMapping("/project/{id}/approval")
     public ResponseEntity<List<EssentialDocumentDTO>> approveProject(@PathVariable Long id){
-        return ResponseEntity.ok(adminProjectService.findEssentialDocs(id).getDocuments());
+        return ResponseEntity.ok(adminProjectService.findEssentialDocs(id));
     }
     //승인/반려 상태 변경 POST
     @PutMapping("/project/{id}/approval-status")
