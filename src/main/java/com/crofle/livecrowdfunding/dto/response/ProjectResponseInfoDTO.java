@@ -34,8 +34,8 @@ public class ProjectResponseInfoDTO {
     private Integer goalAmount;
     private String contentImage;
 
-    //승인, 반려를 위해 확인해야하는 docs
-    private List<EssentialDocumentDTO> documents;
-    private List<Image> images;
+//    //승인, 반려를 위해 확인해야하는 docs
+//    private List<EssentialDocumentDTO> documents;
+//    private List<Image> images;
 
 }

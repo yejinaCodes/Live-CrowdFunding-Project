@@ -10,4 +10,5 @@ import lombok.*;
 public class EssentialDocumentDTO {
     private String id;
     private String document;
+
 }

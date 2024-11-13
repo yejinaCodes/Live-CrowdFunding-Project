@@ -55,6 +55,7 @@ public class AdminProjectRestController {
     public ResponseEntity<List<EssentialDocumentDTO>> approveProject(@PathVariable Long id){
         return ResponseEntity.ok(adminProjectService.findEssentialDocs(id));
     }
+
     //승인/반려 상태 변경 POST
     @PutMapping("/project/{id}/approval-status")
     public ResponseEntity<String> updateAppprStatus(

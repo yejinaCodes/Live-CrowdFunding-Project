@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
+import com.crofle.livecrowdfunding.domain.entity.Image;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.*;
@@ -84,9 +85,16 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     public List<EssentialDocumentDTO> findEssentialDocs(Long id) {
         Project project = projectRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("해당 프로젝트는 존재하지 않습니다"));
 
-        return project.getEssentialDocuments().stream()
+         List<EssentialDocumentDTO> documents = project.getEssentialDocuments().stream()
                 .map(doc -> modelMapper.map(doc, EssentialDocumentDTO.class))
                 .collect(Collectors.toList());
+         if(!project.getImages().isEmpty()) {
+             Image firstImage = project.getImages().get(0);
+             EssentialDocumentDTO imageDoc = new EssentialDocumentDTO();
+             imageDoc.setDocument(firstImage.getImage()); //string 타입의 image가지고 오기
+             documents.add(imageDoc);
+         }
+         return documents;
     }
 
     @Override
