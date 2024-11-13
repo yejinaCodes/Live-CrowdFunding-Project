@@ -23,4 +23,12 @@ public class LikedServiceTest {
                 .build();
         likedService.toggleLike(likedRequestDTO);
     }
+
+    @Test
+    public void testGetLikedProjects() {
+        Long userId = 1L;
+
+        likedService.getUserLikedProjects(userId).stream()
+                .forEach(project -> log.info(project));
+    }
 }
