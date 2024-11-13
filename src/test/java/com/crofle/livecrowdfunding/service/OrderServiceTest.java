@@ -22,7 +22,13 @@ public class OrderServiceTest {
                 .userId(1L)
                 .amount(10000)
                 .build();
-        Long id = orderService.createOrder(orderRequestDTO);
-        log.info(id);
+        OrderResponseDTO orderResponseDTO = orderService.createOrder(orderRequestDTO);
+        log.info(orderResponseDTO);
+    }
+
+    @Test
+    public void testFindOrder() {
+        OrderResponseDTO orderResponseDTO = orderService.findOrder(1L);
+        log.info(orderResponseDTO);
     }
 }

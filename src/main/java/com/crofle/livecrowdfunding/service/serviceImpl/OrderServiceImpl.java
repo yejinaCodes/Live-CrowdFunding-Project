@@ -31,20 +31,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Long createOrder(OrderRequestDTO orderRequestDTO) {
+    public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
         User user = findUser(orderRequestDTO.getUserId());
         Project project = findProject(orderRequestDTO.getProjectId());
         int paymentPrice = calculatePaymentPrice(orderRequestDTO.getAmount(), project.getPrice());
 
-        Orders savedOrder = Orders.builder().
+        Orders order = Orders.builder().
                 user(user).
                 project(project).
                 amount(orderRequestDTO.getAmount()).
                 paymentPrice(paymentPrice).
                 build();
 
-        ordersRepository.save(savedOrder);
-        return savedOrder.getId();
+        order = ordersRepository.save(order);
+        OrderResponseDTO orderResponseDTO = modelMapper.map(order, OrderResponseDTO.class);
+        return orderResponseDTO;
     }
 
     @Override

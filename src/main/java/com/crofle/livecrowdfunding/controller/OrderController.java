@@ -16,13 +16,13 @@ import java.net.URI;
 @RequestMapping("/api/order")
 @Log4j2
 public class OrderController {
+
     private final OrderService orderService;
 
-
     @PostMapping
-    public ResponseEntity<Long> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
-        Long id = orderService.createOrder(orderRequestDTO);
-        return ResponseEntity.created(URI.create("/order/" + id)).body(id);
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+        OrderResponseDTO orderResponseDTO = orderService.createOrder(orderRequestDTO);
+        return ResponseEntity.created(URI.create("/order/" + orderResponseDTO.getId())).body(orderResponseDTO);
     }
 
     @GetMapping("/{id}")

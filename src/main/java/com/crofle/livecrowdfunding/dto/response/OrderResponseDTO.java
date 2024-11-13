@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponseDTO {
+public class OrderResponseDTO { //주문 정보 응답 DTO
     private Long id;
     private UserInfoResponseDTO user;
     private ProjectDetailResponseDTO project;
