@@ -6,16 +6,14 @@ import com.crofle.livecrowdfunding.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponseDTO { //주문 정보 응답 DTO
+public class OrderResponseDTO { //주문 정보 리턴
     private Long id;
-    private UserInfoResponseDTO user;
-    private ProjectDetailResponseDTO project;
+    private OrderUserResponse user;
+    private OrderProjectResponseDTO project;
     private Integer amount;
     private Integer paymentPrice;
 }

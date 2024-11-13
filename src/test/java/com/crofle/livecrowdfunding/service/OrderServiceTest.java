@@ -20,7 +20,7 @@ public class OrderServiceTest {
         OrderRequestDTO orderRequestDTO = OrderRequestDTO.builder()
                 .projectId(1L)
                 .userId(1L)
-                .amount(10000)
+                .amount(70)
                 .build();
         OrderResponseDTO orderResponseDTO = orderService.createOrder(orderRequestDTO);
         log.info(orderResponseDTO);
