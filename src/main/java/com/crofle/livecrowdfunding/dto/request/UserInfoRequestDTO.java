@@ -12,21 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoRequestDTO {
+public class UserInfoRequestDTO { // 사용자 정보 수정 요청
     private Long id;
     private String name;
     private String nickname;
     private String phone;
-    private Boolean gender;
-    private String birth;
-    private String email;
-    private String password;
-    private Integer zipcode;
     private String address;
     private String detailAddress;
-    private Boolean loginMethod;
-    private LocalDateTime registeredAt;
-    private LocalDateTime unregisteredAt;
-    private UserStatus status;
     private Boolean notification;
 }

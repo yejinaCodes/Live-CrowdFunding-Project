@@ -12,21 +12,14 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoResponseDTO {
+public class UserInfoResponseDTO { //마이페이지에서 사용자 정보 조회
     private Long id;
     private String name;
     private String nickname;
     private String phone;
-    private Boolean gender;
-    private String birth;
     private String email;
-    private String password;
-    private Integer zipcode;
     private String address;
     private String detailAddress;
     private Boolean loginMethod;
-    private LocalDateTime registeredAt;
-    private LocalDateTime unregisteredAt;
-    private UserStatus status;
     private Boolean notification;
 }

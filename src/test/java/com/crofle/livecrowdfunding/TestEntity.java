@@ -172,7 +172,7 @@ public class TestEntity {
         //Maker
         Maker maker = Maker.builder().name("yejina").phone("010-1234-5678").business(12318282)
                 .email("test4@test.com").password("Test123!@").zipcode(12345).address("서울시 강남구").detailAddress("테헤란로 123")
-                .registeredAt(LocalDateTime.now()).registerStatus(0).status(0).build();
+                .registeredAt(LocalDateTime.now()).status(0).build();
         Maker savedMaker = makerRepository.save(maker);
         Maker foundMaker = makerRepository.findById(savedMaker.getId())
                 .orElseThrow(() -> new RuntimeException("Not present"));
@@ -337,7 +337,6 @@ public class TestEntity {
                 .zipcode(12345)
                 .address("서울시 강남구")
                 .detailAddress("테헤란로 123")
-                .registerStatus(0)
                 .unregisteredAt(LocalDateTime.now())
                 .registeredAt(LocalDateTime.now())
                 .status(0)
