@@ -13,7 +13,7 @@ public class ProjectServiceTest {
     private ProjectService projectService;
 
     @Test
-    public void testFindProjcteDetail() {
+    public void testFindProjectDetail() {
         Long id = 1L;
         ProjectDetailResponseDTO projectDetailResponseDTO = projectService.findProjectDetail(id);
         log.info(projectDetailResponseDTO);

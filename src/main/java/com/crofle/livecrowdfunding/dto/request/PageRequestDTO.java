@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
+@Data
 @Builder
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class PageRequestDTO {
 
     @Builder.Default
