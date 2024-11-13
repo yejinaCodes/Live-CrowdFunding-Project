@@ -41,7 +41,6 @@ public class AdminProjectServiceImpl implements AdminProjectService {
                     .map(project -> modelMapper.map(project, ProjectResponseInfoDTO.class))
                     .collect(Collectors.toList());
 
-
         // 4. Create PageInfoDTO from pageRequestDTO and the total count of projects
         PageInfoDTO pageInfoDTO = PageInfoDTO.withAll().pageRequestDTO(pageRequestDTO).total((int) projectPage.getTotalElements())
                 .build();
@@ -62,8 +61,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
         return pageListResponseDT;
     }
 
-
-    @Transactional(readOnly = true) //없애도 잘 동작함
+    @Transactional(readOnly = true) //없애도 잘 동작함..
     @Override
     public ProjectResponseInfoDTO findProject(Long id) {
         Project project = projectRepository.findById(id)
@@ -80,4 +78,5 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     }
 
     //승인, 반려, 반려 사유 이메일로 보내기
+
 }

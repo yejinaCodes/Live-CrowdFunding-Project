@@ -1,13 +1,11 @@
 package com.crofle.livecrowdfunding.dto.response;
 
-import com.crofle.livecrowdfunding.domain.entity.Category;
-import com.crofle.livecrowdfunding.domain.entity.Maker;
-import com.crofle.livecrowdfunding.domain.entity.Manager;
-import com.crofle.livecrowdfunding.domain.entity.RatePlan;
+import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -34,5 +32,9 @@ public class ProjectResponseInfoDTO {
     private ProjectStatus progressProjectStatus;
     private Integer goalAmount;
     private String contentImage;
+
+    //승인, 반려를 위해 확인해야하는 docs
+    private List<EssentialDocumentDTO> documents;
+    private List<Image> images;
 
 }
