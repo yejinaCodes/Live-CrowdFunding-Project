@@ -69,4 +69,3 @@ public class SaveServiceTest {
         assert !saveMaker.getName().isEmpty() : "제작자 이름이 비어있습니다";
     }
 }
-
