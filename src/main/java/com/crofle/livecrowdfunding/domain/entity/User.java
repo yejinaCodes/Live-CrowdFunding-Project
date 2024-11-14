@@ -93,4 +93,11 @@ public class User {
         this.detailAddress = userInfoRequestDTO.getDetailAddress();
         this.notification = userInfoRequestDTO.getNotification();
     }
+
+    public void setInterests(List<UserInterest> interests) {
+        this.interests.clear();
+        if (interests != null) {
+            this.interests.addAll(interests);
+        }
+    }
 }
