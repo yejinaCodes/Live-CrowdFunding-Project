@@ -18,20 +18,20 @@ public class ProjectResponseInfoDTO {
     private Long id;
     private ProjectMakerResponseDTO maker; //MakerResponseDTO로 바꿔야 한다. 그래야 매핑
     private ManagerResponseDTO manager; //ManagerResponseDTO로 만들어야 한다.
-    private RatePlanResponseDTO ratePlan; //RatePlanResponseDTO
+    private RatePlanResponseDTO ratePlan; //RatePlanResponseDTO //조회시 필요없음
 
-    private CategoryResponseDTO category;
+    private CategoryResponseDTO category; //조회시 필요없음
     private String productName;
-    private String summary;
-    private Integer price;
-    private Integer discountPercentage;
+    private String summary; //조회시 필요없음
+    private Integer price; //조회시 필요없음
+    private Integer discountPercentage; //조회시 필요없음
     private LocalDateTime startAt;
     private LocalDateTime endAt;
-    private Integer percentage;
+    private Integer percentage; //조회시 필요없음
     private ProjectStatus reviewProjectStatus;
-    private String rejectionReason;
+    private String rejectionReason; //조회시 필요없음
     private ProjectStatus progressProjectStatus;
-    private Integer goalAmount;
+    private Integer goalAmount; //조회시 필요없음
     private String contentImage;
 
 //    //승인, 반려를 위해 확인해야하는 docs
