@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(UserInfoRequestDTO userInfoRequestDTO) {
-        User user = userRepository.findById(userInfoRequestDTO.getId()).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    public void updateUser(Long id, UserInfoRequestDTO userInfoRequestDTO) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         user.updateUserInfo(userInfoRequestDTO);
     }
