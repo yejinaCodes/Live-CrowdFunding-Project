@@ -27,7 +27,7 @@ public class UserMgmResponseDTO {
     public static UserMgmResponseDTO fromUser(User user){
         return UserMgmResponseDTO.builder()
                 .id(user.getId())
-                .memberType("일반회원")
+                .memberType("USER")
                 .name(user.getName())
                 .phone(user.getPhone())
                 .email(user.getEmail())

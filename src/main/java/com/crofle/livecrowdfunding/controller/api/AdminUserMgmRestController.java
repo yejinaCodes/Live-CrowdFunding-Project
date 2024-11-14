@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @Log4j2
 @RequiredArgsConstructor
@@ -41,7 +39,5 @@ public class AdminUserMgmRestController {
 
         PageListResponseDTO<UserMgmResponseDTO> data = adminUserMgmService.getAllMembers(pageRequestDTO);
         return new ResponseEntity<>(data, HttpStatus.OK);
-
     }
-
 }
