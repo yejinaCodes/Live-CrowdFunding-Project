@@ -5,8 +5,8 @@ import com.crofle.livecrowdfunding.domain.entity.Maker;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.domain.entity.UserInterest;
 import com.crofle.livecrowdfunding.domain.id.UserCategoryId;
-import com.crofle.livecrowdfunding.dto.SaveMakerDTO;
-import com.crofle.livecrowdfunding.dto.SaveUserDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveUserRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 import com.crofle.livecrowdfunding.repository.CategoryRepository;
@@ -61,21 +61,21 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public SaveUserDTO saveUser(SaveUserDTO saveUserDTO) {
+    public SaveUserRequestDTO saveUser(SaveUserRequestDTO saveUserRequestDTO) {
 
         User user = User.builder()
-                .name(saveUserDTO.getName())
-                .nickname(saveUserDTO.getNickname())
-                .phone(saveUserDTO.getPhone())
-                .gender(saveUserDTO.getGender())
-                .birth(saveUserDTO.getBirth())
-                .email(saveUserDTO.getEmail())
-                .password(saveUserDTO.getPassword())
-                .zipcode(saveUserDTO.getZipcode())
-                .address(saveUserDTO.getAddress())
-                .detailAddress(saveUserDTO.getDetailAddress())
-                .loginMethod(saveUserDTO.getLoginMethod())
-                .notification(saveUserDTO.getNotification())
+                .name(saveUserRequestDTO.getName())
+                .nickname(saveUserRequestDTO.getNickname())
+                .phone(saveUserRequestDTO.getPhone())
+                .gender(saveUserRequestDTO.getGender())
+                .birth(saveUserRequestDTO.getBirth())
+                .email(saveUserRequestDTO.getEmail())
+                .password(saveUserRequestDTO.getPassword())
+                .zipcode(saveUserRequestDTO.getZipcode())
+                .address(saveUserRequestDTO.getAddress())
+                .detailAddress(saveUserRequestDTO.getDetailAddress())
+                .loginMethod(saveUserRequestDTO.getLoginMethod())
+                .notification(saveUserRequestDTO.getNotification())
                 .status(UserStatus.활성화)
                 .registeredAt(LocalDateTime.now())
                 .build();
@@ -85,10 +85,10 @@ public class UserServiceImpl implements UserService {
         log.info("사용자 기본 정보 저장 완료");
 
 
-        if (saveUserDTO.getCategoryIds() != null && !saveUserDTO.getCategoryIds().isEmpty()) {
+        if (saveUserRequestDTO.getCategoryIds() != null && !saveUserRequestDTO.getCategoryIds().isEmpty()) {
             List<UserInterest> interests = new ArrayList<>();
 
-            for (Long categoryId : saveUserDTO.getCategoryIds()) {
+            for (Long categoryId : saveUserRequestDTO.getCategoryIds()) {
                 Category category = categoryRepository.findById(categoryId)
                         .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리 ID: " + categoryId));
 
@@ -114,22 +114,22 @@ public class UserServiceImpl implements UserService {
 
         }
 
-        return saveUserDTO;
+        return saveUserRequestDTO;
     }
 
     //사용자(구매자)회원가입
     @Override
-    public SaveMakerDTO saveMaker(SaveMakerDTO saveMakerDTO) {
+    public SaveMakerRequestDTO saveMaker(SaveMakerRequestDTO saveMakerRequestDTO) {
 
         Maker maker = Maker.builder()
-                .name(saveMakerDTO.getName())
-                .phone(saveMakerDTO.getPhone())
-                .business(saveMakerDTO.getBusiness())
-                .email(saveMakerDTO.getEmail())
-                .password(saveMakerDTO.getPassword())
-                .zipcode(saveMakerDTO.getZipcode())
-                .address(saveMakerDTO.getAddress())
-                .detailAddress(saveMakerDTO.getDetailAddress())
+                .name(saveMakerRequestDTO.getName())
+                .phone(saveMakerRequestDTO.getPhone())
+                .business(saveMakerRequestDTO.getBusiness())
+                .email(saveMakerRequestDTO.getEmail())
+                .password(saveMakerRequestDTO.getPassword())
+                .zipcode(saveMakerRequestDTO.getZipcode())
+                .address(saveMakerRequestDTO.getAddress())
+                .detailAddress(saveMakerRequestDTO.getDetailAddress())
                 .registeredAt(LocalDateTime.now())
                 .status(0)
                 .build();
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
         maker = makerRepository.save(maker);
         log.info("메이커 정보 저장 완료");
 
-        return saveMakerDTO;
+        return saveMakerRequestDTO;
     }
 
 

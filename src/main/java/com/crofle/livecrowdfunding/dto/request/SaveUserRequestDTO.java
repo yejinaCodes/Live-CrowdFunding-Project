@@ -1,25 +1,30 @@
-package com.crofle.livecrowdfunding.dto;
+package com.crofle.livecrowdfunding.dto.request;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 
-public class SaveMakerDTO {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SaveUserRequestDTO {
     private Long id;
     private String name;
+    private String nickname;
     private String phone;
-    private Integer business;
+    private Boolean gender;
+    private String birth;
     private String email;
     private String password;
     private Integer zipcode;
     private String address;
     private String detailAddress;
+    private Boolean loginMethod;
+    private Boolean notification;
+    private List<Long> categoryIds;
 }

@@ -1,8 +1,8 @@
 package com.crofle.livecrowdfunding.service;
 
 
-import com.crofle.livecrowdfunding.dto.SaveMakerDTO;
-import com.crofle.livecrowdfunding.dto.SaveUserDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveUserRequestDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class SaveServiceTest {
 
     @Test
     public void testUserSave() {
-        SaveUserDTO saveUserDTO = SaveUserDTO.builder()
+        SaveUserRequestDTO saveUserRequestDTO = SaveUserRequestDTO.builder()
 
                 .name("권용빈")
                 .nickname("곽바철")
@@ -26,7 +26,7 @@ public class SaveServiceTest {
 
                 .gender(true)
                 .birth("1919-04-01")
-                .email("2212@naver.com")
+                .email("2332@naver.com")
                 .zipcode(12345)
                 .address("123 Street")
                 .detailAddress("Apt 101")
@@ -36,7 +36,7 @@ public class SaveServiceTest {
                 .categoryIds(Arrays.asList(1L, 2L))
                 .build();
 
-        SaveUserDTO savedUser = userService.saveUser(saveUserDTO);
+        SaveUserRequestDTO savedUser = userService.saveUser(saveUserRequestDTO);
 
         log.info("저장된 사용자 정보: " + savedUser);
         log.info("선택된 카테고리 IDs: " + savedUser.getCategoryIds());
@@ -50,22 +50,24 @@ public class SaveServiceTest {
 
     @Test
     public void testMakerSave() {
-        SaveMakerDTO saveMakerDTO = SaveMakerDTO.builder()
+        SaveMakerRequestDTO saveMakerRequestDTO = SaveMakerRequestDTO.builder()
                 .name("권용빈")
                 .phone("123-456-2890")
                 .business(11211211)
-                .email("firstsm41@gmain.com")
+                .email("1234341@gmain.com")
                 .password("1234")
                 .zipcode(12345)
                 .address("123 Street")
                 .detailAddress("Apt 101")
                 .build();
 
-        SaveMakerDTO saveMaker = userService.saveMaker(saveMakerDTO);
+        SaveMakerRequestDTO saveMaker = userService.saveMaker(saveMakerRequestDTO);
 
         log.info("저장된 제작자 정보: " + saveMaker);
 
         assert saveMaker != null : "제작자 정보가 null입니다";
         assert !saveMaker.getName().isEmpty() : "제작자 이름이 비어있습니다";
     }
+
+    ;
 }

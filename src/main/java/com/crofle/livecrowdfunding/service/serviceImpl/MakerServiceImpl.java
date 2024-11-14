@@ -1,7 +1,7 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Maker;
-import com.crofle.livecrowdfunding.dto.SaveMakerDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
 import com.crofle.livecrowdfunding.repository.MakerRepository;
 import com.crofle.livecrowdfunding.service.MakerService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +20,17 @@ public class MakerServiceImpl implements MakerService {
 
     //판매자 회원가입
     @Override
-    public SaveMakerDTO saveMaker(SaveMakerDTO saveMakerDTO) {
+    public SaveMakerRequestDTO saveMaker(SaveMakerRequestDTO saveMakerRequestDTO) {
 
         Maker maker = Maker.builder()
-                .name(saveMakerDTO.getName())
-                .phone(saveMakerDTO.getPhone())
-                .business(saveMakerDTO.getBusiness())
-                .email(saveMakerDTO.getEmail())
-                .password(saveMakerDTO.getPassword())
-                .zipcode(saveMakerDTO.getZipcode())
-                .address(saveMakerDTO.getAddress())
-                .detailAddress(saveMakerDTO.getDetailAddress())
+                .name(saveMakerRequestDTO.getName())
+                .phone(saveMakerRequestDTO.getPhone())
+                .business(saveMakerRequestDTO.getBusiness())
+                .email(saveMakerRequestDTO.getEmail())
+                .password(saveMakerRequestDTO.getPassword())
+                .zipcode(saveMakerRequestDTO.getZipcode())
+                .address(saveMakerRequestDTO.getAddress())
+                .detailAddress(saveMakerRequestDTO.getDetailAddress())
                 .registeredAt(LocalDateTime.now())
                 .status(0)
                 .build();
@@ -38,7 +38,7 @@ public class MakerServiceImpl implements MakerService {
         maker = makerRepository.save(maker);
         log.info("메이커 정보 저장 완료");
 
-        return saveMakerDTO;
+        return saveMakerRequestDTO;
     }
 
 

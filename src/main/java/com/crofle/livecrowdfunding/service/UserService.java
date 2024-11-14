@@ -1,7 +1,7 @@
 package com.crofle.livecrowdfunding.service;
 
-import com.crofle.livecrowdfunding.dto.SaveMakerDTO;
-import com.crofle.livecrowdfunding.dto.SaveUserDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.SaveUserRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +15,9 @@ public interface UserService {
      void deleteUser(Long userId);
 
 
-     SaveUserDTO saveUser(SaveUserDTO saveUserDTO);
+     SaveUserRequestDTO saveUser(SaveUserRequestDTO saveUserRequestDTO);
 
-     SaveMakerDTO saveMaker(SaveMakerDTO saveMakerDTO);
+     SaveMakerRequestDTO saveMaker(SaveMakerRequestDTO saveMakerRequestDTO);
 
 
      // 이메일 찾기
