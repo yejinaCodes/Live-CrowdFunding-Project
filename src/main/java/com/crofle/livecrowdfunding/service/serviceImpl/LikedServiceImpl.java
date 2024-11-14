@@ -4,7 +4,7 @@ import com.crofle.livecrowdfunding.domain.entity.Liked;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.domain.id.LikedId;
-import com.crofle.livecrowdfunding.dto.ProjectLikedResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectLikedResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.LikedRequestDTO;
 import com.crofle.livecrowdfunding.repository.LikedRepository;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
@@ -13,8 +13,6 @@ import com.crofle.livecrowdfunding.service.LikedService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.aspectj.apache.bcel.generic.RET;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

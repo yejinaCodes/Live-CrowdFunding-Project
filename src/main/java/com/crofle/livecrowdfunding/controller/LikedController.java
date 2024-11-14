@@ -1,6 +1,6 @@
 package com.crofle.livecrowdfunding.controller;
 
-import com.crofle.livecrowdfunding.dto.ProjectLikedResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectLikedResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.LikedRequestDTO;
 import com.crofle.livecrowdfunding.service.LikedService;
 import lombok.RequiredArgsConstructor;
