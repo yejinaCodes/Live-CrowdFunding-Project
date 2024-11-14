@@ -101,12 +101,11 @@ public class AdminProjectServiceImpl implements AdminProjectService {
          return documents;
     }
 
-    //승인, 반려, 반려 사유 DB 업데이트하기
-
+    //승인, 반려, 반려 사유 DB 업데이트하기 + 이메일 전송하기
     @Override
     @Transactional
     public void updateApprovalStatus(Long id, ProjectApprovalRequestDTO request) {
-        //1. 프로젝트 조회
+        //1. 프로젝트 존재 유무 확인
         Project project = projectRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("해당 프로젝트는 존재하지 않습니다"));
 
         //2. 상태 업데이트

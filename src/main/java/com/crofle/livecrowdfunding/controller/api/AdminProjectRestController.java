@@ -57,7 +57,7 @@ public class AdminProjectRestController {
     }
 
     //승인/반려 상태 변경 POST
-    @PutMapping("/project/{id}/approval-status")
+    @PostMapping("/project/{id}/approval-status")
     public ResponseEntity<String> updateAppprStatus(
             @PathVariable Long id, //projectid를 뜻함
             @RequestBody ProjectApprovalRequestDTO request //상태랑, 반려시 사유작성
