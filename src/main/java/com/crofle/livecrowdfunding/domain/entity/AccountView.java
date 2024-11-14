@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "user_view")
-public class UserView { // 클래스 접근 제어자를 public으로 변경
+public class AccountView { // 클래스 접근 제어자를 public으로 변경
     @Id
     private Long id;
     private String name;
