@@ -42,9 +42,6 @@ public class Maker {
     @Column(name = "detail_address", length = 50, nullable = false)
     private String detailAddress;
 
-    @Column(name = "register_status", nullable = false)
-    private Integer registerStatus;
-
     @Column(name = "unregistered_at")
     private LocalDateTime unregisteredAt;
 

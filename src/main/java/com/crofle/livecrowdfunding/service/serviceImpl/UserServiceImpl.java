@@ -12,6 +12,7 @@ import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 import com.crofle.livecrowdfunding.repository.CategoryRepository;
 import com.crofle.livecrowdfunding.repository.MakerRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
+import com.crofle.livecrowdfunding.repository.UserViewRepository;
 import com.crofle.livecrowdfunding.service.UserService;
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
     private final MakerRepository makerRepository;
+    private final UserViewRepository userViewRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -116,6 +117,7 @@ public class UserServiceImpl implements UserService {
         return saveUserDTO;
     }
 
+    //사용자(구매자)회원가입
     @Override
     public SaveMakerDTO saveMaker(SaveMakerDTO saveMakerDTO) {
 
@@ -128,16 +130,23 @@ public class UserServiceImpl implements UserService {
                 .zipcode(saveMakerDTO.getZipcode())
                 .address(saveMakerDTO.getAddress())
                 .detailAddress(saveMakerDTO.getDetailAddress())
-                .registerStatus(1)
                 .registeredAt(LocalDateTime.now())
                 .status(0)
                 .build();
-
-
 
         maker = makerRepository.save(maker);
         log.info("메이커 정보 저장 완료");
 
         return saveMakerDTO;
     }
+
+
+    // 이메일 찾기
+    @Transactional(readOnly = true)
+    @Override
+    public String findEmailByNameAndPhoneNumber(String name, String phone) {
+        return userViewRepository.findEmailByNameAndPhoneNumber(name, phone);
+    }
+
+
 }
