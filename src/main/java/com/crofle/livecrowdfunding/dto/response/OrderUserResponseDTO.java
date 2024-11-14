@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderUserResponse {
+public class OrderUserResponseDTO {
     private Long id;
     private String name;
     private String nickname;

@@ -4,6 +4,7 @@ import com.crofle.livecrowdfunding.domain.entity.Orders;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.dto.request.OrderRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.OrderHistoryResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.OrderResponseDTO;
 import com.crofle.livecrowdfunding.repository.OrdersRepository;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
@@ -16,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
+
+import java.util.List;
 
 @Service
 @Log4j2
@@ -55,6 +58,11 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. ID: " + id));
 
         return modelMapper.map(order, OrderResponseDTO.class);
+    }
+
+    @Override
+    public List<OrderHistoryResponseDTO> findByUser(Long userId) {
+        return ordersRepository.findByUser(userId);
     }
 
     private User findUser(Long userId) {
