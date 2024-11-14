@@ -27,5 +27,4 @@ public class LikedController {
     public ResponseEntity<List<ProjectLikedResponseDTO>> getUserLike(@PathVariable Long id) {
         return ResponseEntity.ok().body(likedService.getUserLikedProjects(id));
     }
-
 }

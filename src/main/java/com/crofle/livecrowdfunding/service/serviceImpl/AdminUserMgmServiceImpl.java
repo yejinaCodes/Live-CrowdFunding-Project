@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @Log4j2
 @RequiredArgsConstructor
 public class AdminUserMgmServiceImpl implements AdminUserMgmService {
+    private final UserRepository userRepository;
+    private final MakerRepository makerRepository;
 
     //User, Maker 둘다 가지고 오기
     public PageListResponseDTO<UserMgmResponseDTO> getAllMembers(PageRequestDTO pageRequestDTO){
@@ -35,14 +37,14 @@ public class AdminUserMgmServiceImpl implements AdminUserMgmService {
 
         //2. 회원 유형에 따른 조회
         if(pageRequestDTO.getSearch().getMT() == null || pageRequestDTO.getSearch().getMT().equalsIgnoreCase("USER")){
-            Page<User> userPage = UserRepository.findByConditions(pageRequestDTO, pageable);
+            Page<User> userPage = userRepository.findByConditions(pageRequestDTO, pageable);
             result.addAll(userPage.getContent().stream()
                     .map(UserMgmResponseDTO::fromUser)
                     .collect(Collectors.toList()));
             totalElements += userPage.getTotalElements();
         }
         if(pageRequestDTO.getSearch().getMT() == null || pageRequestDTO.getSearch().getMT().equalsIgnoreCase("MAKER")){
-            Page<Maker> makerPage = MakerRepository.findByConditions(pageRequestDTO, pageable);
+            Page<Maker> makerPage = makerRepository.findByConditions(pageRequestDTO, pageable);
             result.addAll(makerPage.getContent().stream()
                     .map(UserMgmResponseDTO::fromMaker)
                     .collect(Collectors.toList()));
@@ -52,8 +54,8 @@ public class AdminUserMgmServiceImpl implements AdminUserMgmService {
                 .build();
 
         return PageListResponseDTO.<UserMgmResponseDTO>builder()
-                .contents(result)
-
+                .pageInfoDTO(pageInfoDTO)
+                .dataList(result)
+                .build();
     }
-
 }
