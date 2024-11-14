@@ -4,6 +4,7 @@ import com.crofle.livecrowdfunding.domain.entity.Liked;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.domain.id.LikedId;
+import com.crofle.livecrowdfunding.dto.ProjectLikedResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.LikedRequestDTO;
 import com.crofle.livecrowdfunding.repository.LikedRepository;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -36,6 +39,21 @@ public class LikedServiceImpl implements LikedService {
         return likedRepository.existsById(likedId)
                 ? handleUnlike(likedId)
                 : handleLike(request, likedId);
+    }
+
+    @Transactional
+    public List<ProjectLikedResponseDTO> getUserLikedProjects(Long userId) {
+        List<Project> likedProjects = likedRepository.findByUser(userId);
+        return likedProjects.stream()
+                .map(project -> ProjectLikedResponseDTO.builder()
+                        .id(project.getId())
+                        .productName(project.getProductName())
+                        .description(project.getSummary())
+                        .thumbnailUrl(project.getImages().get(0).getImage())
+                        .price(project.getPrice())
+                        .percentage(project.getDiscountPercentage())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private void validateRequest(LikedRequestDTO request) {

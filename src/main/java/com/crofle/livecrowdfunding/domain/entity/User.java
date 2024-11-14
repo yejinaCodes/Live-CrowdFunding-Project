@@ -86,18 +86,11 @@ public class User {
     private List<ChatReport> chatReports = new ArrayList<>();
 
     public void updateUserInfo(UserInfoRequestDTO userInfoRequestDTO) {
-        //user 필드 전부 수정
         this.name = userInfoRequestDTO.getName();
         this.nickname = userInfoRequestDTO.getNickname();
         this.phone = userInfoRequestDTO.getPhone();
-        this.birth = userInfoRequestDTO.getBirth();
-        this.email = userInfoRequestDTO.getEmail();
-        this.password = userInfoRequestDTO.getPassword();
-        this.zipcode = userInfoRequestDTO.getZipcode();
         this.address = userInfoRequestDTO.getAddress();
         this.detailAddress = userInfoRequestDTO.getDetailAddress();
-        this.loginMethod = userInfoRequestDTO.getLoginMethod();
-        this.status = userInfoRequestDTO.getStatus();
         this.notification = userInfoRequestDTO.getNotification();
     }
 }
