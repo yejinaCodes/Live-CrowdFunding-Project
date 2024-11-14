@@ -15,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,9 @@ import java.util.stream.Collectors;
 public class AdminProjectServiceImpl implements AdminProjectService {
     private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public PageListResponseDTO<ProjectResponseInfoDTO> findProjectList(PageRequestDTO pageRequestDTO) { //naming precision required
@@ -97,18 +101,58 @@ public class AdminProjectServiceImpl implements AdminProjectService {
          return documents;
     }
 
+    //승인, 반려, 반려 사유 DB 업데이트하기
+
     @Override
+    @Transactional
     public void updateApprovalStatus(Long id, ProjectApprovalRequestDTO request) {
+        //1. 프로젝트 조회
         Project project = projectRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("해당 프로젝트는 존재하지 않습니다"));
+
+        //2. 상태 업데이트
         project.setReviewProjectStatus(request.getStatus());
+
+        //3. 반려인 경우 사유 저장
         if(request.getStatus() == ProjectStatus.반려){
             project.setRejectionReason(request.getRejectionReason());
         }
+        //4. DB에 저장
         projectRepository.save(project);
+
+        //5. 이메일 발송
+        try{
+            sendNotificationEmail(project, request);
+        }catch(Exception e) {
+            log.error("이메일 발송 실패: " + e.getMessage());
+        }
     }
+    private void sendNotificationEmail(Project project, ProjectApprovalRequestDTO request){
+        String subject;
+        String content;
 
-    //승인, 반려, 반려 사유 이메일로 보내기
-
-
-
+        if(request.getStatus() == ProjectStatus.반려){
+            subject = "[펀딩] 프로젝트 심사 결과: 반려";
+            content = String.format("""
+                    안녕하세요, %s님
+                    요청하신 프로젝트 '%s'가 다음과 같은 사유로 반려되었습니다:
+                    %s
+                    수정 후 다시 제출해 주시기 바랍니다.
+                    """,
+                    project.getMaker().getName(),
+                    project.getProductName(),
+                    request.getRejectionReason()
+                    );
+        }else{
+            subject = "[펀딩] 프로젝트 심사 결과: 승인";
+            content = String.format("""
+                    안녕하세요, %s님
+                    요청하신 프로젝트  '%s'가 승인되었습니다.
+                    펀딩을 시작하실 수 있습니다.
+                    """,
+                    project.getMaker().getName(),
+                    project.getProductName()
+                    );
+        }
+        emailService.sendEmail(project.getMaker().getEmail(), subject, content);
+    }
 }

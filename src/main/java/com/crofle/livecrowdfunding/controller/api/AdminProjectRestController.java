@@ -73,9 +73,9 @@ public class AdminProjectRestController {
         }
     }
 
+    //프로젝트 ID별 상세 내용 조회
     @GetMapping("/project/{id}")
     public ResponseEntity<ProjectResponseInfoDTO> getProject(@PathVariable Long id) {
         return ResponseEntity.ok(adminProjectService.findProject(id));
     }
-
 }
