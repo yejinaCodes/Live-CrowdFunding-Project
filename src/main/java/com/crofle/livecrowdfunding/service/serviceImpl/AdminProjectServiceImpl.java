@@ -69,7 +69,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
         return pageListResponseDT;
     }
 
-    @Transactional(readOnly = true) //없애도 잘 동작함..
+    @Transactional(readOnly = true) //없애도 잘 동작함..와이?
     @Override
     public ProjectResponseInfoDTO findProject(Long id) {
         Project project = projectRepository.findById(id)
@@ -77,10 +77,10 @@ public class AdminProjectServiceImpl implements AdminProjectService {
 
         log.info("check1: ", project.getManager().getId());
         ProjectResponseInfoDTO projectResponseInfoDTO = modelMapper.map(project, ProjectResponseInfoDTO.class);
-        log.info("checking yejina");
-        log.info(projectResponseInfoDTO.getProductName());
-        log.info("maker ID: " , projectResponseInfoDTO.getMaker());
-        log.info("manager ID: ", projectResponseInfoDTO.getManager());
+//        log.info("checking yejina");
+//        log.info(projectResponseInfoDTO.getProductName());
+//        log.info("maker ID: " , projectResponseInfoDTO.getMaker());
+//        log.info("manager ID: ", projectResponseInfoDTO.getManager());
         return projectResponseInfoDTO;
     }
 
@@ -92,6 +92,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
          List<EssentialDocumentDTO> documents = project.getEssentialDocuments().stream()
                 .map(doc -> modelMapper.map(doc, EssentialDocumentDTO.class))
                 .collect(Collectors.toList());
+
          if(!project.getImages().isEmpty()) {
              Image firstImage = project.getImages().get(0);
              EssentialDocumentDTO imageDoc = new EssentialDocumentDTO();
