@@ -22,7 +22,7 @@ public class AdminChatRestController {
     //신고 목록 조회
     @GetMapping("/chat-reports")
     public ResponseEntity<PageListResponseDTO<ChatReportListDTO>> getReportList( //조건 조회 없음
-                                                                                 @RequestParam int page) {
+        @RequestParam int page) {
 
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .page(page)

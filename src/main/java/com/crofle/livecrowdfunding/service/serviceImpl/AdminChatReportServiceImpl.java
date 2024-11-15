@@ -10,6 +10,8 @@ import com.crofle.livecrowdfunding.service.AdminChatReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +27,11 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class AdminChatReportServiceImpl implements AdminChatReportService {
     private final ChatReportRepository chatReportRepository;
-    private final ModelMapper modelMapper;
 
+//    @Qualifier("ChatmodelMapper")// Bean 이름 지정
+//    private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    
     @Override //신고 list 조회
     public PageListResponseDTO<ChatReportListDTO> findReportList(PageRequestDTO pageRequestDTO) {
         //Pageable로 만들기
@@ -36,8 +41,20 @@ public class AdminChatReportServiceImpl implements AdminChatReportService {
         Page<ChatReport> chatReports = chatReportRepository.findAll(pageable);
 
         //ChatReport entity랑 ChatReportListDTO랑 매핑하기
+//        List<ChatReportListDTO> chatReportListDTOList = chatReports.stream()
+//                .map(chat -> modelMapper.map(chat, ChatReportListDTO.class))
+//                .collect(Collectors.toList());
+        //project, user의 모든 정보가 필요없을 때:
         List<ChatReportListDTO> chatReportListDTOList = chatReports.stream()
-                .map(chat -> modelMapper.map(chat, ChatReportListDTO.class))
+                .map(chat -> ChatReportListDTO.builder()
+                        .id(chat.getId())
+                        .userId(chat.getUser().getId())
+                        .projectId(chat.getProject().getId())
+                        .managerId(chat.getManager().getId())
+                        .reason(chat.getReason())
+                        .chatMessage(chat.getChatMessage())
+                        .createdAt(chat.getCreatedAt())
+                        .build())
                 .collect(Collectors.toList());
 
         //PageListResponseDTO로 만들어주기
