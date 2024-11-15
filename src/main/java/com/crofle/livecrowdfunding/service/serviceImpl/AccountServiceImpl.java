@@ -1,6 +1,6 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
-import com.crofle.livecrowdfunding.config.JwtUtil;
+import com.crofle.livecrowdfunding.util.JwtUtil;
 import com.crofle.livecrowdfunding.domain.entity.AccountView;
 import com.crofle.livecrowdfunding.domain.enums.Role;
 import com.crofle.livecrowdfunding.dto.request.LoginRequestDTO;

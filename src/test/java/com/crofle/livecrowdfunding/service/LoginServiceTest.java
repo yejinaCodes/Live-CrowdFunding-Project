@@ -1,16 +1,16 @@
 package com.crofle.livecrowdfunding.service;
 
-import com.crofle.livecrowdfunding.config.JwtUtil;
+import com.crofle.livecrowdfunding.util.JwtUtil;
 import com.crofle.livecrowdfunding.domain.entity.AccountView;
 import com.crofle.livecrowdfunding.domain.enums.Role;
 import com.crofle.livecrowdfunding.dto.request.ResetPasswordRequestDTO;
-import com.crofle.livecrowdfunding.service.AccountService;
-import com.crofle.livecrowdfunding.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import com.crofle.livecrowdfunding.dto.request.LoginRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.TokenDTO;
 import org.junit.jupiter.api.Test;
@@ -160,7 +160,7 @@ public class LoginServiceTest {
         String emailFromToken = jwtUtil.getEmailFromToken(resetToken);
         log.info("Email from Token: {}", emailFromToken);
 
-        // Claims 확인 (토큰 내용 확인)
+        // 토큰내용 확인이라능
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Base64.getDecoder().decode(jwtUtil.getSecretKey()))  // getSigningKey 대신 secretKey 사용
                 .build()

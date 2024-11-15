@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.config;
+package com.crofle.livecrowdfunding.util;
 
 
 import com.crofle.livecrowdfunding.domain.enums.Role;
@@ -10,6 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
+
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -82,6 +83,7 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+
     // 토큰에서 역할 추출
     public Role getRoleFromToken(String token) {
         return Role.valueOf(Jwts.parserBuilder()
@@ -96,7 +98,6 @@ public class JwtUtil {
         byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
 
 
     public String getSecretKey() {

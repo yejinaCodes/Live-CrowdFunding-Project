@@ -25,7 +25,6 @@ public interface AccountService {
     String generateResetPasswordLink(String email, String resetToken);
 
 
-
     // 이메일 찾기
     @Transactional(readOnly = true)
     Optional<AccountView> findEmailByNameAndPhone(String name, String phone);
