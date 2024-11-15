@@ -79,10 +79,6 @@ public class AdminProjectServiceImpl implements AdminProjectService {
 
         log.info("check1: ", project.getManager().getId());
         ProjectResponseInfoDTO projectResponseInfoDTO = modelMapper.map(project, ProjectResponseInfoDTO.class);
-//        log.info("checking yejina");
-//        log.info(projectResponseInfoDTO.getProductName());
-//        log.info("maker ID: " , projectResponseInfoDTO.getMaker());
-//        log.info("manager ID: ", projectResponseInfoDTO.getManager());
         return projectResponseInfoDTO;
     }
 

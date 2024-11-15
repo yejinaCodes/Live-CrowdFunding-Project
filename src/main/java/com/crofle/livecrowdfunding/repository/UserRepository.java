@@ -9,13 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-//    Page<User> findByConditions(PageRequestDTO pageRequestDTO, Pageable pageable);
-//    @Query("SELECT u FROM User u " +
-//            "WHERE (:#{#dto.search?.US} IS NULL OR u.status = :#{T(com.crofle.livecrowdfunding.domain.enums.UserStatus).valueOf(#dto.search.US)}) " +
-//            "AND (:#{#dto.userName} IS NULL OR u.name LIKE %:#{#dto.userName}%)")
-//    Page<User> findByConditions(@Param("dto") PageRequestDTO dto, Pageable pageable);
-//
-//}
     @Query("SELECT u FROM User u " +
             "WHERE (:#{#dto.search?.US} IS NULL OR u.status = :#{T(com.crofle.livecrowdfunding.domain.enums.UserStatus).valueOf(#dto.search.US)}) " +
             "AND (:#{#dto.userName} IS NULL OR u.name LIKE %:#{#dto.userName}%)")
