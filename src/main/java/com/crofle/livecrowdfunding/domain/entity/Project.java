@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,4 +120,9 @@ public class Project {
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
     private Revenue revenue;
+
+    @PrePersist
+    public void prePersist() {
+        this.reviewProjectStatus = ProjectStatus.검토중;
+    }
 }

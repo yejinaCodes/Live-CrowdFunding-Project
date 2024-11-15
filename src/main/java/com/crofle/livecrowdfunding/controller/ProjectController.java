@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.controller;
 
+import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,11 @@ public class ProjectController {
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDetailResponseDTO> getProject(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.findProjectDetail(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createProject(@RequestBody ProjectRegisterRequestDTO requestDTO) {
+        projectService.createProject(requestDTO);
+        return ResponseEntity.ok().build();
     }
 }
