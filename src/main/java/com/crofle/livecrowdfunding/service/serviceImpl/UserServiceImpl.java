@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
                 .address(saveMakerRequestDTO.getAddress())
                 .detailAddress(saveMakerRequestDTO.getDetailAddress())
                 .registeredAt(LocalDateTime.now())
-                .status(0)
+                .status(UserStatus.활성화)
                 .build();
 
         maker = makerRepository.save(maker);
