@@ -26,7 +26,7 @@ public class AdminProjectRestController {
 
     @GetMapping("/projects")
     public ResponseEntity<PageListResponseDTO<ProjectResponseInfoDTO>> getProjectList(
-            @RequestParam int page,
+            @RequestParam (defaultValue = "1") int page,
             @RequestParam(required = false) String RS,
             @RequestParam(required = false) String PS,
             @RequestParam(required = false) String SD,

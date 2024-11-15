@@ -1,16 +1,16 @@
 package com.crofle.livecrowdfunding.controller.api;
 
+import com.crofle.livecrowdfunding.domain.entity.ChatReport;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.UserStatusRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.ChatReportDetailDTO;
 import com.crofle.livecrowdfunding.dto.response.ChatReportListDTO;
 import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.service.AdminChatReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Log4j2
@@ -22,12 +22,34 @@ public class AdminChatRestController {
     //신고 목록 조회
     @GetMapping("/chat-reports")
     public ResponseEntity<PageListResponseDTO<ChatReportListDTO>> getReportList( //조건 조회 없음
-        @RequestParam int page) {
-
+        @RequestParam(defaultValue = "1") int page) { //page 꼭 넣어주어함
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .page(page)
                 .build();
-
         return ResponseEntity.ok(adminChatReportService.findReportList(pageRequestDTO));
     }
+
+    //신고 상세 정보 조회 모달
+    @GetMapping("/{reportId}")
+    public ResponseEntity<ChatReportDetailDTO> getReportDetail(
+        @PathVariable Long reportId){
+        return ResponseEntity.ok(adminChatReportService.findReportDetail(reportId));
+    }
+
+    //사용자 상태 변경
+    @PostMapping("/{reportId}/user-status")
+    public ResponseEntity<String> updateUserStatus(
+            @PathVariable Long reportId,
+            @RequestBody UserStatusRequestDTO updateDTO) {
+        // reportId를 통해 userId 조회
+        Long userId = adminChatReportService.getUserIdByReportId(reportId);
+
+        // 조회한 userId를 updateDTO에 설정
+        updateDTO.setUserId(userId);
+        updateDTO.setReportId(reportId);
+
+        adminChatReportService.updateUserStatus(updateDTO);
+        return ResponseEntity.ok("사용자 상태가 변경되었습니다.");
+    }
+
 }

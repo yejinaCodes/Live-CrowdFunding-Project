@@ -30,22 +30,4 @@ public class ModelMapperConfig {
 
         return modelMapper;
     }
-
-//    //Chat 리스트 조회시 사용
-//    @Bean(name="ChatmodelMapper")
-//    public ModelMapper ChatmodelMapper() {
-//        ModelMapper modelMapper = new ModelMapper();
-//
-//        modelMapper.createTypeMap(Project.class, ProjectResponseInfoDTO.class);
-//
-//        modelMapper.createTypeMap(ChatReport.class, ChatReportListDTO.class)
-//                .addMappings(mapper -> {
-//                    mapper.map(src -> src.getProject(), ChatReportListDTO::setProject);
-//                    mapper.map(src -> src.getUser(), ChatReportListDTO::setUser);
-//                    mapper.map(ChatReport::getChatMessage, ChatReportListDTO::setChatMessage);
-//                    mapper.map(ChatReport::getCreatedAt, ChatReportListDTO::setCreatedAt);
-//                });
-//
-//        return modelMapper;
-//    }
 }
