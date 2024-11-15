@@ -95,7 +95,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
          if(!project.getImages().isEmpty()) {
              Image firstImage = project.getImages().get(0);
              EssentialDocumentDTO imageDoc = new EssentialDocumentDTO();
-             imageDoc.setDocument(firstImage.getImage()); //string 타입의 image가지고 오기
+             imageDoc.setDocument(firstImage.getUrl()); //string 타입의 image가지고 오기
              documents.add(imageDoc);
          }
          return documents;

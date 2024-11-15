@@ -17,6 +17,12 @@ public class Image {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @Column(name = "image", nullable = false, length = 200)
-    private String image;
+    @Column(nullable = false, length = 200)
+    private String url;
+
+    @Column(name = "image_number", nullable = false)
+    private Integer imageNumber;
+
+    @Column(nullable = false)
+    private String name;
 }

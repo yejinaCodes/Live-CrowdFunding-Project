@@ -33,6 +33,7 @@ public class PaymentHistory {
     @Column(name = "payment_at", nullable = false)
     private LocalDateTime paymentAt;
 
+    @Builder.Default
     @Column(name = "refund_status", nullable = false)
     @Comment("0: No, 1: YES")
     private Integer refundStatus = 0;
