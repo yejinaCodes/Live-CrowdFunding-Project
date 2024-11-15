@@ -20,5 +20,5 @@ public class OrderProjectResponseDTO {  // 주문 정보에 담기는 프로젝�
     private Integer price;
     private Integer discountPercentage;
     private Integer percentage;
-    private List<ImageResponseDTO> images;
+    private List<ImageResponseDTO> urls;
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("SELECT new com.crofle.livecrowdfunding.dto.response.OrderHistoryResponseDTO(" +
             "ph.paymentAt, " +
-            "i.image, " +
+            "i.url, " +
             "p.productName, " +
             "o.amount, " +
             "o.paymentPrice) " +
