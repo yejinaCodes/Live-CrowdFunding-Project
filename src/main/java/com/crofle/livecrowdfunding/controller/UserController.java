@@ -22,14 +22,14 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@RequestBody UserInfoRequestDTO userInfoRequestDTO) {
-        userService.updateUser(userInfoRequestDTO);
-        return ResponseEntity.created(URI.create("/api/user")).build();
+    public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody UserInfoRequestDTO userInfoRequestDTO) {
+        userService.updateUser(id, userInfoRequestDTO);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

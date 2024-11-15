@@ -26,10 +26,9 @@ public class UserServiceTest {
 
     @Test
     public void updateUserTest() {
-        Long userId = 1L;
+        Long id = 1L;
 
         UserInfoRequestDTO userInfoRequestDTO = UserInfoRequestDTO.builder()
-                .id(userId)
                 .name("홍길동1")
                 .nickname("홍길동1")
                 .phone("010-1234-5678")
@@ -38,7 +37,7 @@ public class UserServiceTest {
                 .notification(true)
                 .build();
 
-        userService.updateUser(userInfoRequestDTO);
+        userService.updateUser(id, userInfoRequestDTO);
     }
 
     @Test

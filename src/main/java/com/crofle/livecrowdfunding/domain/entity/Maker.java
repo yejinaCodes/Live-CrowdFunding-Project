@@ -1,5 +1,8 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
+import com.crofle.livecrowdfunding.dto.request.MakerInfoRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.MakerInfoResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -56,4 +59,10 @@ public class Maker {
     @Builder.Default
     @OneToMany(mappedBy = "maker")
     private List<Project> projects = new ArrayList<>();
+
+    public void updateMakerInfo(MakerInfoRequestDTO makerInfoRequestDTO) {
+        this.phone = makerInfoRequestDTO.getPhone();
+        this.address = makerInfoRequestDTO.getAddress();
+        this.detailAddress = makerInfoRequestDTO.getDetailAddress();
+    }
 }

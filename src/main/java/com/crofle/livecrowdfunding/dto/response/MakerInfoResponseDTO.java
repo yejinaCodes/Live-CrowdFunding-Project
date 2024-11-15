@@ -1,22 +1,19 @@
-package com.crofle.livecrowdfunding.dto.request;
+package com.crofle.livecrowdfunding.dto.response;
 
-import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoRequestDTO { // 사용자 정보 수정 요청
+public class MakerInfoResponseDTO { // 판매자 정보 조회 응답 DTO
+    private Long id;
     private String name;
-    private String nickname;
     private String phone;
+    private String email;
     private String address;
     private String detailAddress;
-    private Boolean notification;
 }

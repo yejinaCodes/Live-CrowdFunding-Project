@@ -10,7 +10,7 @@ public interface UserService {
 
      UserInfoResponseDTO findUser(Long userId);
 
-     void updateUser(UserInfoRequestDTO userInfoRequestDTO);
+     void updateUser(Long id, UserInfoRequestDTO userInfoRequestDTO);
 
      void deleteUser(Long userId);
 
