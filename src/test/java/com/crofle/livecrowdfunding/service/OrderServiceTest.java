@@ -35,6 +35,7 @@ public class OrderServiceTest {
     @Test
     public void testFindByUser() {
         Long userId = 1L;
+        log.info("User ID: " + userId);
         orderService.findByUser(userId).forEach(orderHistoryResponseDTO -> log.info(orderHistoryResponseDTO));
     }
 }
