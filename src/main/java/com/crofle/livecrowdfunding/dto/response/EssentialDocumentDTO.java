@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.dto.response;
 
+import com.crofle.livecrowdfunding.domain.enums.DocumentType;
 import lombok.*;
 
 @Getter
@@ -9,6 +10,7 @@ import lombok.*;
 @ToString
 public class EssentialDocumentDTO {
     private String id;
-    private String document;
-
+    private String url;
+    private String name;
+    private DocumentType docType;
 }
