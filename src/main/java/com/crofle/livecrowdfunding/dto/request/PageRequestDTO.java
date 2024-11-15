@@ -27,6 +27,7 @@ public class PageRequestDTO {
     @Builder.Default
     private String orderByDir = "DESC";
 
+    @Builder.Default
     private SearchTypeDTO search = new SearchTypeDTO();
 
     //검색 조건으로 프로젝트 이름명 조회 가능!!!
