@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @Log4j2
 public class MakerServiceImpl implements MakerService {
 
+<<<<<<< Updated upstream
     private final MakerRepository makerRepository;
     private final ModelMapper modelMapper;
 
@@ -26,6 +27,12 @@ public class MakerServiceImpl implements MakerService {
     public MakerInfoResponseDTO findMaker(Long makerId) {
         Maker maker = makerRepository.findById(makerId).orElseThrow(() -> new IllegalArgumentException("해당 메이커가 존재하지 않습니다."));
 
+=======
+
+<<<<<<< Updated upstream
+    private final MakerRepository makerRepository;
+=======
+>>>>>>> Stashed changes
         return modelMapper.map(maker, MakerInfoResponseDTO.class);
     }
 
@@ -36,7 +43,11 @@ public class MakerServiceImpl implements MakerService {
 
         maker.updateMakerInfo(makerInfoRequestDTO);
     }
+<<<<<<< Updated upstream
 }
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
     //판매자 회원가입
     @Override
