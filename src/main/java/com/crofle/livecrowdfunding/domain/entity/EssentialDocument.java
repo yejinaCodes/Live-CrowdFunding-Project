@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
+import com.crofle.livecrowdfunding.domain.enums.DocumentType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,5 +20,12 @@ public class EssentialDocument {
     private Project project;
 
     @Column(nullable = false, length = 200)
-    private String document;
+    private String url;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "doc_type", nullable = false)
+    private DocumentType docType;
+
+    @Column(nullable = false)
+    private String name;
 }

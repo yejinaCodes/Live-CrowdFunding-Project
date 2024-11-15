@@ -47,7 +47,7 @@ public class LikedServiceImpl implements LikedService {
                         .id(project.getId())
                         .productName(project.getProductName())
                         .description(project.getSummary())
-                        .thumbnailUrl(project.getImages().get(0).getImage())
+                        .thumbnailUrl(project.getImages().get(0).getUrl())
                         .price(project.getPrice())
                         .percentage(project.getDiscountPercentage())
                         .build())

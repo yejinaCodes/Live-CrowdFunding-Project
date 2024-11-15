@@ -219,21 +219,21 @@ public class TestEntity {
 
 
         //EssentialDocument
-        EssentialDocument doc = EssentialDocument.builder().project(saveProject).document("https://wheredocissaved").build();
+        EssentialDocument doc = EssentialDocument.builder().project(saveProject).url("https://wheredocissaved").build();
         EssentialDocument savedDoc = essentialDocumentRepository.save(doc);
         EssentialDocument findDoc = essentialDocumentRepository.findById(savedDoc.getId())
                 .orElseThrow(() -> new RuntimeException("Not present"));
         System.out.println("Doc Id: " + savedDoc.getId());
-        System.out.println("Doc projectID: " + findDoc.getProject().getId() + " Doc loc: " + findDoc.getDocument());
+        System.out.println("Doc projectID: " + findDoc.getProject().getId() + " Doc loc: " + findDoc.getUrl());
 
 
         //Image
-        Image image = Image.builder().project(saveProject).image("https://whereimageissaved").build();
+        Image image = Image.builder().project(saveProject).url("https://whereimageissaved").build();
         Image savedImage = imageRepository.save(image);
         Image findImage = imageRepository.findById(savedImage.getId())
                 .orElseThrow(() -> new RuntimeException("Not present"));
         System.out.println("Image Id: " + savedImage.getId());
-        System.out.println("Image projectID: " + findImage.getProject().getId() + " Image loc: " + findImage.getImage());
+        System.out.println("Image projectID: " + findImage.getProject().getId() + " Image loc: " + findImage.getUrl());
 
         //TopFunding
         TopFunding topFunding = TopFunding.builder().project(saveProject).ranking(1).updatedAt(LocalDateTime.now()).build();
@@ -424,7 +424,7 @@ public class TestEntity {
                 .event(Event.builder().id(1L).build())
                 .user(User.builder().id(1L).build())
                 .winningPrize("테스트상품")
-                .winningData(LocalDateTime.now())
+                .winningDate(LocalDateTime.now())
                 .createdAt(LocalDateTime.now())
                 .build();
 
