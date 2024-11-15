@@ -25,6 +25,6 @@ public class ProjectDetailResponseDTO {
     private ProjectStatus progressProjectStatus;
     private Integer goalAmount;
     private String contentImage;
-    private List<ImageResponseDTO> images;
+    private List<ImageResponseDTO> urls;
     private Integer likeCount;
 }

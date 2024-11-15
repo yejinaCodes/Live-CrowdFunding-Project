@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface AccountViewRepository extends JpaRepository<AccountView, Long> {
 
+    Optional<AccountView> findByEmail(String email);
+
     //이메일 찾기
     @Query("SELECT u FROM AccountView u WHERE u.name = :name AND u.phone = :phone")
     Optional<AccountView> findEmailByNameAndPhone(@Param("name") String name, @Param("phone") String phone);

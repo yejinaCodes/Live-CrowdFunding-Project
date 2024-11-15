@@ -21,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +71,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
         return pageListResponseDT;
     }
 
-    @Transactional(readOnly = true) //없애도 잘 동작함..
+    @Transactional(readOnly = true) //없애도 잘 동작함..와이?
     @Override
     public ProjectResponseInfoDTO findProject(Long id) {
         Project project = projectRepository.findById(id)
@@ -77,10 +79,10 @@ public class AdminProjectServiceImpl implements AdminProjectService {
 
         log.info("check1: ", project.getManager().getId());
         ProjectResponseInfoDTO projectResponseInfoDTO = modelMapper.map(project, ProjectResponseInfoDTO.class);
-        log.info("checking yejina");
-        log.info(projectResponseInfoDTO.getProductName());
-        log.info("maker ID: " , projectResponseInfoDTO.getMaker());
-        log.info("manager ID: ", projectResponseInfoDTO.getManager());
+//        log.info("checking yejina");
+//        log.info(projectResponseInfoDTO.getProductName());
+//        log.info("maker ID: " , projectResponseInfoDTO.getMaker());
+//        log.info("manager ID: ", projectResponseInfoDTO.getManager());
         return projectResponseInfoDTO;
     }
 
@@ -89,13 +91,17 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     public List<EssentialDocumentDTO> findEssentialDocs(Long id) {
         Project project = projectRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("해당 프로젝트는 존재하지 않습니다"));
 
+        //front에서 linking할때 doc 별로 보여주는 란 지정하기
          List<EssentialDocumentDTO> documents = project.getEssentialDocuments().stream()
                 .map(doc -> modelMapper.map(doc, EssentialDocumentDTO.class))
                 .collect(Collectors.toList());
+
          if(!project.getImages().isEmpty()) {
-             Image firstImage = project.getImages().get(0);
+             Image firstImage = project.getImages().stream()
+                     .min(Comparator.comparing(Image::getImageNumber))
+                     .orElseThrow(() -> new EntityNotFoundException("이미지를 찾을 수 없습니다"));
              EssentialDocumentDTO imageDoc = new EssentialDocumentDTO();
-             imageDoc.setDocument(firstImage.getImage()); //string 타입의 image가지고 오기
+             imageDoc.setUrl(firstImage.getUrl()); //string 타입의 image가지고 오기
              documents.add(imageDoc);
          }
          return documents;

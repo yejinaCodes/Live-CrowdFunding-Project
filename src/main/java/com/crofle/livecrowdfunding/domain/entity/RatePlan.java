@@ -23,6 +23,7 @@ public class RatePlan {
     @Column(nullable = false)
     private Short charge;
 
+    @Builder.Default
     @OneToMany(mappedBy = "ratePlan")
     private List<Project> projects = new ArrayList<>();
 }

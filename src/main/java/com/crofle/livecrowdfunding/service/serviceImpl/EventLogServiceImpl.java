@@ -24,7 +24,7 @@ public class EventLogServiceImpl implements EventLogService {
                 .map(eventLogWithEventNameDTO -> UserEventLogResponseDTO.builder()
                         .eventName(eventLogWithEventNameDTO.getEventName())
                         .createdAt(eventLogWithEventNameDTO.getEventLog().getCreatedAt().toString())
-                        .winningDate(eventLogWithEventNameDTO.getEventLog().getWinningData().toString())
+                        .winningDate(eventLogWithEventNameDTO.getEventLog().getWinningDate().toString())
                         .winningPrize(eventLogWithEventNameDTO.getEventLog().getWinningPrize())
                         .build())
                 .toList();

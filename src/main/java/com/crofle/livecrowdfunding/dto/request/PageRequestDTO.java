@@ -15,7 +15,7 @@ public class PageRequestDTO {
     @Builder.Default
     @Min(value = 1)
     @Positive
-    private int page = 2;
+    private int page = 1;
 
     @Builder.Default
     @Min(value = 10)
@@ -27,10 +27,14 @@ public class PageRequestDTO {
     @Builder.Default
     private String orderByDir = "DESC";
 
+    @Builder.Default
     private SearchTypeDTO search = new SearchTypeDTO();
 
     //검색 조건으로 프로젝트 이름명 조회 가능!!!
     private String projectName;
+
+    //User 관리용
+    private String userName;
 
 
     public int getOffset(){

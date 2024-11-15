@@ -10,5 +10,5 @@ import lombok.*;
 @AllArgsConstructor
 public class ImageResponseDTO {
     private Long id;
-    private String image;
+    private String url;
 }

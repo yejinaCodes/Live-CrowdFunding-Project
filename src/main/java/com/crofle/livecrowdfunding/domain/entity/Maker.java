@@ -1,5 +1,9 @@
 package com.crofle.livecrowdfunding.domain.entity;
 
+import com.crofle.livecrowdfunding.domain.enums.UserStatus;
+import com.crofle.livecrowdfunding.dto.request.MakerInfoRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.MakerInfoResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -49,11 +53,18 @@ public class Maker {
     private LocalDateTime registeredAt;
 
     @Column(nullable = false)
-    @Comment("0: 활성, 1: 탈퇴")
+    @Comment("활성화, 비활성화")
     @Builder.Default
-    private Integer status = 0;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.활성화;
 
     @Builder.Default
     @OneToMany(mappedBy = "maker")
     private List<Project> projects = new ArrayList<>();
+
+    public void updateMakerInfo(MakerInfoRequestDTO makerInfoRequestDTO) {
+        this.phone = makerInfoRequestDTO.getPhone();
+        this.address = makerInfoRequestDTO.getAddress();
+        this.detailAddress = makerInfoRequestDTO.getDetailAddress();
+    }
 }

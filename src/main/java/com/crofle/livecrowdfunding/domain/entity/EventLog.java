@@ -30,8 +30,8 @@ public class EventLog {
     @Column(name = "winning_prize", nullable = false, length = 255)
     private String winningPrize;
 
-    @Column(name = "winning_data", nullable = false)
-    private LocalDateTime winningData;
+    @Column(name = "winning_date", nullable = false)
+    private LocalDateTime winningDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
