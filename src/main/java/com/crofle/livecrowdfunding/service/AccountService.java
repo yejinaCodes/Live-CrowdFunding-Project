@@ -1,33 +1,30 @@
 package com.crofle.livecrowdfunding.service;
 
 import com.crofle.livecrowdfunding.domain.entity.AccountView;
-import com.crofle.livecrowdfunding.dto.request.LoginRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectApprovalRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ResetPasswordRequestDTO;
-import com.crofle.livecrowdfunding.dto.response.EssentialDocumentDTO;
-import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectResponseInfoDTO;
-import com.crofle.livecrowdfunding.dto.response.TokenDTO;
-import org.springframework.transaction.annotation.Transactional;
+import com.crofle.livecrowdfunding.dto.request.*;
+import com.crofle.livecrowdfunding.dto.response.AccountTokenResponseDTO;
+import com.crofle.livecrowdfunding.dto.request.AccountOAuthRequestDTO;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface AccountService {
-    TokenDTO login(LoginRequestDTO loginRequest);
-
-    TokenDTO refresh(String refreshToken);
-
-    void sendResetPasswordEmail(ResetPasswordRequestDTO request);
 
 
-    String generateResetPasswordLink(String email, String resetToken);
+    // 일반 로그인
+    AccountTokenResponseDTO login(AccountLoginRequestDTO request);
 
+    // 토큰 갱신
+    AccountTokenResponseDTO refresh(AccountTokenRequestDTO request);
+
+    // 로그아웃 처리
+    void logout(String email);
 
     // 이메일 찾기
-    @Transactional(readOnly = true)
-    Optional<AccountView> findEmailByNameAndPhone(String name, String phone);
+    Optional<AccountView> findEmailByNameAndPhone(AccountFindEmailRequestDTO request);
 
+    // 비밀번호 재설정 이메일 발송
+    void sendResetPasswordEmail(AccountPasswordResetRequestDTO request);
 
+    // OAuth 로그인 및 계정 생성
+    AccountTokenResponseDTO authenticateOAuthAccount(AccountOAuthRequestDTO request);
 }

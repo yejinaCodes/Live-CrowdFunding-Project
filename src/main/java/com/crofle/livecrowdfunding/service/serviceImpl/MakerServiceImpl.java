@@ -5,6 +5,7 @@ import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 import com.crofle.livecrowdfunding.dto.request.MakerInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.MakerInfoResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
+import com.crofle.livecrowdfunding.repository.AccountViewRepository;
 import com.crofle.livecrowdfunding.repository.MakerRepository;
 import com.crofle.livecrowdfunding.service.MakerService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 public class MakerServiceImpl implements MakerService {
 
     private final MakerRepository makerRepository;
+    private final AccountViewRepository accountViewRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -39,25 +42,32 @@ public class MakerServiceImpl implements MakerService {
     }
 
     //판매자 회원가입
-    @Override
-    public SaveMakerRequestDTO saveMaker(SaveMakerRequestDTO saveMakerRequestDTO) {
 
-        Maker maker = Maker.builder()
-                .name(saveMakerRequestDTO.getName())
-                .phone(saveMakerRequestDTO.getPhone())
-                .business(saveMakerRequestDTO.getBusiness())
-                .email(saveMakerRequestDTO.getEmail())
-                .password(saveMakerRequestDTO.getPassword())
-                .zipcode(saveMakerRequestDTO.getZipcode())
-                .address(saveMakerRequestDTO.getAddress())
-                .detailAddress(saveMakerRequestDTO.getDetailAddress())
-                .registeredAt(LocalDateTime.now())
-                .status(UserStatus.활성화)
-                .build();
+        @Override
+        @Transactional
+        public SaveMakerRequestDTO saveMaker(SaveMakerRequestDTO request) {
+            // 이메일 중복 체크
+            if (accountViewRepository.findByEmail(request.getEmail()).isPresent()) {
+                throw new IllegalArgumentException("Email already exists");
+            }
 
-        maker = makerRepository.save(maker);
-        log.info("메이커 정보 저장 완료");
+            Maker maker = Maker.builder()
+                    .name(request.getName())
+                    .phone(request.getPhone())
+                    .business(request.getBusiness())
+                    .email(request.getEmail())
+                    .password(request.getPassword())
+                    .zipcode(request.getZipcode())
+                    .address(request.getAddress())
+                    .detailAddress(request.getDetailAddress())
+                    .registeredAt(LocalDateTime.now())
+                    .status(UserStatus.활성화)
+                    .build();
 
-        return saveMakerRequestDTO;
+            makerRepository.save(maker);
+            log.info("메이커 정보 저장 완료");
+
+            return request;
+        }
+
     }
-}

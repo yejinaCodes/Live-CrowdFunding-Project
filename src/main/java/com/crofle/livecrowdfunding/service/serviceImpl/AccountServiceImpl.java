@@ -1,23 +1,23 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
+import com.crofle.livecrowdfunding.domain.entity.User;
+import com.crofle.livecrowdfunding.domain.enums.UserStatus;
+import com.crofle.livecrowdfunding.dto.request.*;
+import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.util.JwtUtil;
 import com.crofle.livecrowdfunding.domain.entity.AccountView;
 import com.crofle.livecrowdfunding.domain.enums.Role;
-import com.crofle.livecrowdfunding.dto.request.LoginRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ResetPasswordRequestDTO;
-import com.crofle.livecrowdfunding.dto.response.TokenDTO;
+import com.crofle.livecrowdfunding.dto.response.AccountTokenResponseDTO;
 import com.crofle.livecrowdfunding.repository.AccountViewRepository;
-import com.crofle.livecrowdfunding.repository.CategoryRepository;
-import com.crofle.livecrowdfunding.repository.MakerRepository;
-import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -25,26 +25,30 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
     private final AccountViewRepository accountViewRepository;
     private final EmailService emailService;
-    private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
-    private final CategoryRepository categoryRepository;
-    private final MakerRepository makerRepository;
     private final JwtUtil jwtUtil;
-
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     @Override
-    public TokenDTO login(LoginRequestDTO loginRequest) {
-        AccountView account = accountViewRepository.findByEmail(loginRequest.getEmail())
+    public AccountTokenResponseDTO login(AccountLoginRequestDTO request) {
+        AccountView account = accountViewRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 
-        if (!account.getPassword().equals(loginRequest.getPassword())) {
+        log.info("사용된 PasswordEncoder 클래스: {}", passwordEncoder.getClass().getName());
+        log.info("Found account: {}", account);
+        log.info("Input password: {}, Stored password: {}", request.getPassword(), account.getPassword());
+
+        boolean passwordMatch = passwordEncoder.matches(request.getPassword(), account.getPassword());
+        log.info("Password match result: {}", passwordMatch);
+
+        if (!passwordMatch) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
         String accessToken = jwtUtil.createAccessToken(account.getEmail(), account.getRole());
         String refreshToken = jwtUtil.createRefreshToken(account.getEmail(), account.getRole());
 
-        return TokenDTO.builder()
+        return AccountTokenResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .userEmail(account.getEmail())
@@ -53,72 +57,109 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public TokenDTO refresh(String refreshToken) {
-        if (!jwtUtil.validateToken(refreshToken)) {
+    public AccountTokenResponseDTO refresh(AccountTokenRequestDTO request) {
+        // 1. 리프레시 토큰 검증
+        if (!jwtUtil.validateToken(request.getRefreshToken())) {
             throw new IllegalArgumentException("Invalid refresh token");
         }
 
-        String email = jwtUtil.getEmailFromToken(refreshToken);
-        Role role = jwtUtil.getRoleFromToken(refreshToken);
+        // 2. 리프레시 토큰에서 사용자 정보 추출
+        String email = jwtUtil.getEmailFromToken(request.getRefreshToken());
+        Role role = jwtUtil.getRoleFromToken(request.getRefreshToken());
 
-        // 새로운 토큰 생성할 때 약간의 지연시간을 추가
+        // 3. 실제 사용자가 존재하는지 한번 더 확인
+        AccountView account = accountViewRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // 4. 새로운 토큰 쌍 생성 (강제로 시간 차이를 주어 다른 토큰이 생성되도록 함)
         try {
-            Thread.sleep(1000); // 1초 지연
+            // 0.1초 대기하여 토큰의 발행 시간이 다르게 설정되도록 함
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        String newAccessToken = jwtUtil.createAccessToken(email, role);
-        String newRefreshToken = jwtUtil.createRefreshToken(email, role);
+        // 5. 새로운 토큰 생성
+        String newAccessToken = jwtUtil.createAccessToken(account.getEmail(), account.getRole());
+        String newRefreshToken = jwtUtil.createRefreshToken(account.getEmail(), account.getRole());
 
-        return TokenDTO.builder()
+        return AccountTokenResponseDTO.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
-                .userEmail(email)
-                .role(role)
+                .userEmail(account.getEmail())
+                .role(account.getRole())
                 .build();
     }
 
+    @Override
+    public void logout(String email) {
+        log.info("User logged out: {}", email);
+    }
 
     @Override
-    public void sendResetPasswordEmail(ResetPasswordRequestDTO request) {
-        String email = accountViewRepository.findEmailByNameAndMailAndPhone(request.getName(), request.getEmail(), request.getPhone());
+    public Optional<AccountView> findEmailByNameAndPhone(AccountFindEmailRequestDTO request) {
+        return accountViewRepository.findEmailByNameAndPhone(request.getName(), request.getPhone());
+    }
+
+    @Override
+    public void sendResetPasswordEmail(AccountPasswordResetRequestDTO request) {
+        String email = accountViewRepository.findEmailByNameAndMailAndPhone(
+                request.getName(),
+                request.getEmail(),
+                request.getPhone()
+        ).orElse(null);
 
         if (email != null) {
-            // 비밀번호 재설정 토큰 생성
             String resetToken = jwtUtil.createPasswordResetToken(email);
-            String resetPasswordLink = generateResetPasswordLink(email, resetToken);
+            String resetLink = String.format(
+                    "https://your-frontend-domain.com/reset-password?token=%s&email=%s",
+                    resetToken, email
+            );
 
             String subject = "비밀번호 재설정 안내";
-            String content = String.format("""
-               안녕하세요, %s님
-               비밀번호 재설정을 요청하셨습니다.
-               아래 링크를 클릭하여 비밀번호를 재설정해 주세요:
-               
-               %s
-               
-               링크는 15분 동안 유효합니다.
-               """, request.getName(), resetPasswordLink);
+            String content = String.format(
+                    "안녕하세요, %s님\n비밀번호 재설정을 위해 아래 링크를 클릭해주세요:\n%s\n링크는 15분간 유효합니다.",
+                    request.getName(), resetLink
+            );
 
             emailService.sendEmail(email, subject, content);
-            log.info("\n\n비밀번호 재설정 이메일 발송 완료: {}\n\n", email);
-        } else {
-            log.warn("\n\n사용자를 찾을 수 없습니다. 이름: {}, 이메일: {}, 전화번호: {}\n\n",
-                    request.getName(), request.getEmail(), request.getPhone());
         }
     }
 
     @Override
-    public String generateResetPasswordLink(String email, String resetToken) {
-        return String.format("https://your-frontend-domain.com/reset-password?token=%s&email=%s",
-                resetToken, email);
-    }
+    public AccountTokenResponseDTO authenticateOAuthAccount(AccountOAuthRequestDTO request) {
+        AccountView account = accountViewRepository.findByEmail(request.getEmail())
+                .orElseGet(() -> {
+                    // Create new user for OAuth
+                    User newUser = User.builder()
+                            .name(request.getName())
+                            .email(request.getEmail())
+                            .password(passwordEncoder.encode(UUID.randomUUID().toString()))
+                            .loginMethod(true)
+                            .phone("NOT_PROVIDED")
+                            .gender(true)
+                            .birth("19000101")
+                            .zipcode(0)
+                            .address("NOT_PROVIDED")
+                            .detailAddress("NOT_PROVIDED")
+                            .status(UserStatus.활성화)
+                            .registeredAt(LocalDateTime.now())
+                            .build();
+                    userRepository.save(newUser);
 
-    // 이메일 찾기
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<AccountView> findEmailByNameAndPhone(String name, String    phone) {
-        return accountViewRepository.findEmailByNameAndPhone(name, phone);
-    }
+                    // Return account view for new user
+                    return accountViewRepository.findByEmail(request.getEmail())
+                            .orElseThrow(() -> new RuntimeException("Failed to create OAuth account"));
+                });
 
+        String accessToken = jwtUtil.createAccessToken(account.getEmail(), account.getRole());
+        String refreshToken = jwtUtil.createRefreshToken(account.getEmail(), account.getRole());
+
+        return AccountTokenResponseDTO.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .userEmail(account.getEmail())
+                .role(account.getRole())
+                .build();
+    }
 }
