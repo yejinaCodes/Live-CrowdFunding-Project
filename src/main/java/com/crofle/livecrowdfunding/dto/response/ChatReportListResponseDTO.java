@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 //관리자 신고 현황 조회 시 ChatReportList 보여주기
-public class ChatReportListDTO {
+public class ChatReportListResponseDTO {
 //    private Long id;
 //    private ProjectResponseInfoDTO project;
 //    private UserInfoResponseDTO user;

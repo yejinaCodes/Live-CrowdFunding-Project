@@ -101,7 +101,6 @@ public class User {
         }
     }
 
-
     // 상태 변경을 위한 비즈니스 메서드들
     public void activateUser() {
         this.status = UserStatus.활성화;
@@ -119,6 +118,4 @@ public class User {
     public void updateStatus(UserStatus newStatus) {
         this.status = newStatus;
     }
-
-
 }

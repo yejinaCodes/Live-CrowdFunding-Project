@@ -1,10 +1,9 @@
 package com.crofle.livecrowdfunding.controller.api;
 
-import com.crofle.livecrowdfunding.domain.entity.ChatReport;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.UserStatusRequestDTO;
-import com.crofle.livecrowdfunding.dto.response.ChatReportDetailDTO;
-import com.crofle.livecrowdfunding.dto.response.ChatReportListDTO;
+import com.crofle.livecrowdfunding.dto.response.ChatReportDetailResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ChatReportListResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.service.AdminChatReportService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +20,8 @@ public class AdminChatRestController {
 
     //신고 목록 조회
     @GetMapping("/chat-reports")
-    public ResponseEntity<PageListResponseDTO<ChatReportListDTO>> getReportList( //조건 조회 없음
-        @RequestParam(defaultValue = "1") int page) { //page 꼭 넣어주어함
+    public ResponseEntity<PageListResponseDTO<ChatReportListResponseDTO>> getReportList( //조건 조회 없음
+                                                                                         @RequestParam(defaultValue = "1") int page) { //page 꼭 넣어주어함
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .page(page)
                 .build();
@@ -31,7 +30,7 @@ public class AdminChatRestController {
 
     //신고 상세 정보 조회 모달
     @GetMapping("/{reportId}")
-    public ResponseEntity<ChatReportDetailDTO> getReportDetail(
+    public ResponseEntity<ChatReportDetailResponseDTO> getReportDetail(
         @PathVariable Long reportId){
         return ResponseEntity.ok(adminChatReportService.findReportDetail(reportId));
     }

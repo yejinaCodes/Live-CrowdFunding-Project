@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 //관리자쪽 신고현황에서 모달창으로 상세조회하기
-public class ChatReportDetailDTO {
+public class ChatReportDetailResponseDTO {
     private Long id;
     private Long projectId;
     private String projectName;

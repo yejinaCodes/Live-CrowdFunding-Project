@@ -1,5 +1,4 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
-
 import com.crofle.livecrowdfunding.domain.entity.Image;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +65,6 @@ public class AdminProjectServiceImpl implements AdminProjectService {
             log.info("Project ID: " + p.getId());
             log.info("Product Name: " + p.getProductName());
         }
-
         return pageListResponseDT;
     }
 
