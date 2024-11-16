@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectStatusRequestDTO {
+public class ProjectStatusRequestDTO { // 판매자가 프로젝트의 상태를 변경할 때 사용하는 DTO, 보통 수정 후 재검토 시
     private ProjectStatus status;
 }

@@ -3,6 +3,7 @@ package com.crofle.livecrowdfunding.controller;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
 import com.crofle.livecrowdfunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDetailResponseDTO> getProject(@PathVariable Long id) {
-        return ResponseEntity.ok(projectService.findProjectDetail(id));
+        return ResponseEntity.ok(projectService.getProjectForUser(id));
     }
 
     @PostMapping
@@ -31,5 +32,10 @@ public class ProjectController {
     public ResponseEntity<Void> updateProjectStatus(@PathVariable Long id, @RequestBody ProjectStatusRequestDTO requestDTO) {
         projectService.updateProjectStatus(id, requestDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/update")
+    public ResponseEntity<ProjectDetailToUpdateResponseDTO> getProjectToUpdate(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectForManagerUpdate(id));
     }
 }

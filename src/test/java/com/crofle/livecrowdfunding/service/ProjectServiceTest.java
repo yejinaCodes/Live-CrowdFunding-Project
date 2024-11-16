@@ -8,6 +8,7 @@ import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.EssentialDocumentDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ public class ProjectServiceTest {
     @Test
     public void testFindProjectDetail() {
         Long id = 1L;
-        ProjectDetailResponseDTO projectDetailResponseDTO = projectService.findProjectDetail(id);
+        ProjectDetailResponseDTO projectDetailResponseDTO = projectService.getProjectForUser(id);
         log.info(projectDetailResponseDTO);
     }
 
@@ -81,5 +82,12 @@ public class ProjectServiceTest {
                 .build();
 
         projectService.updateProjectStatus(projectId, requestDTO);
+    }
+
+    @Test
+    public void testFindProjectUpdate() {
+        Long id = 1L;
+        ProjectDetailToUpdateResponseDTO projectDetailToUpdateResponseDTO = projectService.getProjectForManagerUpdate(id);
+        log.info(projectDetailToUpdateResponseDTO);
     }
 }
