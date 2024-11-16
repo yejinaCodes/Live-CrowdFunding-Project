@@ -1,5 +1,4 @@
-
-        package com.crofle.livecrowdfunding.service;
+package com.crofle.livecrowdfunding.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
@@ -23,7 +22,7 @@ public class NaverOAuthTest {
 
     public static void main(String[] args) {
         try {
-            System.setProperty("file.encoding", "UTF-8");
+            System.setOut(new java.io.PrintStream(System.out, true, "UTF-8"));
 
             // 1. 인증 URL 생성
             String state = "randomstate123";
@@ -45,6 +44,7 @@ public class NaverOAuthTest {
             String code = reader.readLine();
 
             if (code != null && !code.trim().isEmpty()) {
+
                 // 4. 토큰 요청 파라미터 로그 출력
                 log.info("토큰 요청 파라미터:");
                 log.info("client_id: {}", CLIENT_ID);
@@ -98,10 +98,12 @@ public class NaverOAuthTest {
         } catch (Exception e) {
             log.error("오류 발생: ", e);
         }
+
+
     }
 
     private static void printMessage(String message) {
-        System.out.println(new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+        System.out.println(message);
     }
 
     private static String createAuthorizationUrl(String state) {
