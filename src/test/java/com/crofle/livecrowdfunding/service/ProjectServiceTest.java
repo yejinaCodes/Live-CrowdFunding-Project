@@ -1,12 +1,15 @@
 package com.crofle.livecrowdfunding.service;
 
 import com.crofle.livecrowdfunding.domain.enums.DocumentType;
+import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.request.DocumentRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ImageRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.EssentialDocumentDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,5 +70,16 @@ public class ProjectServiceTest {
                  .build();
 
          projectService.createProject(requestDTO);
+    }
+
+    @Test
+    public void testUpdateProjectStatus() {
+        Long projectId = 1L;
+
+        ProjectStatusRequestDTO requestDTO = ProjectStatusRequestDTO.builder()
+                .status(ProjectStatus.검토중)
+                .build();
+
+        projectService.updateProjectStatus(projectId, requestDTO);
     }
 }

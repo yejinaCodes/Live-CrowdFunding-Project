@@ -1,6 +1,7 @@
 package com.crofle.livecrowdfunding.controller;
 
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<Void> createProject(@RequestBody ProjectRegisterRequestDTO requestDTO) {
         projectService.createProject(requestDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("{id}/status/")
+    public ResponseEntity<Void> updateProjectStatus(@PathVariable Long id, @RequestBody ProjectStatusRequestDTO requestDTO) {
+        projectService.updateProjectStatus(id, requestDTO);
         return ResponseEntity.ok().build();
     }
 }

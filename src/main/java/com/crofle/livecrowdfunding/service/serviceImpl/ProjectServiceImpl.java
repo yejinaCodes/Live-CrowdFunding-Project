@@ -3,6 +3,7 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectMakerResponseDTO;
 import com.crofle.livecrowdfunding.repository.*;
@@ -87,5 +88,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 
         projectRepository.save(project);
+    }
+
+    @Transactional
+    @Override
+    public void updateProjectStatus(Long id, ProjectStatusRequestDTO requestDTO) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("프로젝트 조회에 실패했습니다"));
+
+        project.setReviewProjectStatus(requestDTO.getStatus());
     }
 }
