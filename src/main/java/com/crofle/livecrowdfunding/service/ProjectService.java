@@ -3,6 +3,7 @@ package com.crofle.livecrowdfunding.service;
 
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.ProjectUpdateRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
@@ -17,4 +18,6 @@ public interface ProjectService {
     ProjectDetailForMakerResponseDTO getProjectForMaker(Long id);
 
     ProjectDetailToUpdateResponseDTO getProjectForManagerUpdate(Long id);
+
+    void updateProject(Long id, ProjectUpdateRequestDTO requestDTO);
 }

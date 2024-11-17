@@ -4,6 +4,7 @@ import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.ProjectUpdateRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.*;
 import com.crofle.livecrowdfunding.repository.*;
 import com.crofle.livecrowdfunding.service.ProjectService;
@@ -14,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +27,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final MakerRepository makerRepository;
-    private final ManagerRepository managerRepository;
     private final RatePlanRepository ratePlanRepository;
     private final CategoryRepository categoryRepository;
-    private final PaymentHistoryRepository paymentHistoryRepository;
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -147,6 +147,50 @@ public class ProjectServiceImpl implements ProjectService {
         projectDetailToUpdateResponseDTO.setCategory(project.getCategory().getClassification());
         return projectDetailToUpdateResponseDTO;
     }
+
+    @Transactional
+    @Override
+    public void updateProject(Long id, ProjectUpdateRequestDTO requestDTO) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("프로젝트 조회에 실패했습니다"));
+
+        project.setCategory(categoryRepository.findById(requestDTO.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("카테고리 조회에 실패했습니다")));
+
+
+
+        project.setProductName(requestDTO.getProductName());
+        project.setSummary(requestDTO.getSummary());
+        project.setPrice(requestDTO.getPrice());
+        project.setDiscountPercentage(requestDTO.getDiscountPercentage());
+        project.setGoalAmount(requestDTO.getGoalAmount());
+        project.setContentImage(requestDTO.getContentImage());
+
+        if(requestDTO.getImages() != null) {
+            project.getImages().clear();
+            requestDTO.getImages().forEach(image -> {
+                project.getImages().add(Image.builder()
+                        .project(project)
+                        .url(image.getUrl())
+                        .imageNumber(image.getImageNumber())
+                        .name(image.getName())
+                        .build());
+            });
+        }
+
+        if(requestDTO.getEssentialDocuments() != null) {
+            project.getEssentialDocuments().clear();
+            requestDTO.getEssentialDocuments().forEach(document -> {
+                project.getEssentialDocuments().add(EssentialDocument.builder()
+                        .project(project)
+                        .name(document.getName())
+                        .url(document.getUrl())
+                        .docType(document.getDocType())
+                        .build());
+            });
+        }
+    }
+
 
     private String checkShowStatus(Project project) {
         if(project.getReviewProjectStatus() == ProjectStatus.승인) {

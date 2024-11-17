@@ -2,10 +2,7 @@ package com.crofle.livecrowdfunding.service;
 
 import com.crofle.livecrowdfunding.domain.enums.DocumentType;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
-import com.crofle.livecrowdfunding.dto.request.DocumentRegisterRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ImageRegisterRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.*;
 import com.crofle.livecrowdfunding.dto.response.EssentialDocumentDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
@@ -87,7 +84,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testFindProjectDetailForMaker() {
-        Long id = 3L;
+        Long id = 1L;
         ProjectDetailForMakerResponseDTO projectDetailForMakerResponseDTO = projectService.getProjectForMaker(id);
         log.info(projectDetailForMakerResponseDTO);
     }
@@ -99,4 +96,44 @@ public class ProjectServiceTest {
         log.info(projectDetailToUpdateResponseDTO);
     }
 
+    @Test
+    public void testUpdateProject() {
+        Long projectId = 1L;
+
+        ProjectUpdateRequestDTO requestDTO = ProjectUpdateRequestDTO.builder()
+                .categoryId(1L)
+                .productName("싸디싼 스마트폰")
+                .summary("이건 진짜 싸다")
+                .price(1000000)
+                .discountPercentage(10)
+                .goalAmount(1000000000)
+                .contentImage("contentImage.jpg")
+                .images(List.of(
+                        ImageRegisterRequestDTO.builder()
+                                .url("변경된image1.jpg")
+                                .imageNumber(1)
+                                .name("이미지1")
+                                .build(),
+                        ImageRegisterRequestDTO.builder()
+                                .url("변경된image2.jpg")
+                                .imageNumber(2)
+                                .name("이미지2")
+                                .build()
+                ))
+                .essentialDocuments(List.of(
+                        DocumentRegisterRequestDTO.builder()
+                                .url("변경된document1.pdf")
+                                .docType(DocumentType.개발)
+                                .name("필수문서1")
+                                .build(),
+                        DocumentRegisterRequestDTO.builder()
+                                .url("변경된document2.pdf")
+                                .docType(DocumentType.프로젝트)
+                                .name("필수문서2")
+                                .build()
+                ))
+                .build();
+
+        projectService.updateProject(projectId, requestDTO);
+    }
 }
