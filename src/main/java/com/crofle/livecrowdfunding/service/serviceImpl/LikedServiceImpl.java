@@ -4,6 +4,9 @@ import com.crofle.livecrowdfunding.domain.entity.Liked;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.domain.id.LikedId;
+import com.crofle.livecrowdfunding.dto.PageInfoDTO;
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectLikedResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.LikedRequestDTO;
 import com.crofle.livecrowdfunding.repository.LikedRepository;
@@ -13,6 +16,7 @@ import com.crofle.livecrowdfunding.service.LikedService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,18 +44,35 @@ public class LikedServiceImpl implements LikedService {
     }
 
     @Transactional
-    public List<ProjectLikedResponseDTO> getUserLikedProjects(Long userId) {
-        List<Project> likedProjects = likedRepository.findByUser(userId);
-        return likedProjects.stream()
-                .map(project -> ProjectLikedResponseDTO.builder()
-                        .id(project.getId())
-                        .productName(project.getProductName())
-                        .description(project.getSummary())
-                        .thumbnailUrl(project.getImages().get(0).getUrl())
-                        .price(project.getPrice())
-                        .percentage(project.getDiscountPercentage())
+    @Override
+    public PageListResponseDTO<ProjectLikedResponseDTO> getUserLikedProjects(Long userId, PageRequestDTO pageRequestDTO) {
+        Page<Project> likedProjects = likedRepository.findByUser(userId, pageRequestDTO.getPageable());
+        return PageListResponseDTO.<ProjectLikedResponseDTO>builder()
+                .dataList(likedProjects.stream()
+                        .map(project -> ProjectLikedResponseDTO.builder()
+                                .id(project.getId())
+                                .productName(project.getProductName())
+                                .description(project.getSummary())
+                                .thumbnailUrl(project.getImages().get(0).getUrl())
+                                .price(project.getPrice())
+                                .percentage(project.getDiscountPercentage())
+                                .build())
+                        .collect(Collectors.toList()))
+                .pageInfoDTO(PageInfoDTO.withAll()
+                        .pageRequestDTO(pageRequestDTO)
+                        .total((int)likedProjects.getTotalElements())
                         .build())
-                .collect(Collectors.toList());
+                .build();
+//        return likedProjects.stream()
+//                .map(project -> ProjectLikedResponseDTO.builder()
+//                        .id(project.getId())
+//                        .productName(project.getProductName())
+//                        .description(project.getSummary())
+//                        .thumbnailUrl(project.getImages().get(0).getUrl())
+//                        .price(project.getPrice())
+//                        .percentage(project.getDiscountPercentage())
+//                        .build())
+//                .collect(Collectors.toList());
     }
 
     private void validateRequest(LikedRequestDTO request) {

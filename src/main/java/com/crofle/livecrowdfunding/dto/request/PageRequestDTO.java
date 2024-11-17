@@ -4,6 +4,9 @@ import com.crofle.livecrowdfunding.dto.SearchTypeDTO;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Data
 @Builder
@@ -41,5 +44,11 @@ public class PageRequestDTO {
         return (page - 1) * 10;
     }
 
-
+    public Pageable getPageable() {
+        if (orderBy != null && orderByDir != null) {
+            Sort.Direction dir = Sort.Direction.fromString(orderByDir.toUpperCase());
+            return PageRequest.of(page - 1, size, Sort.by(dir, orderBy));
+        }
+        return PageRequest.of(page - 1, size);
+    }
 }

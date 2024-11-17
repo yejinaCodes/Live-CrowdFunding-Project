@@ -1,11 +1,15 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.dto.projection.EventLogWithEventNameDTO;
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.PageResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.UserEventLogResponseDTO;
 import com.crofle.livecrowdfunding.repository.EventLogRepository;
 import com.crofle.livecrowdfunding.service.EventLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +21,9 @@ public class EventLogServiceImpl implements EventLogService {
     private final EventLogRepository eventLogRepository;
 
     @Override
-    public List<UserEventLogResponseDTO> findByUser(Long userId) {
-        List<EventLogWithEventNameDTO> eventLogWithEventNameDTOS = eventLogRepository.findByUser(userId);
+    public PageListResponseDTO<UserEventLogResponseDTO> findByUser(Long userId, PageRequestDTO pageRequestDTO) {
+        Page<EventLogWithEventNameDTO> eventLogWithEventNameDTOS = eventLogRepository.findByUser(userId, pageRequestDTO.getPageable());
 
-        return eventLogWithEventNameDTOS.stream()
-                .map(eventLogWithEventNameDTO -> UserEventLogResponseDTO.builder()
-                        .eventName(eventLogWithEventNameDTO.getEventName())
-                        .createdAt(eventLogWithEventNameDTO.getEventLog().getCreatedAt().toString())
-                        .winningDate(eventLogWithEventNameDTO.getEventLog().getWinningDate().toString())
-                        .winningPrize(eventLogWithEventNameDTO.getEventLog().getWinningPrize())
-                        .build())
-                .toList();
+        return null;
     }
 }
