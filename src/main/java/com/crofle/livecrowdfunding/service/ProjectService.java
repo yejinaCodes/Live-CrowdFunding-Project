@@ -1,14 +1,8 @@
 package com.crofle.livecrowdfunding.service;
 
 
-import com.crofle.livecrowdfunding.dto.request.ProjectListRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectUpdateRequestDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectListResponseDTO;
+import com.crofle.livecrowdfunding.dto.request.*;
+import com.crofle.livecrowdfunding.dto.response.*;
 
 import java.util.List;
 
@@ -25,5 +19,5 @@ public interface ProjectService {
 
     void updateProject(Long id, ProjectUpdateRequestDTO requestDTO);
 
-    List<ProjectListResponseDTO> getProjectList(ProjectListRequestDTO requestDTO);
+    PageListResponseDTO<ProjectListResponseDTO> getProjectList(ProjectListRequestDTO requestDTO, PageRequestDTO pageRequestDTO);
 }

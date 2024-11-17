@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.service;
 
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +17,6 @@ public class EventLogServiceTest {
 
     @Test
     public void findByUserTest() {
-        log.info(eventLogService.findByUser(1L));
+        log.info(eventLogService.findByUser(1L, PageRequestDTO.builder().page(1).size(10).build()));
     }
 }

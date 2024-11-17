@@ -140,7 +140,7 @@ public class ProjectServiceTest {
                 .statusNumber(1)
                 .build();
 
-        List<ProjectListResponseDTO> projectList = projectService.getProjectList(requestDTO);
+        List<ProjectListResponseDTO> projectList = projectService.getProjectList(requestDTO, PageRequestDTO.builder().page(1).size(2).build()).getDataList();
         log.info(projectList);
     }
 }

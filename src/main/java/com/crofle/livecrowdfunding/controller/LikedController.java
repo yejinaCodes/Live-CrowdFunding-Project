@@ -1,5 +1,7 @@
 package com.crofle.livecrowdfunding.controller;
 
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectLikedResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.LikedRequestDTO;
 import com.crofle.livecrowdfunding.service.LikedService;
@@ -24,7 +26,7 @@ public class LikedController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ProjectLikedResponseDTO>> getUserLike(@PathVariable Long id) {
-        return ResponseEntity.ok().body(likedService.getUserLikedProjects(id));
+    public ResponseEntity<PageListResponseDTO<ProjectLikedResponseDTO>> getUserLike(@PathVariable Long id, @ModelAttribute PageRequestDTO pageRequestDTO) {
+        return ResponseEntity.ok().body(likedService.getUserLikedProjects(id, pageRequestDTO));
     }
 }

@@ -2,10 +2,8 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
-import com.crofle.livecrowdfunding.dto.request.ProjectListRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
-import com.crofle.livecrowdfunding.dto.request.ProjectUpdateRequestDTO;
+import com.crofle.livecrowdfunding.dto.PageInfoDTO;
+import com.crofle.livecrowdfunding.dto.request.*;
 import com.crofle.livecrowdfunding.dto.response.*;
 import com.crofle.livecrowdfunding.repository.*;
 import com.crofle.livecrowdfunding.service.ProjectService;
@@ -14,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -202,44 +201,53 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(readOnly = true)
     @Override   // 좋지못한 로직이지만 erd 를 바꿔야해서 리팩토링으로 남겨둬야 함 1. 검토중, 반려 2. 승인& 펀딩중 3. 성공, 미달성
-    public List<ProjectListResponseDTO> getProjectList(ProjectListRequestDTO requestDTO) {
+    public PageListResponseDTO<ProjectListResponseDTO> getProjectList(ProjectListRequestDTO requestDTO, PageRequestDTO pageRequestDTO) {
         int num = requestDTO.getStatusNumber();
-        List<Project> projects;
+        Page<Project> projects;
 
         switch (num) {
             case 1:
-                projects = projectRepository.findByReviewStatuses(List.of(ProjectStatus.검토중, ProjectStatus.반려));
-                return projects.stream()
-                        .map(project -> {
-                            ProjectListResponseDTO dto = modelMapper.map(project, ProjectListResponseDTO.class);
-                            dto.setStatus(project.getReviewProjectStatus() == ProjectStatus.검토중 ? "검토중" : "반려");
-                            return dto;
-                        })
-                        .collect(Collectors.toList());
+                projects = projectRepository.findByReviewStatuses(List.of(ProjectStatus.검토중, ProjectStatus.반려), pageRequestDTO.getPageable());
+                return PageListResponseDTO.<ProjectListResponseDTO>builder()
+                        .dataList(projects.stream()
+                                .map(project -> {
+                                    ProjectListResponseDTO dto = modelMapper.map(project, ProjectListResponseDTO.class);
+                                    dto.setStatus(project.getReviewProjectStatus().toString());
+                                    return dto;
+                                })
+                                .collect(Collectors.toList()))
+                        .pageInfoDTO(PageInfoDTO.withAll()
+                                .pageRequestDTO(pageRequestDTO)
+                                .total((int) projects.getTotalElements())
+                                .build())
+                        .build();
 
             case 2:
-                projects = projectRepository.findByReviewStatusAndProgressStatus(ProjectStatus.승인, ProjectStatus.펀딩중);
-                return projects.stream()
-                        .map(project -> {
-                            ProjectListResponseDTO dto = modelMapper.map(project, ProjectListResponseDTO.class);
-                            dto.setStatus("펀딩중");
-                            return dto;
-                        })
-                        .collect(Collectors.toList());
+                projects = projectRepository.findByReviewStatusAndProgressStatus(ProjectStatus.승인, ProjectStatus.펀딩중, pageRequestDTO.getPageable());
+                return getProjectListResponseDTOPageListResponseDTO(pageRequestDTO, projects);
 
             case 3:
-                projects = projectRepository.findByProgressStatuses(List.of(ProjectStatus.성공, ProjectStatus.미달성));
-                return projects.stream()
-                        .map(project -> {
-                            ProjectListResponseDTO dto = modelMapper.map(project, ProjectListResponseDTO.class);
-                            dto.setStatus(project.getProgressProjectStatus() == ProjectStatus.성공 ? "성공" : "미달성");
-                            return dto;
-                        })
-                        .collect(Collectors.toList());
-
+                    projects = projectRepository.findByProgressStatuses(List.of(ProjectStatus.성공, ProjectStatus.미달성), pageRequestDTO.getPageable());
+                return getProjectListResponseDTOPageListResponseDTO(pageRequestDTO, projects);
             default:
                 //not allowed
                 return null;
         }
+    }
+
+    private PageListResponseDTO<ProjectListResponseDTO> getProjectListResponseDTOPageListResponseDTO(PageRequestDTO pageRequestDTO, Page<Project> projects) {
+        return PageListResponseDTO.<ProjectListResponseDTO>builder()
+                .dataList(projects.stream()
+                        .map(project -> {
+                            ProjectListResponseDTO dto = modelMapper.map(project, ProjectListResponseDTO.class);
+                            dto.setStatus(project.getProgressProjectStatus().toString());
+                            return dto;
+                        })
+                        .collect(Collectors.toList()))
+                .pageInfoDTO(PageInfoDTO.withAll()
+                        .pageRequestDTO(pageRequestDTO)
+                        .total((int) projects.getTotalElements())
+                        .build())
+                .build();
     }
 }
