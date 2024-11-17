@@ -12,8 +12,8 @@ import java.util.List;
 //대시보드 신규 가입자 수를 위한 DTO
 public class UserGraphResponseDTO {
     private List<String> labels;
-    private Long users;
-    private Long makers;
-    private Long total;
+    private List<Long> users;
+    private List<Long> makers;
+    private List<Long> total;
 
 }

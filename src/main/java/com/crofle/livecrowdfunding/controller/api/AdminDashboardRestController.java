@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -16,8 +17,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class AdminDashboardRestController {
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime oneYearAgo = now.minusYears(1);
+    LocalDate now = LocalDate.now();
+    LocalDate oneYearAgo = now.minusYears(1);
 
     //프론트에서 Fetchall 사용해 개별 엔드포인트 병렬 호출
     public final AdminDashBoardService dashBoardService;
@@ -32,10 +33,12 @@ public class AdminDashboardRestController {
     public ResponseEntity<UserGraphResponseDTO>getNewUsers(){
         UserGraphResponseDTO userStats = UserGraphResponseDTO.builder()
                 .labels(dashBoardService.getLast12Months())
-                .users()
-                .makers()
-                .total()
+                .users(dashBoardService.getNewUserStats(oneYearAgo, now))
+                .makers(dashBoardService.getNewMakerStats(oneYearAgo, now))
+                .total(dashBoardService.getNewTotalStats(oneYearAgo, now))
                 .build();
+
+        return ResponseEntity.ok(userStats);
     }
 
     @GetMapping("/dashboard/GraphB")
