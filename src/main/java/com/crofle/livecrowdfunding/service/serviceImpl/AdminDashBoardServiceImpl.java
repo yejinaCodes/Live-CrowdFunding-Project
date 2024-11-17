@@ -1,11 +1,13 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
+import com.crofle.livecrowdfunding.dto.response.MonthlyUserCountResponseDTO;
 import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.AdminDashBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +18,6 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class AdminDashBoardServiceImpl implements AdminDashBoardService {
     private final UserRepository userRepository;
-
     @Override
     public List<String> getLast12Months(){
         return Stream.iterate(LocalDate.now().minusMonths(11),
@@ -26,18 +27,35 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
                 .collect(Collectors.toList());
     }
     @Override
-    public List<Long>getNewUserStats(LocalDate start, LocalDate end){
-        return userRepository.countMonthlyNewUsers(start, end);
+    public List<MonthlyUserCountResponseDTO>getNewUserStats(LocalDateTime start, LocalDateTime end){
+        List<Object[]> result = userRepository.countMonthlyNewUsers(start, end);
+        return result.stream()
+                .map(row->new MonthlyUserCountResponseDTO(
+                        (String) row[0],
+                        ((Number) row[1]).longValue()
+                ))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<MonthlyUserCountResponseDTO> getNewMakerStats(LocalDateTime start, LocalDateTime end) {
+        List<Object[]> result = userRepository.countMonthlyNewMakers(start, end);
+        return result.stream()
+                .map(row->new MonthlyUserCountResponseDTO(
+                        (String) row[0],
+                        ((Number) row[1]).longValue()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Long> getNewMakerStats(LocalDate start, LocalDate end) {
-        return userRepository.countMonthlyNewMakers(start,end);
-    }
+    public List<MonthlyUserCountResponseDTO> getNewTotalStats(LocalDateTime start, LocalDateTime end) {
+        List<Object[]> result = userRepository.countMonthlyNewTotal(start, end);
 
-    @Override
-    public List<Long> getNewTotalStats(LocalDate start, LocalDate end) {
-        return userRepository.countMontlyNewTotal(start, end);
+        return result.stream()
+                .map(row->new MonthlyUserCountResponseDTO(
+                        (String) row[0],
+                        ((Number) row[1]).longValue()
+                ))
+                .collect(Collectors.toList());
     }
-
 }

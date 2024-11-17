@@ -1,7 +1,7 @@
 package com.crofle.livecrowdfunding.repository;
-
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.MonthlyUserCountResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -18,40 +19,29 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findByConditions(@Param("dto") PageRequestDTO dto, Pageable pageable);
 
     @Query(value = """
-        SELECT COUNT(u) FROM User u 
-        WHERE u.registeredAt >= :startDate AND u.registeredAt < :endDate 
-        GROUP BY FUNCTION('DATE_FORMAT', u.registeredAt, '%Y-%m')
-        ORDER BY FUNCTION('DATE_FORMAT', u.registeredAt, '%Y-%m')
-        """)
-    List<Long> countMonthlyNewUsers(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate
-    );
+    SELECT DATE_FORMAT(registered_at, '%Y-%m') as month, COUNT(*) as count
+    FROM Users WHERE registered_at >= :startDate AND registered_at < :endDate 
+    GROUP BY DATE_FORMAT(registered_at, '%Y-%m') ORDER BY month """, nativeQuery = true)
+    List<Object[]> countMonthlyNewUsers(@Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 
     @Query(value = """
-        SELECT COUNT(m) FROM Maker m  
-        WHERE m.registeredAt >= :startDate AND m.registeredAt < :endDate 
-        GROUP BY FUNCTION('DATE_FORMAT', m.registeredAt, '%Y-%m')
-        ORDER BY FUNCTION('DATE_FORMAT', m.registeredAt, '%Y-%m')
-        """)
+    SELECT DATE_FORMAT(registered_at, '%Y-%m') as month, COUNT(*) as count
+    FROM Maker WHERE registered_at >= :startDate AND registered_at < :endDate 
+    GROUP BY DATE_FORMAT(registered_at, '%Y-%m') ORDER BY month """, nativeQuery = true)
+    List<Object[]> countMonthlyNewMakers( @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
 
-    List<Long> countMonthlyNewMakers(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate
-    );
-
-    // 전체 사용자 통계
+    // 전체 사용자 통계 Native query 사용
     @Query(value = """
-        SELECT COUNT(u) 
-        FROM User u 
-        WHERE u.createdAt >= :startDate 
-        AND u.createdAt < :endDate 
-        GROUP BY FUNCTION('DATE_FORMAT', u.createdAt, '%Y-%m')
-        ORDER BY FUNCTION('DATE_FORMAT', u.createdAt, '%Y-%m')
-        """)
-    List<Long> countMonthlyTotalUsers(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate
+   SELECT DATE_FORMAT(combined.registered_at, '%Y-%m') as month, COUNT(*) as count
+   FROM (SELECT registered_at FROM Users WHERE registered_at >= :startDate AND registered_at < :endDate
+       UNION ALL SELECT registered_at FROM Maker WHERE registered_at >= :startDate AND registered_at < :endDate
+   ) combined
+   GROUP BY DATE_FORMAT(combined.registered_at, '%Y-%m') ORDER BY month """, nativeQuery = true)
+    List<Object[]> countMonthlyNewTotal(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
     );
 
 

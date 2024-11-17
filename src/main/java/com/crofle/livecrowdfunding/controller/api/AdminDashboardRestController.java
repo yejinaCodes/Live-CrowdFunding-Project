@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -17,8 +15,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class AdminDashboardRestController {
-    LocalDate now = LocalDate.now();
-    LocalDate oneYearAgo = now.minusYears(1);
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime oneYearAgo = now.minusYears(1);
 
     //프론트에서 Fetchall 사용해 개별 엔드포인트 병렬 호출
     public final AdminDashBoardService dashBoardService;
@@ -26,8 +24,9 @@ public class AdminDashboardRestController {
     //동시성 제어 사용시 axios사용
     @GetMapping("/dashboard/stats")
     public ResponseEntity<StatisticsResponseDTO>getStats(){
-
+        return null;
     }
+
     //월별(최근 12개월) 신규 가입자 수 (일반회원, 메이커, 총계)
     @GetMapping("/dashboard/new-users")
     public ResponseEntity<UserGraphResponseDTO>getNewUsers(){
@@ -43,18 +42,18 @@ public class AdminDashboardRestController {
 
     @GetMapping("/dashboard/GraphB")
     public ResponseEntity<RevenueGraphResponseDTO>getTotalRevenue(){
-
+        return null;
     }
     @GetMapping("/dashboard/GraphC")
     public ResponseEntity<PopularFundingResponseDTO>getPopularFunding(){
-
+        return null;
     }
     @GetMapping("/dashboard/GraphD")
     public ResponseEntity<CurrentUserGraphResponseDTO>getCurrentUsers(){
-
+        return null;
     }
     @GetMapping("/dashboard/GraphE")
     public ResponseEntity<CategoryRevenueResponseDTO>getCategoryRevenue(){
-
+        return null;
     }
 }
