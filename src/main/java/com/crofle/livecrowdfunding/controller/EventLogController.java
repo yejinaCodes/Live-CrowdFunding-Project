@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.controller;
 
+import com.crofle.livecrowdfunding.dto.projection.EventLogWithEventNameDTO;
 import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.UserEventLogResponseDTO;
@@ -17,7 +18,7 @@ public class EventLogController {
     private final EventLogService eventLogService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<PageListResponseDTO<UserEventLogResponseDTO>> findByUser(@PathVariable Long userId, @ModelAttribute PageRequestDTO pageRequestDTO) {
+    public ResponseEntity<PageListResponseDTO<EventLogWithEventNameDTO>> findByUser(@PathVariable Long userId, @ModelAttribute PageRequestDTO pageRequestDTO) {
         return ResponseEntity.ok().body(eventLogService.findByUser(userId, pageRequestDTO));
     }
 }
