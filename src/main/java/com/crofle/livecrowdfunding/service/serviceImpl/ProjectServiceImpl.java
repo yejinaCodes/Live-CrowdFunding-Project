@@ -1,13 +1,12 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.*;
-import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectMakerResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectManagementResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
 import com.crofle.livecrowdfunding.repository.*;
 import com.crofle.livecrowdfunding.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
@@ -103,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional(readOnly = true)
     @Override
-    public ProjectManagementResponseDTO getProjectForMaker(Long id) {
+    public ProjectDetailForMakerResponseDTO getProjectForMaker(Long id) {
 
         return null;
     }

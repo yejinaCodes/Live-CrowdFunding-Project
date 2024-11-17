@@ -5,7 +5,7 @@ import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectManagementResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
 
 public interface ProjectService {
     ProjectDetailResponseDTO getProjectForUser(Long id);
@@ -14,7 +14,7 @@ public interface ProjectService {
 
     void updateProjectStatus(Long id, ProjectStatusRequestDTO requestDTO);
     
-    ProjectManagementResponseDTO getProjectForMaker(Long id);
+    ProjectDetailForMakerResponseDTO getProjectForMaker(Long id);
 
     ProjectDetailToUpdateResponseDTO getProjectForManagerUpdate(Long id);
 }

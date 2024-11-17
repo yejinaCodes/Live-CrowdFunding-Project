@@ -10,17 +10,18 @@ import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDetailToUpdateResponseDTO {
+@NoArgsConstructor
+public class ProjectDetailForMakerResponseDTO { // 판매자 프로젝트 조회, 프로젝트 정보와 미니 대시보드 리턴
     private String productName;
-    private String summary;
-    private String category;
     private Integer price;
+    private String category;
+    private String status;
     private Integer discountPercentage;
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
     private Integer percentage;
     private Integer goalAmount;
-    private String contentImage;
     private List<ImageResponseDTO> images;
-    private List<DocumentResponseDTO> essentialDocuments;
+
 }
