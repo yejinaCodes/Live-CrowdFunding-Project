@@ -87,7 +87,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testFindProjectDetailForMaker() {
-        Long id = 1L;
+        Long id = 3L;
         ProjectDetailForMakerResponseDTO projectDetailForMakerResponseDTO = projectService.getProjectForMaker(id);
         log.info(projectDetailForMakerResponseDTO);
     }

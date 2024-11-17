@@ -10,10 +10,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//todo 카테고리 추가해야함
 public class ProjectDetailResponseDTO { // 사용자가 프로젝트 조회 시 리턴
-    private ProjectMakerResponseDTO maker;
+    private String maker;
     private String productName;
+    private String category;
     private String summary;
     private Integer price;
     private Integer discountPercentage;

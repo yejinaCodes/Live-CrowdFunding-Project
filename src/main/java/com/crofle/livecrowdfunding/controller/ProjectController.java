@@ -2,6 +2,7 @@ package com.crofle.livecrowdfunding.controller;
 
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
 import com.crofle.livecrowdfunding.service.ProjectService;
@@ -37,5 +38,10 @@ public class ProjectController {
     @GetMapping("/{id}/update")
     public ResponseEntity<ProjectDetailToUpdateResponseDTO> getProjectToUpdate(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.getProjectForManagerUpdate(id));
+    }
+
+    @GetMapping("/{id}/maker")
+    public ResponseEntity<ProjectDetailForMakerResponseDTO> getProjectForMaker(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectForMaker(id));
     }
 }

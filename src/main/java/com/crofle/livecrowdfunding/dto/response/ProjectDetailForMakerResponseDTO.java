@@ -16,7 +16,7 @@ public class ProjectDetailForMakerResponseDTO { // 판매자 프로젝트 조회
     private String productName;
     private Integer price;
     private String category;    //서비스에서 검토 로직있어야함
-    private String status;
+    private String showStatus;
     private Integer discountPercentage;
     private LocalDateTime startAt;
     private LocalDateTime endAt;

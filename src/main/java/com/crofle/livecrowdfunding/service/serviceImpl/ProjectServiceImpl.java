@@ -1,6 +1,7 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.*;
+import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -35,7 +37,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException("프로젝트 조회에 실패했습니다"));
 
         ProjectDetailResponseDTO projectDetailResponseDTO = modelMapper.map(project, ProjectDetailResponseDTO.class);
-        projectDetailResponseDTO.setMaker(modelMapper.map(project.getMaker(), ProjectMakerResponseDTO.class));
+        projectDetailResponseDTO.setMaker(project.getMaker().getName());
+        projectDetailResponseDTO.setCategory(project.getCategory().getClassification());
         //우선 같이 가져오지만 비동기 처리 고려
         projectDetailResponseDTO.setLikeCount(project.getLikes().size());
 
@@ -104,26 +107,31 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public ProjectDetailForMakerResponseDTO getProjectForMaker(Long id) {
-// 주문 정보와 함께 프로젝트 로드
+
         Project project = projectRepository.findByIdWithOrders(id)
                 .orElseThrow(() -> new EntityNotFoundException("프로젝트 조회에 실패했습니다"));
 
-        // 이미지와 문서 정보 로드
         Project projectWithImages = projectRepository.findByIdWithImages(id).orElseThrow();
         Project projectWithDocs = projectRepository.findByIdWithDocuments(id).orElseThrow();
 
         ProjectDetailForMakerResponseDTO projectDetailForMakerResponseDTO = modelMapper.map(project, ProjectDetailForMakerResponseDTO.class);
         projectDetailForMakerResponseDTO.setCategory(project.getCategory().getClassification());
-        projectDetailForMakerResponseDTO.setStatus(project.getReviewProjectStatus().name());
+        projectDetailForMakerResponseDTO.setShowStatus(checkShowStatus(project));
         projectDetailForMakerResponseDTO.setPaymentCount((int) project.getOrders().stream()
                 .filter(order -> order.getPaymentHistory() != null)
                 .count());
 
-        // 이미지와 문서 정보 설정
-        projectDetailForMakerResponseDTO.setImages(modelMapper.map(projectWithImages.getImages(),
-                new TypeToken<List<ImageResponseDTO>>() {}.getType()));
-        projectDetailForMakerResponseDTO.setEssentialDocuments(modelMapper.map(projectWithDocs.getEssentialDocuments(),
-                new TypeToken<List<DocumentResponseDTO>>() {}.getType()));
+        projectDetailForMakerResponseDTO.setImages(
+                projectWithImages.getImages().stream()
+                        .map(image -> modelMapper.map(image, ImageResponseDTO.class))
+                        .collect(Collectors.toList())
+        );
+
+        projectDetailForMakerResponseDTO.setEssentialDocuments(
+                projectWithDocs.getEssentialDocuments().stream()
+                        .map(document -> modelMapper.map(document, DocumentResponseDTO.class))
+                        .collect(Collectors.toList())
+        );
 
         return projectDetailForMakerResponseDTO;
     }
@@ -138,5 +146,12 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectDetailToUpdateResponseDTO projectDetailToUpdateResponseDTO = modelMapper.map(project, ProjectDetailToUpdateResponseDTO.class);
         projectDetailToUpdateResponseDTO.setCategory(project.getCategory().getClassification());
         return projectDetailToUpdateResponseDTO;
+    }
+
+    private String checkShowStatus(Project project) {
+        if(project.getReviewProjectStatus() == ProjectStatus.승인) {
+            return project.getProgressProjectStatus().toString();
+        }
+        return project.getReviewProjectStatus().toString();
     }
 }
