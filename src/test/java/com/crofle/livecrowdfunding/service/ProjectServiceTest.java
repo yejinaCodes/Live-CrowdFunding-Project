@@ -7,6 +7,7 @@ import com.crofle.livecrowdfunding.dto.request.ImageRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.EssentialDocumentDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
 import lombok.extern.log4j.Log4j2;
@@ -85,9 +86,17 @@ public class ProjectServiceTest {
     }
 
     @Test
+    public void testFindProjectDetailForMaker() {
+        Long id = 1L;
+        ProjectDetailForMakerResponseDTO projectDetailForMakerResponseDTO = projectService.getProjectForMaker(id);
+        log.info(projectDetailForMakerResponseDTO);
+    }
+
+    @Test
     public void testFindProjectUpdate() {
         Long id = 1L;
         ProjectDetailToUpdateResponseDTO projectDetailToUpdateResponseDTO = projectService.getProjectForManagerUpdate(id);
         log.info(projectDetailToUpdateResponseDTO);
     }
+
 }

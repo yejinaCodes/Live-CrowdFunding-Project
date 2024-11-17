@@ -3,18 +3,18 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectMakerResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.*;
 import com.crofle.livecrowdfunding.repository.*;
 import com.crofle.livecrowdfunding.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Log4j2
@@ -26,6 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ManagerRepository managerRepository;
     private final RatePlanRepository ratePlanRepository;
     private final CategoryRepository categoryRepository;
+    private final PaymentHistoryRepository paymentHistoryRepository;
     private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
@@ -103,8 +104,28 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public ProjectDetailForMakerResponseDTO getProjectForMaker(Long id) {
+// 주문 정보와 함께 프로젝트 로드
+        Project project = projectRepository.findByIdWithOrders(id)
+                .orElseThrow(() -> new EntityNotFoundException("프로젝트 조회에 실패했습니다"));
 
-        return null;
+        // 이미지와 문서 정보 로드
+        Project projectWithImages = projectRepository.findByIdWithImages(id).orElseThrow();
+        Project projectWithDocs = projectRepository.findByIdWithDocuments(id).orElseThrow();
+
+        ProjectDetailForMakerResponseDTO projectDetailForMakerResponseDTO = modelMapper.map(project, ProjectDetailForMakerResponseDTO.class);
+        projectDetailForMakerResponseDTO.setCategory(project.getCategory().getClassification());
+        projectDetailForMakerResponseDTO.setStatus(project.getReviewProjectStatus().name());
+        projectDetailForMakerResponseDTO.setPaymentCount((int) project.getOrders().stream()
+                .filter(order -> order.getPaymentHistory() != null)
+                .count());
+
+        // 이미지와 문서 정보 설정
+        projectDetailForMakerResponseDTO.setImages(modelMapper.map(projectWithImages.getImages(),
+                new TypeToken<List<ImageResponseDTO>>() {}.getType()));
+        projectDetailForMakerResponseDTO.setEssentialDocuments(modelMapper.map(projectWithDocs.getEssentialDocuments(),
+                new TypeToken<List<DocumentResponseDTO>>() {}.getType()));
+
+        return projectDetailForMakerResponseDTO;
     }
 
     @Transactional(readOnly = true)
