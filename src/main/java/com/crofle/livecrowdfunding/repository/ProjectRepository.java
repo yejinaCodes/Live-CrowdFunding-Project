@@ -2,6 +2,8 @@ package com.crofle.livecrowdfunding.repository;
 
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,16 +30,17 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByIdWithDocuments(@Param("id") Long id);
 
     @Query("SELECT p FROM Project p WHERE p.reviewProjectStatus IN :statuses")
-    List<Project> findByReviewStatuses(@Param("statuses") List<ProjectStatus> statuses);
+    Page<Project> findByReviewStatuses(@Param("statuses") List<ProjectStatus> statuses, Pageable pageable);
 
     // 펀딩 진행 중인 프로젝트 조회 (승인 && 펀딩중)
     @Query("SELECT p FROM Project p WHERE p.reviewProjectStatus = :reviewStatus AND p.progressProjectStatus = :progressStatus")
-    List<Project> findByReviewStatusAndProgressStatus(
+    Page<Project> findByReviewStatusAndProgressStatus(
             @Param("reviewStatus") ProjectStatus reviewStatus,
-            @Param("progressStatus") ProjectStatus progressStatus
+            @Param("progressStatus") ProjectStatus progressStatus,
+            Pageable pageable
     );
 
     // 펀딩 종료된 프로젝트 조회 (성공, 미달성)
     @Query("SELECT p FROM Project p WHERE p.progressProjectStatus IN :statuses")
-    List<Project> findByProgressStatuses(@Param("statuses") List<ProjectStatus> statuses);
+    Page<Project> findByProgressStatuses(@Param("statuses") List<ProjectStatus> statuses, Pageable pageable);
 }

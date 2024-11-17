@@ -18,6 +18,6 @@ public class EventLogController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<PageListResponseDTO<UserEventLogResponseDTO>> findByUser(@PathVariable Long userId, @ModelAttribute PageRequestDTO pageRequestDTO) {
-        return ResponseEntity.ok().body(eventLogService.findByUser(userId));
+        return ResponseEntity.ok().body(eventLogService.findByUser(userId, pageRequestDTO));
     }
 }
