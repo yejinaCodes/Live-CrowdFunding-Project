@@ -1,17 +1,20 @@
 package com.crofle.livecrowdfunding.controller;
 
+import com.crofle.livecrowdfunding.dto.request.ProjectListRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectRegisterRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectStatusRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.ProjectUpdateRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.ProjectListResponseDTO;
 import com.crofle.livecrowdfunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/project")
@@ -50,5 +53,10 @@ public class ProjectController {
     public ResponseEntity<Void> updateProject(@PathVariable Long id, @RequestBody ProjectUpdateRequestDTO requestDTO) {
         projectService.updateProject(id, requestDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<ProjectListResponseDTO>> getProjectList(@RequestBody ProjectListRequestDTO requestDTO) {
+        return ResponseEntity.ok(projectService.getProjectList(requestDTO));
     }
 }

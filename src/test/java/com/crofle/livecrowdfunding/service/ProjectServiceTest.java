@@ -3,10 +3,7 @@ package com.crofle.livecrowdfunding.service;
 import com.crofle.livecrowdfunding.domain.enums.DocumentType;
 import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import com.crofle.livecrowdfunding.dto.request.*;
-import com.crofle.livecrowdfunding.dto.response.EssentialDocumentDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailForMakerResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.ProjectDetailToUpdateResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.*;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,10 +31,10 @@ public class ProjectServiceTest {
     public void testCreateProject() {
          ProjectRegisterRequestDTO requestDTO = ProjectRegisterRequestDTO.builder()
                  .makerId(1L)
-                 .planId(2L)
-                 .categoryId(1L)
-                 .productName("싸디싼 스마트폰")
-                 .summary("이건 진짜 싸다")
+                 .planId(1L)
+                 .categoryId(2L)
+                 .productName("상태 테스팅 상품")
+                 .summary("이건 좀 비쌀듯")
                  .price(1000000)
                  .discountPercentage(10)
                  .goalAmount(1000000000)
@@ -73,10 +70,10 @@ public class ProjectServiceTest {
 
     @Test
     public void testUpdateProjectStatus() {
-        Long projectId = 1L;
+        Long projectId = 8L;
 
         ProjectStatusRequestDTO requestDTO = ProjectStatusRequestDTO.builder()
-                .status(ProjectStatus.검토중)
+                .status(ProjectStatus.반려)
                 .build();
 
         projectService.updateProjectStatus(projectId, requestDTO);
@@ -135,5 +132,15 @@ public class ProjectServiceTest {
                 .build();
 
         projectService.updateProject(projectId, requestDTO);
+    }
+
+    @Test
+    public void testFindProjectList() {
+        ProjectListRequestDTO requestDTO = ProjectListRequestDTO.builder()
+                .statusNumber(1)
+                .build();
+
+        List<ProjectListResponseDTO> projectList = projectService.getProjectList(requestDTO);
+        log.info(projectList);
     }
 }
