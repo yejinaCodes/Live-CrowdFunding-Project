@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "AND (:#{#dto.userName} IS NULL OR u.name LIKE %:#{#dto.userName}%)")
     Page<User> findByConditions(@Param("dto") PageRequestDTO dto, Pageable pageable);
 
+    //가입 현황 그래프 용
+    //Users
     @Query(value = """
     SELECT DATE_FORMAT(registered_at, '%Y-%m') as month, COUNT(*) as count
     FROM Users WHERE registered_at >= :startDate AND registered_at < :endDate 
@@ -25,6 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<Object[]> countMonthlyNewUsers(@Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
 
+    //Maker
     @Query(value = """
     SELECT DATE_FORMAT(registered_at, '%Y-%m') as month, COUNT(*) as count
     FROM Maker WHERE registered_at >= :startDate AND registered_at < :endDate 
@@ -44,5 +47,33 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param("endDate") LocalDateTime endDate
     );
 
+    //이용자 현황 그래프 용
+    //Users
+    @Query(value = """
+    SELECT DATE_FORMAT(registered_at, '%Y-%m') as month, COUNT(*) as count
+    FROM Users WHERE registered_at >= :startDate AND registered_at < :endDate 
+    GROUP BY DATE_FORMAT(registered_at, '%Y-%m') ORDER BY month """, nativeQuery = true)
+    List<Object[]> countMonthlyCurrentUsers( @Param("startDate") LocalDateTime startDate,
+                                          @Param("endDate") LocalDateTime endDate);
+
+    //Maker
+    @Query(value = """
+    SELECT DATE_FORMAT(registered_at, '%Y-%m') as month, COUNT(*) as count
+    FROM Maker WHERE registered_at >= :startDate AND registered_at < :endDate 
+    GROUP BY DATE_FORMAT(registered_at, '%Y-%m') ORDER BY month """, nativeQuery = true)
+    List<Object[]> countMonthlyCurrentMakers( @Param("startDate") LocalDateTime startDate,
+                                          @Param("endDate") LocalDateTime endDate);
+
+    //Total
+    @Query(value = """
+   SELECT DATE_FORMAT(combined.registered_at, '%Y-%m') as month, COUNT(*) as count
+   FROM (SELECT registered_at FROM Users WHERE registered_at >= :startDate AND registered_at < :endDate
+       UNION ALL SELECT registered_at FROM Maker WHERE registered_at >= :startDate AND registered_at < :endDate
+   ) combined
+   GROUP BY DATE_FORMAT(combined.registered_at, '%Y-%m') ORDER BY month """, nativeQuery = true)
+    List<Object[]> countMonthlyCurrentTotal(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
 
 }

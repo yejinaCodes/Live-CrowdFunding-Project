@@ -48,10 +48,20 @@ public class AdminDashboardRestController {
     public ResponseEntity<PopularFundingResponseDTO>getPopularFunding(){
         return null;
     }
-    @GetMapping("/dashboard/GraphD")
-    public ResponseEntity<CurrentUserGraphResponseDTO>getCurrentUsers(){
-        return null;
+
+    //최근 12개월 이용자 수
+    @GetMapping("/dashboard/current-users")
+    public ResponseEntity<UserGraphResponseDTO>getCurrentUsers(){
+        UserGraphResponseDTO userStats = UserGraphResponseDTO.builder()
+                .labels(dashBoardService.getLast12Months())
+                .users(dashBoardService.getCurrentUserStats(oneYearAgo, now))
+                .makers(dashBoardService.getCurrentMakerStats(oneYearAgo, now))
+                .total(dashBoardService.getCurrentTotalStats(oneYearAgo, now))
+                .build();
+
+        return ResponseEntity.ok(userStats);
     }
+
     @GetMapping("/dashboard/GraphE")
     public ResponseEntity<CategoryRevenueResponseDTO>getCategoryRevenue(){
         return null;
