@@ -1,10 +1,8 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
-import com.crofle.livecrowdfunding.dto.response.CategoryRevenueResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.CategoryStatsResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.MonthlyRevenueResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.MonthlyUserCountResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.*;
 import com.crofle.livecrowdfunding.repository.RevenueRepository;
+import com.crofle.livecrowdfunding.repository.ScheduleRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.AdminDashBoardService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,6 +21,7 @@ import java.util.stream.Stream;
 public class AdminDashBoardServiceImpl implements AdminDashBoardService {
     private final UserRepository userRepository;
     private final RevenueRepository revenueRepository;
+    private final ScheduleRepository scheduleRepository;
 
     //최근 12개월 list
     @Override
@@ -128,6 +124,12 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
                         ((Number) row[2]).doubleValue() //revenue
                 ))
                 .collect(Collectors.toList());
+    }
+    //스트리밍 별 구매자, 스트리밍 수
+    @Override
+    public List<YesterdayStreamingResponseDTO>getYesterdaySStats(){
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        return scheduleRepository.findYesterdaySStats(yesterday);
     }
 
 }

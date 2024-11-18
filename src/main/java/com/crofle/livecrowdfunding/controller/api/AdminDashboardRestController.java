@@ -2,6 +2,7 @@ package com.crofle.livecrowdfunding.controller.api;
 
 import com.crofle.livecrowdfunding.dto.response.*;
 import com.crofle.livecrowdfunding.service.AdminDashBoardService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @Log4j2
@@ -72,10 +74,15 @@ public class AdminDashboardRestController {
     @GetMapping("/dashboard/revenue-by-category")
     public ResponseEntity<CategoryRevenueResponseDTO>getCategoryRevenue(){
         CategoryRevenueResponseDTO result = CategoryRevenueResponseDTO.builder()
-                .labels(dashBoardService.getLast12Months())
                 .catrevenue(dashBoardService.getCategoryStats())
                 .build();
 
         return ResponseEntity.ok(result);
+    }
+
+    //스트리밍 프로젝트 별 구매자, 시청수
+    @GetMapping("/dashboard/streaming-stats")
+    public ResponseEntity<List<YesterdayStreamingResponseDTO>>getYesterdayStreamingStats(){
+        return ResponseEntity.ok(dashBoardService.getYesterdaySStats());
     }
 }
