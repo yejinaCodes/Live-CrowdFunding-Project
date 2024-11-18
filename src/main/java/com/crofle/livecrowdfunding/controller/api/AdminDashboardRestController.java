@@ -2,7 +2,6 @@ package com.crofle.livecrowdfunding.controller.api;
 
 import com.crofle.livecrowdfunding.dto.response.*;
 import com.crofle.livecrowdfunding.service.AdminDashBoardService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;

@@ -23,7 +23,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>  {
             LEFT JOIN PaymentHistory ph ON o.id = ph.orderId
             WHERE DATE(s.date) = DATE(:yesterday)
             GROUP BY p.productName, s.total_viewer
-            ORDER BY COUNT(DISTINCT ph.orderId) DESC
+            ORDER BY COUNT(DISTINCT ph.orderId) DESC, s.total_viewer DESC
+            
             """)
     List<YesterdayStreamingResponseDTO> findYesterdaySStats(@Param("yesterday") LocalDateTime yesterday);
 }
