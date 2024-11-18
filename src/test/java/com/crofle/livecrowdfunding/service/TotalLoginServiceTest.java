@@ -9,15 +9,19 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import static org.junit.jupiter.api.Assertions.*;import org.springframework.beans.factory.annotation.Value;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Log4j2
 @Import(PasswordConfig.class)
-public class LoginServiceTest {
+public class TotalLoginServiceTest {
     @Autowired
     private AccountService accountService;
 
@@ -27,11 +31,19 @@ public class LoginServiceTest {
     @Value("${jwt.secret}")
     private String secretKey;
 
+    // 테스트 계정 상수
     private final String TEST_USER_EMAIL = "cccc@ccc.com";
     private final String TEST_MAKER_EMAIL = "bbbb@bbb.com";
     private final String TEST_OAUTH_EMAIL = "oauth@test.com";
-    private final String TEST_PASSWORD = "1234";
+    private final String TEST_PASSWORD = "1234"; // cccc@ccc.com의 실제 암호화된 비밀번호
 
+    // 이메일 찾기 테스트용 데이터 (firstsm41@naver.com 계정 정보 사용)
+    private final String TEST_NAME = "최성민";
+    private final String TEST_PHONE = "010-7529-0837";
+    private final String TEST_RESET_EMAIL = "firstsm41@naver.com";
+
+
+    // 기존 테스트 메소드들
     @Test
     @DisplayName("일반 사용자 로그인 성공 테스트")
     public void testUserLoginSuccess() {
@@ -95,26 +107,30 @@ public class LoginServiceTest {
     public void testOAuthLoginSuccess() {
         log.info("\n\n===== OAuth 로그인 테스트 시작 =====\n");
 
-        AccountOAuthRequestDTO request = AccountOAuthRequestDTO.builder()
-                .email(TEST_OAUTH_EMAIL)
-                .name("OAuth테스트")
-                .role(Role.USER)
-                .build();
+        // 네이버 응답 데이터 시뮬레이션
+        Map<String, Object> response = new HashMap<>();
+        response.put("email", TEST_OAUTH_EMAIL);
+        response.put("name", "OAuth테스트");
+        response.put("mobile", "010-1234-5678");
+        response.put("gender", "M");
+        response.put("birthyear", "1990");
+
+        AccountOAuthRequestDTO request = AccountOAuthRequestDTO.fromNaverResponse(response);
 
         log.info("OAuth 로그인 요청: {}\n", request);
-        AccountTokenResponseDTO response = accountService.authenticateOAuthAccount(request);
+        AccountTokenResponseDTO tokenResponse = accountService.authenticateOAuthAccount(request);
 
         log.info("토큰 정보:");
-        log.info("액세스 토큰: {}", response.getAccessToken());
-        log.info("리프레시 토큰: {}", response.getRefreshToken());
-        log.info("이메일: {}", response.getUserEmail());
-        log.info("역할: {}\n", response.getRole());
+        log.info("액세스 토큰: {}", tokenResponse.getAccessToken());
+        log.info("리프레시 토큰: {}", tokenResponse.getRefreshToken());
+        log.info("이메일: {}", tokenResponse.getUserEmail());
+        log.info("역할: {}\n", tokenResponse.getRole());
 
         assertAll(
-                () -> assertNotNull(response),
-                () -> assertNotNull(response.getAccessToken()),
-                () -> assertEquals(TEST_OAUTH_EMAIL, response.getUserEmail()),
-                () -> assertEquals(Role.USER, response.getRole())
+                () -> assertNotNull(tokenResponse),
+                () -> assertNotNull(tokenResponse.getAccessToken()),
+                () -> assertEquals(TEST_OAUTH_EMAIL, tokenResponse.getUserEmail()),
+                () -> assertEquals(Role.USER, tokenResponse.getRole())
         );
 
         log.info("\n===== OAuth 로그인 테스트 종료 =====\n");
@@ -191,9 +207,9 @@ public class LoginServiceTest {
         log.info("\n\n===== 비밀번호 재설정 이메일 발송 테스트 시작 =====\n");
 
         AccountPasswordResetRequestDTO request = AccountPasswordResetRequestDTO.builder()
-                .email("firstsm41@naver.com")
-                .name("최성민")
-                .phone("010-7529-0837")
+                .email(TEST_RESET_EMAIL)
+                .name(TEST_NAME)
+                .phone(TEST_PHONE)
                 .build();
 
         log.info("비밀번호 재설정 이메일 발송 요청: {}\n", request);
@@ -203,6 +219,42 @@ public class LoginServiceTest {
         log.info("\n===== 비밀번호 재설정 이메일 발송 테스트 종료 =====\n");
     }
 
+    // 네이버 OAuth 관련 추가 테스트
+    @Test
+    @DisplayName("네이버 OAuth 전화번호 포맷팅 테스트")
+    public void testNaverOAuthPhoneFormatting() {
+        log.info("\n\n===== 네이버 OAuth 전화번호 포맷팅 테스트 시작 =====\n");
 
+        // 다양한 형식의 전화번호로 테스트
+        Map<String, Object> response1 = createTestResponse("01012345678");
+        Map<String, Object> response2 = createTestResponse("010-1234-5678");
+        Map<String, Object> response3 = createTestResponse("010 1234 5678");
 
+        AccountOAuthRequestDTO request1 = AccountOAuthRequestDTO.fromNaverResponse(response1);
+        AccountOAuthRequestDTO request2 = AccountOAuthRequestDTO.fromNaverResponse(response2);
+        AccountOAuthRequestDTO request3 = AccountOAuthRequestDTO.fromNaverResponse(response3);
+
+        log.info("포맷팅 결과:");
+        log.info("케이스1: {}", request1.getPhone());
+        log.info("케이스2: {}", request2.getPhone());
+        log.info("케이스3: {}", request3.getPhone());
+
+        assertAll(
+                () -> assertEquals("010-1234-5678", request1.getPhone()),
+                () -> assertEquals("010-1234-5678", request2.getPhone()),
+                () -> assertEquals("010-1234-5678", request3.getPhone())
+        );
+
+        log.info("\n===== 네이버 OAuth 전화번호 포맷팅 테스트 종료 =====\n");
+    }
+
+    private Map<String, Object> createTestResponse(String phoneNumber) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("email", TEST_OAUTH_EMAIL);        // 실제 OAuth 테스트 계정 이메일 사용
+        response.put("name", "OAuth테스트");            // 실제 이름 사용
+        response.put("mobile", phoneNumber);
+        response.put("gender", "M");
+        response.put("birthyear", "1990");
+        return response;
+    }
 }

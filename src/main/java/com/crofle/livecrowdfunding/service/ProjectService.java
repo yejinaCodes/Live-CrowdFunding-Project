@@ -7,6 +7,7 @@ import com.crofle.livecrowdfunding.dto.response.*;
 import java.util.List;
 
 public interface ProjectService {
+  
     ProjectDetailResponseDTO getProjectForUser(Long id);
 
     void createProject(ProjectRegisterRequestDTO requestDTO);

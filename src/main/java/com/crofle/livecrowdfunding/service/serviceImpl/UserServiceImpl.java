@@ -58,60 +58,54 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-    @Transactional
     @Override
-    public SaveUserRequestDTO saveUser(SaveUserRequestDTO saveUserRequestDTO) {
+    @Transactional
+    public SaveUserRequestDTO saveUser(SaveUserRequestDTO request) {
+        // 이메일 중복 체크
+        if (accountViewRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already exists");
+        }
 
         User user = User.builder()
-                .name(saveUserRequestDTO.getName())
-                .nickname(saveUserRequestDTO.getNickname())
-                .phone(saveUserRequestDTO.getPhone())
-                .gender(saveUserRequestDTO.getGender())
-                .birth(saveUserRequestDTO.getBirth())
-                .email(saveUserRequestDTO.getEmail())
-                .password(saveUserRequestDTO.getPassword())
-                .zipcode(saveUserRequestDTO.getZipcode())
-                .address(saveUserRequestDTO.getAddress())
-                .detailAddress(saveUserRequestDTO.getDetailAddress())
-                .loginMethod(saveUserRequestDTO.getLoginMethod())
-                .notification(saveUserRequestDTO.getNotification())
+                .name(request.getName())
+                .nickname(request.getNickname())
+                .phone(request.getPhone())
+                .gender(request.getGender())
+                .birth(request.getBirth())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .zipcode(request.getZipcode())
+                .address(request.getAddress())
+                .detailAddress(request.getDetailAddress())
+                .loginMethod(request.getLoginMethod())
+                .notification(request.getNotification())
                 .status(UserStatus.활성화)
                 .registeredAt(LocalDateTime.now())
                 .build();
 
-
         user = userRepository.save(user);
         log.info("사용자 기본 정보 저장 완료");
 
-
-        if (saveUserRequestDTO.getCategoryIds() != null && !saveUserRequestDTO.getCategoryIds().isEmpty()) {
+        // 관심 카테고리 처리
+        if (request.getCategoryIds() != null && !request.getCategoryIds().isEmpty()) {
             List<UserInterest> interests = new ArrayList<>();
-
-            for (Long categoryId : saveUserRequestDTO.getCategoryIds()) {
+            for (Long categoryId : request.getCategoryIds()) {
                 Category category = categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리 ID: " + categoryId));
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid category ID: " + categoryId));
 
-                // UserCategoryId 생성
-                UserCategoryId userCategoryId = new UserCategoryId(user.getId(), category.getId());
-
-                // UserInterest 생성
                 UserInterest interest = UserInterest.builder()
-                        .id(userCategoryId)
+                        .id(new UserCategoryId(user.getId(), category.getId()))
                         .user(user)
                         .category(category)
                         .build();
-
                 interests.add(interest);
             }
-
             user.setInterests(interests);
             userRepository.save(user);
-            log.info("사용자 관심사 정보 저장 완료");
-
-
         }
 
-        return saveUserRequestDTO;
+        return request;
     }
 
 }
+

@@ -1,74 +1,70 @@
 package com.crofle.livecrowdfunding.service;
 
-
 import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.SaveUserRequestDTO;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Log4j2
 public class SaveServiceTest {
     @Autowired
     private UserService userService;
+    @Autowired
     private MakerService makerService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
+    @DisplayName("사용자 저장 테스트")
     public void testUserSave() {
-        SaveUserRequestDTO saveUserRequestDTO = SaveUserRequestDTO.builder()
-
-                .name("최성민")
-                .nickname("CSM")
-                .phone("123-456-2890")
-                .password("1234")
+        SaveUserRequestDTO request = SaveUserRequestDTO.builder()
+                .name("aaaaa")
+                .nickname("bbbbb")
+                .phone("000-000-0000")
+                .password(passwordEncoder.encode("1234"))
                 .gender(true)
-                .birth("1919-04-01")
-                .email("11g1@naver.com")
+                .birth("19900401")
+                .email("dddd@ccc.com")
                 .zipcode(12345)
-                .address("123 Street")
-                .detailAddress("Apt 101")
+                .address("테스트주소")
+                .detailAddress("상세주소")
                 .loginMethod(false)
-                .notification(true)
                 .notification(true)
                 .categoryIds(Arrays.asList(1L, 2L))
                 .build();
 
-        SaveUserRequestDTO savedUser = userService.saveUser(saveUserRequestDTO);
+        SaveUserRequestDTO result = userService.saveUser(request);
 
-        log.info("저장된 사용자 정보: " + savedUser);
-        log.info("선택된 카테고리 IDs: " + savedUser.getCategoryIds());
-
-
-        assert savedUser.getCategoryIds() != null : "카테고리 정보가 null입니다";
-        assert !savedUser.getCategoryIds().isEmpty() : "카테고리 정보가 비어있습니다";
+        assertNotNull(result);
+        assertEquals("dddd@ccc.com", result.getEmail());
     }
-
-    ;
 
     @Test
+    @DisplayName("메이커 저장 테스트")
     public void testMakerSave() {
-        SaveMakerRequestDTO saveMakerRequestDTO = SaveMakerRequestDTO.builder()
-                .name("권용빈")
-                .phone("123-456-2890")
-                .business(11211211)
-                .email("1234341@gmain.com")
-                .password("1234")
+        SaveMakerRequestDTO request = SaveMakerRequestDTO.builder()
+                .name("aasd")
+                .phone("010-7777-6666")
+                .business(12345678)
+                .email("bbbb@bbb.com")
+                .password(passwordEncoder.encode("1234"))
                 .zipcode(12345)
-                .address("123 Street")
-                .detailAddress("Apt 101")
+                .address("테스트주소")
+                .detailAddress("상세주소")
                 .build();
 
-        SaveMakerRequestDTO saveMaker = makerService.saveMaker(saveMakerRequestDTO);
+        SaveMakerRequestDTO result = makerService.saveMaker(request);
 
-        log.info("저장된 제작자 정보: " + saveMaker);
-
-        assert saveMaker != null : "제작자 정보가 null입니다";
-        assert !saveMaker.getName().isEmpty() : "제작자 이름이 비어있습니다";
+        assertNotNull(result);
+        assertEquals("bbbb@bbb.com", result.getEmail());
     }
-
-    ;
 }

@@ -1,6 +1,5 @@
 package com.crofle.livecrowdfunding.dto.request;
 
-import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
 import lombok.*;
 
 @Data
@@ -8,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ResetPasswordRequestDTO {
+public class AccountPasswordResetRequestDTO {
     private String email;
     private String name;
     private String phone;

@@ -1,6 +1,5 @@
-package com.crofle.livecrowdfunding.dto.response;
+package com.crofle.livecrowdfunding.dto.request;
 
-import com.crofle.livecrowdfunding.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,11 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class TokenDTO {
+@AllArgsConstructor
+// 토큰 재발급 요청
+public class AccountTokenRequestDTO {
     private String accessToken;
     private String refreshToken;
-    private String userEmail;
-    private Role role;
 }

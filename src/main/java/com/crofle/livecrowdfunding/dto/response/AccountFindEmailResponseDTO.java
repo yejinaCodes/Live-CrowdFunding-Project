@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.dto.request;
+package com.crofle.livecrowdfunding.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequestDTO {
+
+// 이메일 찾기 응답
+public class AccountFindEmailResponseDTO {
     private String email;
-    private String password;
+    private String name;
 }
