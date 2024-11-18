@@ -18,5 +18,5 @@ public interface AdminDashBoardService {
     List<MonthlyUserCountResponseDTO> getCurrentTotalStats(LocalDateTime start, LocalDateTime end);
 
     List<MonthlyRevenueResponseDTO> getRevenueStats(LocalDateTime start);
-    List<CategoryStatsResponseDTO> getCategoryStats(LocalDateTime start);
+    List<CategoryStatsResponseDTO> getCategoryStats();
 }

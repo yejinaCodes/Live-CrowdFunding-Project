@@ -119,14 +119,13 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
 
     //카테고리별 수익
     @Override
-    public List<CategoryStatsResponseDTO> getCategoryStats(LocalDateTime start) {
-        List<Object[]> result = revenueRepository.calculateMonthlyCategoryStats(start);
+    public List<CategoryStatsResponseDTO> getCategoryStats() {
+        List<Object[]> result = revenueRepository.calculateLastMonthCategoryStats();
         return result.stream()
                 .map(row -> new CategoryStatsResponseDTO(
-                        (String) row[0], //month
-                        (String) row[1], //category
-                        ((Number) row[2]).longValue(), //success_count
-                        ((Number) row[3]).doubleValue() //revenue
+                        (String) row[0], //category name
+                        ((Number) row[1]).longValue(), //success_count
+                        ((Number) row[2]).doubleValue() //revenue
                 ))
                 .collect(Collectors.toList());
     }

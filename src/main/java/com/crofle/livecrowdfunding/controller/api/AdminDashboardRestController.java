@@ -73,7 +73,7 @@ public class AdminDashboardRestController {
     public ResponseEntity<CategoryRevenueResponseDTO>getCategoryRevenue(){
         CategoryRevenueResponseDTO result = CategoryRevenueResponseDTO.builder()
                 .labels(dashBoardService.getLast12Months())
-                .catrevenue(dashBoardService.getCategoryStats(oneYearAgo))
+                .catrevenue(dashBoardService.getCategoryStats())
                 .build();
 
         return ResponseEntity.ok(result);
