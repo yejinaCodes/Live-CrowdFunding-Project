@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ProposalRequest {
     private String projectDocument;
-    private String FundingDocument;
+    private String fundingDocument;
 }
