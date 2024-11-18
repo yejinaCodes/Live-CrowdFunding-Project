@@ -8,7 +8,7 @@ import com.crofle.livecrowdfunding.util.JwtUtil;
 import com.crofle.livecrowdfunding.domain.entity.AccountView;
 import com.crofle.livecrowdfunding.domain.enums.Role;
 import com.crofle.livecrowdfunding.dto.response.AccountTokenResponseDTO;
-import com.crofle.livecrowdfunding.repository.AccountViewRepository;
+import com.crofle.livecrowdfunding.repository.redis.AccountViewRepository;
 import com.crofle.livecrowdfunding.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

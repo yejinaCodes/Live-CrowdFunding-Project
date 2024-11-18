@@ -5,7 +5,7 @@ import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 import com.crofle.livecrowdfunding.dto.request.MakerInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.MakerInfoResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
-import com.crofle.livecrowdfunding.repository.AccountViewRepository;
+import com.crofle.livecrowdfunding.repository.redis.AccountViewRepository;
 import com.crofle.livecrowdfunding.repository.MakerRepository;
 import com.crofle.livecrowdfunding.service.MakerService;
 import lombok.RequiredArgsConstructor;

@@ -9,7 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration.class})
+
 public class LiveCrowdFundingBackendApplication {
 
 	public static void main(String[] args) {SpringApplication.run(LiveCrowdFundingBackendApplication.class, args);}
