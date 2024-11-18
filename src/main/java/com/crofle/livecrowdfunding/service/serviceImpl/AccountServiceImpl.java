@@ -145,17 +145,25 @@ public class AccountServiceImpl implements AccountService {
         if (email != null) {
             String resetToken = jwtUtil.createPasswordResetToken(email);
             String resetLink = String.format(
-                    "https://your-frontend-domain.com/reset-password?token=%s&email=%s",
+                    "http://localhost:5173/auth/reset-password?token=%s&email=%s",
                     resetToken, email
             );
 
             String subject = "비밀번호 재설정 안내";
             String content = String.format(
-                    "안녕하세요, %s님\n비밀번호 재설정을 위해 아래 링크를 클릭해주세요:\n%s\n링크는 15분간 유효합니다.",
+                    "<div style='margin:30px auto;max-width:600px;padding:20px;font-family:Arial,sans-serif;'>" +
+                            "<h2 style='color:#333;margin-bottom:20px;'>비밀번호 재설정 안내</h2>" +
+                            "<p style='color:#666;line-height:1.6;margin-bottom:20px;'>안녕하세요, %s님</p>" +
+                            "<p style='color:#666;line-height:1.6;margin-bottom:20px;'>아래 버튼을 클릭하여 비밀번호를 재설정해주세요.</p>" +
+                            "<a href='%s' style='display:inline-block;background-color:#007bff;color:#ffffff;text-decoration:none;" +
+                            "padding:12px 30px;border-radius:5px;margin:20px 0;'>비밀번호 재설정</a>" +
+                            "<p style='color:#999;font-size:14px;margin-top:20px;'>링크는 15분간 유효합니다.</p>" +
+                            "<p style='color:#999;font-size:14px;'>본 메일은 발신전용입니다.</p>" +
+                            "</div>",
                     request.getName(), resetLink
             );
 
-            emailService.sendEmail(email, subject, content);
+            emailService.sendHtmlEmail(email, subject, content);
         }
     }
 
