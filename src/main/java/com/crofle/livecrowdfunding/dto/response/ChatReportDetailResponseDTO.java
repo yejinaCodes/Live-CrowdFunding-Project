@@ -22,5 +22,4 @@ public class ChatReportDetailResponseDTO {
     private Long managerId; //신고 직원ID
     private String reason; //관리자 코멘트
 
-
 }
