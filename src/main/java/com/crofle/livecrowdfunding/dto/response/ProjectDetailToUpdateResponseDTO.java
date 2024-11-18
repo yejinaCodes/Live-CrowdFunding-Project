@@ -1,7 +1,9 @@
 package com.crofle.livecrowdfunding.dto.response;
 
-import com.crofle.livecrowdfunding.domain.enums.ProjectStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,18 +12,15 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDetailResponseDTO { // 사용자가 프로젝트 조회 시 리턴
-    private String maker;
+public class ProjectDetailToUpdateResponseDTO {
     private String productName;
-    private String category;
     private String summary;
+    private String category;
     private Integer price;
     private Integer discountPercentage;
-    private LocalDateTime startAt;
-    private LocalDateTime endAt;
     private Integer percentage;
     private Integer goalAmount;
     private String contentImage;
     private List<ImageResponseDTO> images;
-    private Integer likeCount;
+    private List<DocumentResponseDTO> essentialDocuments;
 }
