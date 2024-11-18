@@ -45,7 +45,7 @@ public class AdminDashboardRestController {
     public ResponseEntity<RevenueGraphResponseDTO>getTotalRevenue(){
         RevenueGraphResponseDTO revenueStats = RevenueGraphResponseDTO.builder()
                 .labels(dashBoardService.getLast12Months())
-                .revenue(dashBoardService.getNewTotalStats(oneYearAgo, now))
+                .revenue(dashBoardService.getRevenueStats(oneYearAgo))
                 .build();
 
         return ResponseEntity.ok(revenueStats);
@@ -68,8 +68,14 @@ public class AdminDashboardRestController {
         return ResponseEntity.ok(userStats);
     }
 
-    @GetMapping("/dashboard/GraphE")
+    //카테고리별 펀딩 수와 수익
+    @GetMapping("/dashboard/revenue-by-category")
     public ResponseEntity<CategoryRevenueResponseDTO>getCategoryRevenue(){
-        return null;
+        CategoryRevenueResponseDTO result = CategoryRevenueResponseDTO.builder()
+                .labels(dashBoardService.getLast12Months())
+                .catrevenue(dashBoardService.getCategoryStats(oneYearAgo))
+                .build();
+
+        return ResponseEntity.ok(result);
     }
 }

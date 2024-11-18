@@ -1,9 +1,9 @@
 package com.crofle.livecrowdfunding.service;
 
+import com.crofle.livecrowdfunding.dto.response.CategoryStatsResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.MonthlyRevenueResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.MonthlyUserCountResponseDTO;
-import org.springframework.cglib.core.Local;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,5 +17,6 @@ public interface AdminDashBoardService {
     List<MonthlyUserCountResponseDTO> getCurrentMakerStats(LocalDateTime start, LocalDateTime end);
     List<MonthlyUserCountResponseDTO> getCurrentTotalStats(LocalDateTime start, LocalDateTime end);
 
-
+    List<MonthlyRevenueResponseDTO> getRevenueStats(LocalDateTime start);
+    List<CategoryStatsResponseDTO> getCategoryStats(LocalDateTime start);
 }

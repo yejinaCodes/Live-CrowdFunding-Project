@@ -1,6 +1,10 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
+import com.crofle.livecrowdfunding.dto.response.CategoryRevenueResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.CategoryStatsResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.MonthlyRevenueResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.MonthlyUserCountResponseDTO;
+import com.crofle.livecrowdfunding.repository.RevenueRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
 import com.crofle.livecrowdfunding.service.AdminDashBoardService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class AdminDashBoardServiceImpl implements AdminDashBoardService {
     private final UserRepository userRepository;
+    private final RevenueRepository revenueRepository;
 
     //최근 12개월 list
     @Override
@@ -101,5 +106,29 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
     }
 
     //Revenue
+    @Override
+    public List<MonthlyRevenueResponseDTO> getRevenueStats(LocalDateTime start) {
+        List<Object[]> result = revenueRepository.calculateMonthlyRevenue(start);
+        return result.stream()
+                .map(row -> new MonthlyRevenueResponseDTO(
+                        (String) row[0],
+                        ((Number) row[1]).longValue()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    //카테고리별 수익
+    @Override
+    public List<CategoryStatsResponseDTO> getCategoryStats(LocalDateTime start) {
+        List<Object[]> result = revenueRepository.calculateMonthlyCategoryStats(start);
+        return result.stream()
+                .map(row -> new CategoryStatsResponseDTO(
+                        (String) row[0], //month
+                        (String) row[1], //category
+                        ((Number) row[2]).longValue(), //success_count
+                        ((Number) row[3]).doubleValue() //revenue
+                ))
+                .collect(Collectors.toList());
+    }
 
 }
