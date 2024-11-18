@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -85,11 +88,12 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
                 .collect(Collectors.toList());
     }
 
+    //Total
     @Override
     public List<MonthlyUserCountResponseDTO> getCurrentTotalStats(LocalDateTime start, LocalDateTime end) {
         List<Object[]> result = userRepository.countMonthlyCurrentTotal(start, end);
         return result.stream()
-                .map(row->new MonthlyUserCountResponseDTO(
+                .map(row -> new MonthlyUserCountResponseDTO(
                         (String) row[0],
                         ((Number) row[1]).longValue()
                 ))
