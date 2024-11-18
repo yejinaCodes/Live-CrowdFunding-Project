@@ -7,15 +7,17 @@ import com.crofle.livecrowdfunding.dto.request.AccountOAuthRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.AccountTokenResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.*;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,9 +27,10 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 import java.io.IOException;
@@ -37,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Slf4j
+@Log4j2
 public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final AccountService accountService;
@@ -50,58 +53,33 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // 기존 엔드포인트
                         .requestMatchers("/api/account/login", "/api/account/refresh").permitAll()
-                        // OAuth 관련 엔드포인트
                         .requestMatchers("/oauth2/**", "/login/**").permitAll()
                         .requestMatchers("/api/oauth2/**").permitAll()
-                        // 소셜 로그인 콜백 URL
                         .requestMatchers("/login/oauth2/code/**").permitAll()
-                        // Swagger UI 관련 엔드포인트 (있다면)
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        // 그 외 모든 요청은 인증 필요
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService()))
-                        .successHandler(oAuth2AuthenticationSuccessHandler()));
+                        .successHandler(oAuth2AuthenticationSuccessHandler())
+                        .failureHandler(oAuth2AuthenticationFailureHandler())
+                );
 
         return http.build();
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
-        return userRequest -> {
-            DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
-            OAuth2User oauth2User = delegate.loadUser(userRequest);
-
-            try {
-                log.debug("OAuth2User attributes: {}", oauth2User.getAttributes());
-
-                // 네이버에서 받은 사용자 정보
-                Map<String, Object> attributes = oauth2User.getAttributes();
-                Map<String, Object> responseData = (Map<String, Object>) attributes.get("response");
-
-                String email = (String) responseData.get("email");
-                String name = (String) responseData.get("name");
-
-                // AccountService를 통해 인증 처리
-                AccountOAuthRequestDTO authRequest = AccountOAuthRequestDTO.builder()
-                        .email(email)
-                        .name(name)
-                        .role(Role.USER)
-                        .build();
-
-                AccountTokenResponseDTO tokenResponse = accountService.authenticateOAuthAccount(authRequest);
-                log.debug("OAuth2 authentication successful for email: {}", email);
-
-                return oauth2User;
-            } catch (Exception e) {
-                log.error("Error processing OAuth2User: ", e);
-                throw new OAuth2AuthenticationException(
-                        new OAuth2Error("processing_error", "Failed to process OAuth2User", null),
-                        e
-                );
+    public AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request,
+                                                HttpServletResponse response,
+                                                AuthenticationException exception) throws IOException {
+                log.error("OAuth2 authentication failed: ", exception);
+                String targetUrl = "http://localhost:5173/login?error=" +
+                        URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
+                getRedirectStrategy().sendRedirect(request, response, targetUrl);
             }
         };
     }
@@ -113,11 +91,42 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "RefreshToken"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
+        return userRequest -> {
+            DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
+            OAuth2User oauth2User = delegate.loadUser(userRequest);
+
+            try {
+                log.debug("OAuth2User attributes: {}", oauth2User.getAttributes());
+                Map<String, Object> attributes = oauth2User.getAttributes();
+                Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+                String email = (String) response.get("email");
+                String name = (String) response.get("name");
+
+                AccountOAuthRequestDTO authRequest = AccountOAuthRequestDTO.builder()
+                        .email(email)
+                        .name(name)
+                        .role(Role.USER)
+                        .build();
+
+                accountService.authenticateOAuthAccount(authRequest);
+                return oauth2User;
+            } catch (Exception e) {
+                log.error("Error processing OAuth2User: ", e);
+                throw new OAuth2AuthenticationException(
+                        new OAuth2Error("processing_error", "Failed to process OAuth2User", null)
+                );
+            }
+        };
     }
 
     @Bean
@@ -127,17 +136,14 @@ public class SecurityConfig {
             public void onAuthenticationSuccess(HttpServletRequest request,
                                                 HttpServletResponse response,
                                                 Authentication authentication) throws IOException {
+                OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+                Map<String, Object> attributes = oauth2User.getAttributes();
+                Map<String, Object> responseData = (Map<String, Object>) attributes.get("response");
+
+                String email = (String) responseData.get("email");
+                String name = (String) responseData.get("name");
+
                 try {
-                    OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-                    Map<String, Object> attributes = oauth2User.getAttributes();
-                    Map<String, Object> responseData = (Map<String, Object>) attributes.get("response");
-
-                    String email = (String) responseData.get("email");
-                    String name = (String) responseData.get("name");
-
-                    log.debug("Processing OAuth2 success: email={}, name={}", email, name);
-
-                    // AccountService를 통해 토큰 발급
                     AccountOAuthRequestDTO authRequest = AccountOAuthRequestDTO.builder()
                             .email(email)
                             .name(name)
@@ -146,17 +152,18 @@ public class SecurityConfig {
 
                     AccountTokenResponseDTO tokenResponse = accountService.authenticateOAuthAccount(authRequest);
 
-                    // 프론트엔드로 리다이렉트 (토큰 포함)
-                    String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/oauth2/redirect")
+                    String targetUrl = UriComponentsBuilder
+                            .fromUriString("http://localhost:5173/oauth/callback")
                             .queryParam("token", tokenResponse.getAccessToken())
                             .queryParam("refreshToken", tokenResponse.getRefreshToken())
+                            .queryParam("email", tokenResponse.getUserEmail())
                             .build().toUriString();
 
-                    log.debug("Redirecting to: {}", targetUrl);
                     getRedirectStrategy().sendRedirect(request, response, targetUrl);
                 } catch (Exception e) {
                     log.error("Error in OAuth2 success handler: ", e);
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Authentication failed");
+                    getRedirectStrategy().sendRedirect(request, response,
+                            "http://localhost:5173/login?error=Authentication failed");
                 }
             }
         };

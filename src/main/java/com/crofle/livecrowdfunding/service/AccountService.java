@@ -5,6 +5,7 @@ import com.crofle.livecrowdfunding.dto.request.*;
 import com.crofle.livecrowdfunding.dto.response.AccountTokenResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.AccountOAuthRequestDTO;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface AccountService {
@@ -27,4 +28,15 @@ public interface AccountService {
 
     // OAuth 로그인 및 계정 생성
     AccountTokenResponseDTO authenticateOAuthAccount(AccountOAuthRequestDTO request);
+
+    Map<String, Object> getNaverUserInfo(String code, String state);
+
+    // Redis 관련 메서드들
+    void saveToken(String email, String accessToken, String refreshToken);
+
+    String getStoredAccessToken(String email);
+
+    String getStoredRefreshToken(String email);
+
+    void deleteTokens(String email);
 }
