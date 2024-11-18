@@ -74,8 +74,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     FROM months m ORDER BY m.month """, nativeQuery = true)
     List<Object[]> countMonthlyCurrentTotal(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-
-
-
-
 }
