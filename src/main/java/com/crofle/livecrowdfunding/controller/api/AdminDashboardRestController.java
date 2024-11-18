@@ -21,9 +21,10 @@ public class AdminDashboardRestController {
     //프론트에서 Fetchall 사용해 개별 엔드포인트 병렬 호출
     public final AdminDashBoardService dashBoardService;
 
-    //동시성 제어 사용시 axios사용
+    //refactoring시: 동시성 제어 사용시 axios사용??
     @GetMapping("/dashboard/stats")
     public ResponseEntity<StatisticsResponseDTO>getStats(){
+
         return null;
     }
 
@@ -40,9 +41,14 @@ public class AdminDashboardRestController {
         return ResponseEntity.ok(userStats);
     }
 
-    @GetMapping("/dashboard/GraphB")
+    @GetMapping("/dashboard/yearly-revenue")
     public ResponseEntity<RevenueGraphResponseDTO>getTotalRevenue(){
-        return null;
+        RevenueGraphResponseDTO revenueStats = RevenueGraphResponseDTO.builder()
+                .labels(dashBoardService.getLast12Months())
+                .revenue(dashBoardService.getNewTotalStats(oneYearAgo, now))
+                .build();
+
+        return ResponseEntity.ok(revenueStats);
     }
     @GetMapping("/dashboard/GraphC")
     public ResponseEntity<PopularFundingResponseDTO>getPopularFunding(){
