@@ -52,3 +52,5 @@ build/
 out/
 *.class
 create.sql
+
+*.txt

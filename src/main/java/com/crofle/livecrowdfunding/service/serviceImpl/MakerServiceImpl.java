@@ -1,6 +1,7 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.Maker;
+import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 import com.crofle.livecrowdfunding.dto.request.MakerInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.MakerInfoResponseDTO;
 import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
@@ -51,7 +52,7 @@ public class MakerServiceImpl implements MakerService {
                 .address(saveMakerRequestDTO.getAddress())
                 .detailAddress(saveMakerRequestDTO.getDetailAddress())
                 .registeredAt(LocalDateTime.now())
-                .status(0)
+                .status(UserStatus.활성화)
                 .build();
 
         maker = makerRepository.save(maker);

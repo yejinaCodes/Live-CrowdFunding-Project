@@ -15,18 +15,19 @@ import java.util.Arrays;
 public class SaveServiceTest {
     @Autowired
     private UserService userService;
+    private MakerService makerService;
 
     @Test
     public void testUserSave() {
         SaveUserRequestDTO saveUserRequestDTO = SaveUserRequestDTO.builder()
 
-                .name("권용빈")
-                .nickname("곽바철")
-                .phone("123-456-2890").password("1234")
-
+                .name("최성민")
+                .nickname("CSM")
+                .phone("123-456-2890")
+                .password("1234")
                 .gender(true)
                 .birth("1919-04-01")
-                .email("2332@naver.com")
+                .email("11g1@naver.com")
                 .zipcode(12345)
                 .address("123 Street")
                 .detailAddress("Apt 101")
@@ -61,7 +62,7 @@ public class SaveServiceTest {
                 .detailAddress("Apt 101")
                 .build();
 
-        SaveMakerRequestDTO saveMaker = userService.saveMaker(saveMakerRequestDTO);
+        SaveMakerRequestDTO saveMaker = makerService.saveMaker(saveMakerRequestDTO);
 
         log.info("저장된 제작자 정보: " + saveMaker);
 
