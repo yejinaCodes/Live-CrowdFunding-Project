@@ -20,6 +20,7 @@ public class MakerController {
         return ResponseEntity.ok(makerService.findMaker(id));
     }
 
+    //Patch로 변경 예정
     @PostMapping("/{id}")
     public ResponseEntity<Void> updateMaker(@PathVariable Long id, @RequestBody MakerInfoRequestDTO makerInfoRequestDTO) {
         makerService.updateMaker(id, makerInfoRequestDTO);

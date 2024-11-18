@@ -3,6 +3,7 @@ package com.crofle.livecrowdfunding.service;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
 import com.crofle.livecrowdfunding.dto.request.OrderRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.OrderResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,17 @@ public class OrderServiceTest {
         log.info(orderResponseDTO);
     }
 
+//    @Test //페이지 적용 전
+//    public void testFindByUser() {
+//        Long userId = 1L;
+//        log.info("User ID: " + userId);
+//        orderService.findByUser(userId).forEach(orderHistoryResponseDTO -> log.info(orderHistoryResponseDTO));
+//    }
+
     @Test
     public void testFindByUser() {
         Long userId = 1L;
-        orderService.findByUser(userId).forEach(orderHistoryResponseDTO -> log.info(orderHistoryResponseDTO));
+        log.info("User ID: " + userId);
+        orderService.findByUser(userId, PageRequestDTO.builder().page(1).build()).getDataList().forEach(orderHistoryResponseDTO -> log.info(orderHistoryResponseDTO));
     }
 }

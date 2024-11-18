@@ -15,5 +15,5 @@ import java.util.List;
 public interface LikedRepository extends JpaRepository<Liked, LikedId> {
 
     @Query("SELECT l.project FROM Liked l WHERE l.user.id = :userId ORDER BY l.createdAt DESC")
-    List<Project> findByUser(@Param("userId") Long userId);
+    Page<Project> findByUser(@Param("userId") Long userId, Pageable pageable);
 }

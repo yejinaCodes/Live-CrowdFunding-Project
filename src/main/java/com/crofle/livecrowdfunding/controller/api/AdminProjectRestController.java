@@ -26,7 +26,7 @@ public class AdminProjectRestController {
 
     @GetMapping("/projects")
     public ResponseEntity<PageListResponseDTO<ProjectResponseInfoDTO>> getProjectList(
-            @RequestParam int page,
+            @RequestParam (defaultValue = "1") int page,
             @RequestParam(required = false) String RS,
             @RequestParam(required = false) String PS,
             @RequestParam(required = false) String SD,
@@ -50,7 +50,7 @@ public class AdminProjectRestController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    //승인, 반려를 위한 프로젝트별 상세 조회
+    //승인, 반려를 위한 프로젝트별 상세 조회 페이지에서 필요한 서류들 보기. 프론트에서 해당 서류들 위치 지정해주기.
     @GetMapping("/project/{id}/approval")
     public ResponseEntity<List<EssentialDocumentDTO>> approveProject(@PathVariable Long id){
         return ResponseEntity.ok(adminProjectService.findEssentialDocs(id));

@@ -1,8 +1,10 @@
 package com.crofle.livecrowdfunding.controller;
 
 import com.crofle.livecrowdfunding.dto.request.OrderRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.OrderHistoryResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.OrderResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.ProjectDetailResponseDTO;
 import com.crofle.livecrowdfunding.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderHistoryResponseDTO>> getOrdersByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(orderService.findByUser(userId));
+    public ResponseEntity<PageListResponseDTO<OrderHistoryResponseDTO>> getOrdersByUser(@PathVariable Long userId, @ModelAttribute PageRequestDTO pageRequestDTO) {
+        return ResponseEntity.ok(orderService.findByUser(userId, pageRequestDTO));
     }
 }

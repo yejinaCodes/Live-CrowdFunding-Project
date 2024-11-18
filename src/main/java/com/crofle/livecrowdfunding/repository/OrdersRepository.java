@@ -2,6 +2,8 @@ package com.crofle.livecrowdfunding.repository;
 
 import com.crofle.livecrowdfunding.domain.entity.Orders;
 import com.crofle.livecrowdfunding.dto.response.OrderHistoryResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,7 +21,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "JOIN o.paymentHistory ph " +
             "JOIN p.images i " +
             "WHERE o.user.id = :userId " +
-            "AND i.id = (SELECT MIN(img.imageNumber) FROM Image img WHERE img.project = p) " +
+            "AND i.imageNumber = (SELECT MIN(img.imageNumber) FROM Image img WHERE img.project = p) " +
             "ORDER BY ph.paymentAt DESC")
-    List<OrderHistoryResponseDTO> findByUser(Long userId);
+    Page<OrderHistoryResponseDTO> findByUser(Long userId, Pageable pageable);
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,14 +110,19 @@ public class Project {
     @Builder.Default
     private List<Orders> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<Image> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<EssentialDocument> essentialDocuments = new ArrayList<>();
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
     private Revenue revenue;
+
+    @PrePersist
+    public void prePersist() {
+        this.reviewProjectStatus = ProjectStatus.검토중;
+    }
 }

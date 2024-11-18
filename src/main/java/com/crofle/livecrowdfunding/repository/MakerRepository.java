@@ -11,15 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface MakerRepository extends JpaRepository<Maker, Long> {
-//    Page<Maker> findByConditions(PageRequestDTO pageRequestDTO, Pageable pageable);
-//}
-
-    //Maker은 상태 조회하지 않음!
-//@Query("SELECT m FROM Maker m " +
-//        "WHERE (:#{#dto.userName} IS NULL OR :#{#dto.userName} = '' OR m.name LIKE %:#{#dto.userName}%)")
-//Page<Maker> findByConditions(@Param("dto") PageRequestDTO dto, Pageable pageable);
-
-
     @Query("SELECT m FROM Maker m " +
             "WHERE (:#{#dto.search?.US} IS NULL OR m.status = :#{T(com.crofle.livecrowdfunding.domain.enums.UserStatus).valueOf(#dto.search.US)}) " +
             "AND (:#{#dto.userName} IS NULL OR m.name LIKE %:#{#dto.userName}%)")

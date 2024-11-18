@@ -3,9 +3,13 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 import com.crofle.livecrowdfunding.domain.entity.Orders;
 import com.crofle.livecrowdfunding.domain.entity.Project;
 import com.crofle.livecrowdfunding.domain.entity.User;
+import com.crofle.livecrowdfunding.dto.PageInfoDTO;
 import com.crofle.livecrowdfunding.dto.request.OrderRequestDTO;
+import com.crofle.livecrowdfunding.dto.request.PageRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.OrderHistoryResponseDTO;
 import com.crofle.livecrowdfunding.dto.response.OrderResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.PageListResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.PageResponseDTO;
 import com.crofle.livecrowdfunding.repository.OrdersRepository;
 import com.crofle.livecrowdfunding.repository.ProjectRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
@@ -14,6 +18,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
@@ -61,8 +66,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderHistoryResponseDTO> findByUser(Long userId) {
-        return ordersRepository.findByUser(userId);
+    public PageListResponseDTO<OrderHistoryResponseDTO> findByUser(Long userId, PageRequestDTO pageRequestDTO) {
+        Page<OrderHistoryResponseDTO> orders = ordersRepository.findByUser(userId, pageRequestDTO.getPageable());
+        return PageListResponseDTO.<OrderHistoryResponseDTO>builder()
+                .dataList(orders.getContent())
+                .pageInfoDTO(PageInfoDTO.withAll()
+                        .pageRequestDTO(pageRequestDTO)
+                        .total((int)orders.getTotalElements())
+                        .build())
+                .build();
     }
 
     private User findUser(Long userId) {
