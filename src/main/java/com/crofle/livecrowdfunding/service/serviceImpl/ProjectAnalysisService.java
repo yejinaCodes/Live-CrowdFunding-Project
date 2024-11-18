@@ -38,12 +38,12 @@ public class ProjectAnalysisService {
             requestBody.put("system", getSystemPrompt());  // system 메시지를 톱레벨 파라미터로 전달
 
             String userMessage = String.format("""
-                기획안 1:
+                상품 기획안 1:
                 %s
                 
-                기획안 2:
+                펀딩 기획안 2:
                 %s
-                """, request.getProposal1(), request.getProposal2());
+                """, request.getProjectDocument(), request.getFundingDocument());
 
             Map<String, String> message = new HashMap<>();
             message.put("role", "user");
@@ -73,32 +73,53 @@ public class ProjectAnalysisService {
 
     private String getSystemPrompt() {
         return """
-            당신은 사업 기획안을 평가하는 전문가입니다. 아래 기준으로 두 기획안을 평가해주세요:
+            당신은 사업 기획안을 평가하는 전문가입니다. 아래 기준으로 두 기획안을 종합하여 평가해주세요:
             
-            1. 시장성 (30점)
-               - 시장 규모와 성장성
-               - 고객 니즈 부합도
+            상품 기획안
+	1. 상품 정의(20점)
+		- 상품의 핵심 가지와 특장점
+		- 목표 고객층 정의
+		- 시장 내 경쟁 제품 분석
+		- 가격 전략의 적절성
             
-            2. 실현 가능성 (30점)
-               - 기술적/운영적 실현 가능성
-               - 자원 소요 적절성
+            2. 상품 계획(20점)
+            		- 생산 방식과 프로세스
+		- 생산 용량 및 확장성
+		- 품질 관리 방안
+		- 원자재/부품 조달 계획
             
-            3. 수익성 (20점)
-               - 수익 모델의 명확성
-               - 예상 수익률
-            
-            4. 차별성 (20점)
-               - 경쟁사 대비 강점
-               - 혁신성
+            3. 배송 계획 (10점)
+		- 배송 및 물류 계획
+		- 재고 관리 방안
+		- AS/반품 정책
+		- 고객 지원 체계
+
+            4. 리스크 관리(10점)
+              	- 생산 지연 대응 방안
+              	- 품질 이슈 대응 계획
+		- 원가 변동 리스크 관리
+		- 공급망 리스크 대책
+
+	펀딩 기획안
+	1. 펀딩 전략(20점)
+		- 펀딩 목표액의 적절성
+            		- 상품 홍보 게시글 작성 방향
+            		- 상품 홍보 이미지 계획
+            		- 할인율 산정
+	
+	2. 스트리밍 계획(20점)
+		- 라이브 방송 컨텐츠 계획
+		- 라이브 이벤트 계획
+		- 스트리밍 일정 계획
+
             
             기획안 분석 결과는 100점 만점으로 산출됩니다. 80점 이상이면 통과로 간주합니다.
-            기획안 분석 결과는 각 항목 별 점수를 제공해주면 됩니다.
+            통과 시 반려 사유 기재하지 않고, 반려 시 반려 사유를 100자 이내로 적어주세요.
            
             다음 형식으로 JSON으로 응답해주세요:
             {
-                "proposal1Score": 점수,
-                "proposal2Score": 점수,
-                "analysis": "기획안 분석 결과"
+                "proposalScore": 점수,
+                "rejectionReason": "반려 사유"
             }
             """;
     }
@@ -110,13 +131,8 @@ public class ProjectAnalysisService {
             JsonNode rootNode = mapper.readTree(content.asText());
 
             return ProposalAnalysisResponse.builder()
-                    .proposal1Score(rootNode.get("proposal1Score").asDouble())
-                    .proposal2Score(rootNode.get("proposal2Score").asDouble())
-                    .analysis(rootNode.get("analysis").asText())
-                    .passesThreshold(
-                            rootNode.get("proposal1Score").asDouble() >= 80 ||
-                                    rootNode.get("proposal2Score").asDouble() >= 80
-                    )
+                    .proposalScore(rootNode.get("proposalScore").asInt())
+                    .rejectionReason(rootNode.get("rejectionReason").asText())
                     .build();
 
         } catch (Exception e) {

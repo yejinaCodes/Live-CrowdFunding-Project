@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ProposalRequest {
-    private String proposal1;
-    private String proposal2;
+    private String projectDocument;
+    private String FundingDocument;
 }
