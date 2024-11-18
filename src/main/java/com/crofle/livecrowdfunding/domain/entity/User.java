@@ -100,4 +100,22 @@ public class User {
             this.interests.addAll(interests);
         }
     }
+
+    // 상태 변경을 위한 비즈니스 메서드들
+    public void activateUser() {
+        this.status = UserStatus.활성화;
+    }
+
+    public void deactivateUser() {
+        this.status = UserStatus.비활성화;
+    }
+
+    public void suspendUser() {
+        this.status = UserStatus.정지;
+    }
+
+    // 또는 하나의 메서드로
+    public void updateStatus(UserStatus newStatus) {
+        this.status = newStatus;
+    }
 }
