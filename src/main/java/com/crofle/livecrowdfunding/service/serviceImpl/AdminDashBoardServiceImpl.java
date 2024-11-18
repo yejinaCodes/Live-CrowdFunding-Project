@@ -1,6 +1,7 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.dto.response.*;
+import com.crofle.livecrowdfunding.repository.ProjectRepository;
 import com.crofle.livecrowdfunding.repository.RevenueRepository;
 import com.crofle.livecrowdfunding.repository.ScheduleRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
@@ -22,6 +23,7 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
     private final UserRepository userRepository;
     private final RevenueRepository revenueRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ProjectRepository projectRepository;
 
     //최근 12개월 list
     @Override
@@ -130,6 +132,11 @@ public class AdminDashBoardServiceImpl implements AdminDashBoardService {
     public List<YesterdayStreamingResponseDTO>getYesterdaySStats(){
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
         return scheduleRepository.findYesterdaySStats(yesterday);
+    }
+
+    @Override
+    public ProjectStatisticsResponseDTO getProjectStatistics(){
+        return projectRepository.getProjectStatistics();
     }
 
 }

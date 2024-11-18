@@ -24,9 +24,8 @@ public class AdminDashboardRestController {
 
     //refactoring시: 동시성 제어 사용시 axios사용??
     @GetMapping("/dashboard/stats")
-    public ResponseEntity<StatisticsResponseDTO>getStats(){
-
-        return null;
+    public ResponseEntity<ProjectStatisticsResponseDTO>getStats(){
+        return ResponseEntity.ok(dashBoardService.getProjectStatistics());
     }
 
     //월별(최근 12개월) 신규 가입자 수 (일반회원, 메이커, 총계)

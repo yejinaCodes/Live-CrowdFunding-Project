@@ -1,9 +1,6 @@
 package com.crofle.livecrowdfunding.service;
 
-import com.crofle.livecrowdfunding.dto.response.CategoryStatsResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.MonthlyRevenueResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.MonthlyUserCountResponseDTO;
-import com.crofle.livecrowdfunding.dto.response.YesterdayStreamingResponseDTO;
+import com.crofle.livecrowdfunding.dto.response.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,4 +19,5 @@ public interface AdminDashBoardService {
     List<CategoryStatsResponseDTO> getCategoryStats();
 
     List<YesterdayStreamingResponseDTO>getYesterdaySStats();
+    ProjectStatisticsResponseDTO getProjectStatistics();
 }
