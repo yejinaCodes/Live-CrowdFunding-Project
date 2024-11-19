@@ -24,6 +24,8 @@ public class Schedule {
     @Column(name = "date")
     private LocalDateTime date;
 
+    private Long total_viewer;
+
     @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private Video video;
 
