@@ -1,6 +1,7 @@
 package com.crofle.livecrowdfunding.service;
 
 import com.crofle.livecrowdfunding.dto.request.ScheduleRegisterRequestDTO;
+import com.crofle.livecrowdfunding.dto.response.ScheduleReserveResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 @Log4j2
@@ -27,5 +29,14 @@ public class ScheduleServiceTest {
                 .build());
 
         log.info("Schedule created");
+    }
+
+    @Test
+    public void getReserveScheduleTest() {
+        LocalDateTime startDate = LocalDateTime.now();
+
+        List<ScheduleReserveResponseDTO> list = scheduleService.getReserveSchedule(startDate);
+
+        log.info(list);
     }
 }
