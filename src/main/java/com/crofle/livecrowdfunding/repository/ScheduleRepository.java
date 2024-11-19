@@ -5,12 +5,15 @@ import com.crofle.livecrowdfunding.dto.response.YesterdayStreamingResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface ScheduleRepository extends JpaRepository<Schedule, Long>  {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
+    @Query("SELECT s.date " +
+            "FROM Schedule s " +
+            "WHERE s.date >= :startDate AND s.date <= :endDate")
+    List<LocalDateTime> findByDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
     @Query("""
             SELECT new com.crofle.livecrowdfunding.dto.response.YesterdayStreamingResponseDTO(
                 p.productName,

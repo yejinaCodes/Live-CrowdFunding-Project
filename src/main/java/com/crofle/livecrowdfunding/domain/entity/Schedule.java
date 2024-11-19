@@ -24,7 +24,13 @@ public class Schedule {
     @Column(name = "date")
     private LocalDateTime date;
 
-    private Long total_viewer;
+    @Column(name = "is_streaming", nullable = false)
+    @Builder.Default
+    private Boolean isStreaming = false;
+
+    @Column(name = "total_viewer", nullable = false)
+    @Builder.Default
+    private Integer totalViewer = 0;
 
     @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private Video video;
