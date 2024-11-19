@@ -1,5 +1,6 @@
 package com.crofle.livecrowdfunding.service.serviceImpl;
 
+import com.crofle.livecrowdfunding.domain.entity.AdminAccountView;
 import com.crofle.livecrowdfunding.domain.entity.Manager;
 import com.crofle.livecrowdfunding.domain.enums.Role;
 import com.crofle.livecrowdfunding.dto.request.AccountTokenRequestDTO;
@@ -28,12 +29,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;    // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
-
-
     @Override
     public AccountTokenResponseDTO login(AdminAccountLoginRequestDTO request) {
         //해당 사번의 직원이 존재하는지 DB 확인
-        Manager manager = adminAccountRepository.findByIdNum(request.getIdentificationNumber())
+        AdminAccountView manager = adminAccountRepository.findByIdNum(request.getIdentificationNumber())
                 .orElseThrow(()-> new IllegalArgumentException("Invalid identification number or password "));
 
         log.info("사용된 PasswordEncoder 클래스: {}", passwordEncoder.getClass().getName());
@@ -44,21 +43,27 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         boolean passwordMatch = passwordEncoder.matches(request.getPassword(), manager.getPassword());
         log.info("Password match result: {}", passwordMatch);
 
+        // 임시로 평문 비밀번호 비교
+//        if(!request.getPassword().equals(manager.getPassword())) {
+//            throw new IllegalArgumentException("Invalid password");
+//        }
+
         if(!passwordMatch){
             throw new IllegalArgumentException("Invalid identification number or password");
         }
 
         //토큰 발급
-        String accessToken = jwtUtil.createAccessToken(manager.getIdentificationNumber(), Role.Employeer);
-        String refreshToken = jwtUtil.createRefreshToken(manager.getIdentificationNumber(), Role.Employeer);
+        String accessToken = jwtUtil.createAccessToken(manager.getIdNum(), Role.Employeer);
+        String refreshToken = jwtUtil.createRefreshToken(manager.getIdNum(), Role.Employeer);
 
+        log.info(accessToken, refreshToken);
         //Redis 토큰 저장
-        saveToken(manager.getIdentificationNumber(), accessToken, refreshToken);
+        //saveToken(manager.getIdNum(), accessToken, refreshToken);
 
         return AccountTokenResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .identificationNumber(manager.getIdentificationNumber())
+                .identificationNumber(manager.getIdNum())
                 .build();
     }
 
@@ -97,12 +102,12 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         }
 
         // 3. 실제 사용자가 존재하는지 확인
-        Manager manager = adminAccountRepository.findByIdNum(idNum)
+        AdminAccountView manager = adminAccountRepository.findByIdNum(idNum)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // 4. 새로운 토큰 생성
-        String newAccessToken = jwtUtil.createAccessToken(manager.getIdentificationNumber(), Role.Employeer);
-        String newRefreshToken = jwtUtil.createRefreshToken(manager.getIdentificationNumber(), Role.Employeer);
+        String newAccessToken = jwtUtil.createAccessToken(manager.getIdNum(), Role.Employeer);
+        String newRefreshToken = jwtUtil.createRefreshToken(manager.getIdNum(), Role.Employeer);
 
         // 5. Redis에 새로운 토큰 저장
         saveToken(idNum, newAccessToken, newRefreshToken);
@@ -110,7 +115,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         return AccountTokenResponseDTO.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
-                .identificationNumber(manager.getIdentificationNumber())
+                .identificationNumber(manager.getIdNum())
                 .role(Role.Employeer)
                 .build();
     }
