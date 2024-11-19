@@ -17,12 +17,15 @@ import java.util.Map;
 
 @Service
 @Log4j2
-public class ProjectAnalysisService {
+public class ProposalAnalysisService {
 
-    @Value("${anthropic.api.key}")
-    private String claudeApiKey;
-
+    private final String claudeApiKey;
     private static final String CLAUDE_API_URL = "https://api.anthropic.com/v1/messages";
+
+    public ProposalAnalysisService(@Value("${anthropic.api.key}") String claudeApiKey) {
+        this.claudeApiKey = claudeApiKey;
+    }
+
 
     public ProposalAnalysisResponse analyzeProposals(ProposalRequest request) {
         try {
@@ -35,7 +38,7 @@ public class ProjectAnalysisService {
             requestBody.put("model", "claude-3-5-sonnet-20241022");
             requestBody.put("max_tokens", 1000);
             requestBody.put("temperature", 0.3);
-            requestBody.put("system", getSystemPrompt());  // system 메시지를 톱레벨 파라미터로 전달
+            requestBody.put("system", getSystemPrompt());
 
             String userMessage = String.format("""
                 상품 기획안 1:
