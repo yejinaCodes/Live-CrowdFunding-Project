@@ -13,5 +13,4 @@ import lombok.NoArgsConstructor;
 // 이메일 찾기 응답
 public class AccountFindEmailResponseDTO {
     private String email;
-    private String name;
 }

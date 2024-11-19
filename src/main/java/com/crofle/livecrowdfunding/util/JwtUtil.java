@@ -74,6 +74,7 @@ public class JwtUtil {
                 .compact();
     }
 
+
     /**
      * 토큰 검증
      */
@@ -139,6 +140,7 @@ public class JwtUtil {
     /**
      * 토큰이 비밀번호 재설정용인지 확인
      */
+
     public boolean isPasswordResetToken(String token) {
         try {
             Claims claims = parseToken(token).getBody();
@@ -184,4 +186,6 @@ public class JwtUtil {
         final long FIVE_MINUTES = 5 * 60 * 1000L;
         return getTokenTimeToLive(token) < FIVE_MINUTES;
     }
+
+
 }
