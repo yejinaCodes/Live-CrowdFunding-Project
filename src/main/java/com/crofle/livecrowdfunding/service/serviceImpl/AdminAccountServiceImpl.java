@@ -58,7 +58,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
         log.info(accessToken, refreshToken);
         //Redis 토큰 저장
-        //saveToken(manager.getIdNum(), accessToken, refreshToken);
+        saveToken(manager.getIdNum(), accessToken, refreshToken);
 
         return AccountTokenResponseDTO.builder()
                 .accessToken(accessToken)

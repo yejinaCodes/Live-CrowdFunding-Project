@@ -27,8 +27,8 @@ public class AdminAccountRestController {
     //토큰 갱신
     @PostMapping("/refresh")
     public ResponseEntity<AccountTokenResponseDTO>refresh(
-            @RequestHeader("Authorization") String refreshToken,
-            @RequestHeader("AccessToken") String accessToken){
+            @RequestHeader(value = "Authorization", required = true) String refreshToken,
+            @RequestHeader(value = "AccessToken", required = true) String accessToken){
         AccountTokenRequestDTO request = AccountTokenRequestDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
