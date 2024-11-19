@@ -9,9 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    @Query("SELECT DISTINCT s FROM Schedule s " +
-            "LEFT JOIN FETCH s.script " +
-            "LEFT JOIN FETCH s.video " +
+    @Query("SELECT s.date " +
+            "FROM Schedule s " +
             "WHERE s.date >= :startDate AND s.date <= :endDate")
-    List<Schedule> findByDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    List<LocalDateTime> findByDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
