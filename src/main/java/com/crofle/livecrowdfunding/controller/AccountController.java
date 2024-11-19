@@ -116,7 +116,7 @@ public class AccountController {
     }
 
     /**
-     * 네이버 로그인 콜백 처리
+     * 네이버 로그인 콜백 처Dㅇㄹ
      */
     @GetMapping("/oauth/naver/callback")
     public ResponseEntity<AccountTokenResponseDTO> naverCallback(

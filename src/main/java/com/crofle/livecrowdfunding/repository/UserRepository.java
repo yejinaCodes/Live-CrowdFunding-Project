@@ -73,4 +73,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
          WHERE mk.status = '활성화' AND mk.unregistered_at IS NULL AND DATE_FORMAT(mk.registered_at, '%Y-%m') <= m.month) as total_active
     FROM months m ORDER BY m.month """, nativeQuery = true)
     List<Object[]> countMonthlyCurrentTotal(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
 }
