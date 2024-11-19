@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @EnableWebSecurity
@@ -53,14 +52,15 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/account/login", "/api/account/refresh").permitAll()
-                        .requestMatchers("/oauth2/**", "/login/**").permitAll()
-                        .requestMatchers("/api/oauth2/**").permitAll()
-                        .requestMatchers("/login/oauth2/code/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/dashboard/**").permitAll()
-                        .requestMatchers("/api/admin-account/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/**").permitAll())
+//                        .requestMatchers("/api/account/login", "/api/account/refresh").permitAll()
+//                        .requestMatchers("/oauth2/**", "/login/**").permitAll()
+//                        .requestMatchers("/api/oauth2/**").permitAll()
+//                        .requestMatchers("/login/oauth2/code/**").permitAll()
+//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//                        .requestMatchers("/api/dashboard/**").permitAll()
+//                        .requestMatchers("/api/admin-account/**").permitAll()
+//                        .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService()))

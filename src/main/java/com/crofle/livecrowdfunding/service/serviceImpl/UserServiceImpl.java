@@ -2,14 +2,13 @@ package com.crofle.livecrowdfunding.service.serviceImpl;
 
 import com.crofle.livecrowdfunding.domain.entity.*;
 import com.crofle.livecrowdfunding.domain.id.UserCategoryId;
-import com.crofle.livecrowdfunding.dto.request.SaveMakerRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.SaveUserRequestDTO;
 import com.crofle.livecrowdfunding.dto.request.UserInfoRequestDTO;
 import com.crofle.livecrowdfunding.dto.response.UserInfoResponseDTO;
 import com.crofle.livecrowdfunding.repository.CategoryRepository;
 import com.crofle.livecrowdfunding.repository.MakerRepository;
 import com.crofle.livecrowdfunding.repository.UserRepository;
-import com.crofle.livecrowdfunding.repository.AccountViewRepository;
+import com.crofle.livecrowdfunding.repository.redis.AccountViewRepository;
 import com.crofle.livecrowdfunding.service.UserService;
 import com.crofle.livecrowdfunding.domain.enums.UserStatus;
 

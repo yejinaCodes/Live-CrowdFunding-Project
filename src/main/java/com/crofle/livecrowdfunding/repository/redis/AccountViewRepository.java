@@ -1,4 +1,4 @@
-package com.crofle.livecrowdfunding.repository;
+package com.crofle.livecrowdfunding.repository.redis;
 
 import com.crofle.livecrowdfunding.domain.entity.AccountView;
 import org.springframework.data.jpa.repository.JpaRepository;
