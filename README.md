@@ -91,11 +91,8 @@ Our team adopted Agile methodology by conducting daily scrum meetings. Shared us
 
 ## 7. FEATURE IMPLEMENTATION
 
-<img width="280" alt="image" src="https://github.com/user-attachments/assets/79c5e38a-a782-4f04-81c0-0da984f55f8c" />
 
-<img width="280" alt="image" src="https://github.com/user-attachments/assets/a9b65c3a-60ce-4bec-a6e1-e67310d8b8e6" />
-
-<img width="280" alt="image" src="https://github.com/user-attachments/assets/c430a63c-1602-42fd-81eb-176419f3a4ae" />
+<img src="" width="400" height="300" />
 
 
 My contribution includes developing the admin page (JWT login, dashboard statistics, project management, user management, report management), Toss Payment API integration for 2 types of payment logic.
