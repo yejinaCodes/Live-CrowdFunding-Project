@@ -95,7 +95,6 @@ Our team adopted Agile methodology by conducting daily scrum meetings. Shared us
 
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/a9b65c3a-60ce-4bec-a6e1-e67310d8b8e6" />
 
-
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/c430a63c-1602-42fd-81eb-176419f3a4ae" />
 
 
