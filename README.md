@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e9619fa3-6fe7-491a-8ff3-b6786f7c4011)## CROFLE CROWDFUNDING SERVICE INTRODUCTION
+## CROFLE CROWDFUNDING SERVICE INTRODUCTION
 <img width="585" alt="스크린샷 2025-02-02 오후 4 17 28" src="https://github.com/user-attachments/assets/422bb5d6-dc0a-462c-8e87-c9592b7176da" />
 
 Crowdfunding is the act of raising funds from individuals through social networking services for small-scale donations or investments. 
@@ -95,9 +95,6 @@ Our team adopted Agile methodology by conducting daily scrum meetings. Shared us
 
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/a9b65c3a-60ce-4bec-a6e1-e67310d8b8e6" />
 
-<img width="914" alt="스크린샷 2025-02-02 오후 6 23 20" src="https://github.com/user-attachments/assets/fbb1e531-3548-4560-bade-658e6064300f" />
-
-
 
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/c430a63c-1602-42fd-81eb-176419f3a4ae" />
 
@@ -111,22 +108,19 @@ For more information please refer to my blog.
 
 1. Problem with Filler Plugin in Bar Chart of Chart.js
 
-Compatibility issue with Filler plugin. The issue arose due to multiple graphs sharing the same bar.vue and line.vue components.
+* Compatibility issue with Filler plugin. The issue arose due to multiple graphs sharing the same bar.vue and line.vue components.
 
-Solution: Adopted lazy loading pattern to dynamically load the plugin only when necessary.
+* Solution: Adopted lazy loading pattern to dynamically load the plugin only when necessary.
 
 2. Problem with setting additional trigger to the same table
 
-Inability to use trigger that would change the funding status after project approval/denial due to already set trigger on the same stable.
+* Inability to use trigger that would change the funding status after project approval/denial due to already set trigger on the same stable.
 
-The reason trigger cannot be applied to a table that already has a trigger is primarily due to database systems placing restrictions to prevent infinite loops or unintended side effects. 
+* The reason trigger cannot be applied to a table that already has a trigger is primarily due to database systems placing restrictions to prevent infinite loops or unintended side effects. 
 
-Infinite calls not only degrade the performance of the DB, but also pose threat to overall stability of the system.
+* Infinite calls not only degrade the performance of the DB, but also pose threat to overall stability of the system.
 
-Solution: 
-
-
-
+* Solution: Avoid trigger and manage status update within the backend business logic
 
 ## 9. AREAS OF IMPROVEMENT
 
@@ -147,6 +141,7 @@ Response entity를 같게 통일하는게 좋다?
 ## 11. LINKS
 
 [**NOTION 🔗**]()
+
 [**ERD 🔗**]()
 
 
