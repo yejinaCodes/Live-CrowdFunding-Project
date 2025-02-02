@@ -96,6 +96,7 @@ Our team adopted Agile methodology by conducting daily scrum meetings. Shared us
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/a9b65c3a-60ce-4bec-a6e1-e67310d8b8e6" />
 
 
+
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/c430a63c-1602-42fd-81eb-176419f3a4ae" />
 
 
@@ -107,41 +108,37 @@ For more information please refer to my blog.
 ## 8. TROUBLE SHOOTING
 
 1. Problem with Filler Plugin in Bar Chart of Chart.js
-
 * Compatibility issue with Filler plugin. The issue arose due to multiple graphs sharing the same bar.vue and line.vue components.
-
 * Solution: Adopted lazy loading pattern to dynamically load the plugin only when necessary.
-
+  
 2. Problem with setting additional trigger to the same table
-
 * Inability to use trigger that would change the funding status after project approval/denial due to already set trigger on the same stable.
-
 * The reason trigger cannot be applied to a table that already has a trigger is primarily due to database systems placing restrictions to prevent infinite loops or unintended side effects. 
-
 * Infinite calls not only degrade the performance of the DB, but also pose threat to overall stability of the system.
-
 * Solution: Avoid trigger and manage status update within the backend business logic
 
 ## 9. AREAS OF IMPROVEMENT
 
-이메일 로직 정리: 디비 조회후 상태변경으로 진행, 1달 지난뒤 file에 저장하는 기능 추후 추가.
-환불 규정에 따른 구현 추가 필요
-security 적용 필요
-디자인 패턴 적용 클린 코드 작성
-대용량 트래픽이 생길 경우: 분산처리할 것으로 예상
-common entity 및 코드 합칠 때 정리해줘야 함
-Response entity를 같게 통일하는게 좋다?
+* Add feature to save reports and top funding data to a file at monthly intervals
+* Implement refund policy logic
+* Apply Security to admin login
+* Study then apply relevant design patterns and write cleaner code
+* Distribute processing in case of high traffic volume
+* Unify the Response entity to improve readability
+
 
 ## 10. RETROSPECTION
 
-* I felt a lack of experience in simplifying backend architecture and writing clean code with design patterns. However, I plan to continue developing my skills through hands-on experience and learning to write more efficient and structured code.
-* The importance of the dashboard became clear to me, as various statistics can help provide better services for managing crowdfunding projects. I want to further my knowledge in using data-driven insights to improve services.
-* The successful completion of the project was largely due to continuous communication and collaboration with the team. This experience highlighted the importance of teamwork.
+I felt a lack of experience in simplifying backend architecture and writing clean code with design patterns. However, I plan to continue developing my skills through hands-on experience and learning to write more efficient and structured code.
+
+Also, the importance of the dashboard became clear to me, as various statistics can help provide better services for managing crowdfunding projects. I want to further my knowledge in using data-driven insights to improve services.
+
+The successful completion of the project was largely due to continuous communication and collaboration with the team. This experience highlighted the importance of teamwork.
 
 ## 11. LINKS
 
-[**NOTION 🔗**]()
+[**NOTION 🔗**](https://short-measure-b6e.notion.site/4-12630b3d969f808894eed78fea456c01)
 
-[**ERD 🔗**]()
+[**ERD 🔗**](https://www.erdcloud.com/d/KYPmJkkarumbWEtCu)
 
 
