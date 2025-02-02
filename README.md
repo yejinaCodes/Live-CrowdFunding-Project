@@ -30,11 +30,11 @@ The project was carried out over a 6 week period.
 ## 1. DEVELOPMENT ENVIRONMENT
 <img width="630" alt="스크린샷 2025-02-02 오후 4 37 54" src="https://github.com/user-attachments/assets/81b1f108-441a-45ab-91b0-906e0717cc6b" />
 
-* FRONT-END: Vue3, HTML5, CSS3, JavaScript(ES6)
-* BACK-END: Java(17), Spring Boot(3.3.4), JPA, Spring Security, Junit5, MediaSoup, Docker, MySQL(8.0.21), Redis
-* VERSION CONTROL: Github, Git
-* DEVELOPMENT TOOL: Visual Studio, Intellij IDE, MySQL Workbench
-* COLLABORATION TOOL: Slack, Notion, GoogleDrive, Zoom
+* Front-end: Vue3, HTML5, CSS3, JavaScript(ES6)
+* Back-end: Java(17), Spring Boot(3.3.4), JPA, Spring Security, Junit5, MediaSoup, Docker, MySQL(8.0.21), Redis
+* Version Control: Github, Git
+* Development Tool: Visual Studio, Intellij IDE, MySQL Workbench
+* Collaboration Tool: Slack, Notion, GoogleDrive, Zoom
 
 
 ## 2. SERVER ARCHITECTURE
@@ -96,13 +96,13 @@ Our team adopted Agile methodology by conducting daily scrum meetings. Shared us
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/a9b65c3a-60ce-4bec-a6e1-e67310d8b8e6" />
 
 
-
 <img width="280" alt="image" src="https://github.com/user-attachments/assets/c430a63c-1602-42fd-81eb-176419f3a4ae" />
 
 
-My contribution includes developing the admin page (JWT login, dashboard, project management, user management, report management), payment functionality implementation.
+My contribution includes developing the admin page (JWT login, dashboard statistics, project management, user management, report management), Toss Payment API integration for 2 types of payment logic.
 
 For more information please refer to my blog.
+
 [**BLOG LINK 🔗**](https://velog.io/@lightamericano/%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%B0%98-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%BB%A4%EB%A8%B8%EC%8A%A4)
 
 ## 8. TROUBLE SHOOTING
@@ -119,12 +119,14 @@ For more information please refer to my blog.
 
 ## 9. AREAS OF IMPROVEMENT
 
-* Add feature to save reports and top funding data to a file at monthly intervals
-* Implement refund policy logic
-* Apply Security to admin login
-* Study then apply relevant design patterns and write cleaner code
-* Distribute processing in case of high traffic volume
-* Unify the Response entity to improve readability
+* Refine
+  - Unify the Response entity to improve readability
+  - Study then apply relevant design patterns and write cleaner code
+    
+* Add
+  - Implement refund policy logic
+  - Add feature to save reports and top funding data to a file at monthly intervals
+  - Distribute processing in case of high traffic volume
 
 
 ## 10. RETROSPECTION
