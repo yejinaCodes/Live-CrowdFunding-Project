@@ -47,9 +47,9 @@ The project was carried out over a 6 week period.
 
 ## 3. GITHUB CONVENTION
 
-<img width="405" alt="image" src="https://github.com/user-attachments/assets/8981cf44-d128-429d-ae60-07a113253a58" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/8981cf44-d128-429d-ae60-07a113253a58" />
 
-<img width="233" alt="image" src="https://github.com/user-attachments/assets/bc0b5f5e-a99c-4d02-978e-f7668957aa73" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/bc0b5f5e-a99c-4d02-978e-f7668957aa73" />
 
 
 [**FRONT-END CODE REPO 🔗**](https://github.com/yejinaCodes/Live-CrowdFunding-Frontend)
@@ -78,9 +78,9 @@ Through Continuous Integration, code changes were shared and integrated quickly,
 
 ## 5. PROJECT PACKAGE STRUCTURE & NAMING CONVENTION
 
-<img width="220" alt="image" src="https://github.com/user-attachments/assets/a2389394-9391-446d-8cd0-6acc3d206a4e" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/a2389394-9391-446d-8cd0-6acc3d206a4e" />
 
-<img width="420" alt="image" src="https://github.com/user-attachments/assets/794352b5-c176-4c77-88f3-d09b58970fac" />
+<img width="320" alt="image" src="https://github.com/user-attachments/assets/794352b5-c176-4c77-88f3-d09b58970fac" />
 
 ## 6. COLLABORATION
 
